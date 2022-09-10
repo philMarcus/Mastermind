@@ -1,5 +1,10 @@
+package ai;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import baseGame.GameSettings;
+import baseGame.Peg;
+import baseGame.Turn;
 
 //Calculations based on the game state; used to inform guesses by specific AI strategies(ists?).
 public class AI {

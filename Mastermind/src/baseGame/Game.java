@@ -1,3 +1,4 @@
+package baseGame;
 
 import java.awt.Container;
 import java.awt.FlowLayout;
@@ -6,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import ai.AI;
 
 public class Game implements ActionListener{
 	

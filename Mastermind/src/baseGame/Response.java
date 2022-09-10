@@ -1,3 +1,4 @@
+package baseGame;
 
 public class Response {
 	private int numBlack=0;

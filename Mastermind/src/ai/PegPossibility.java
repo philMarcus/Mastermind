@@ -1,3 +1,5 @@
+package ai;
+import baseGame.Peg;
 
 //For each peg we need to keep track of the min and max number there could be in the code, as well
 //as which slots the peg can't be found in and which slots they have been found in
