@@ -6,7 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButtonMenuItem;
 
 import ai.AI;
 
@@ -24,6 +28,7 @@ public class Game implements ActionListener{
 	private static JFrame window;
 	private static GuessInputPanel guessPanel;
 	private static Board board;
+	private static GameMenuBar menuBar;
 
 	
 	public void takeTurn(Code guess) {
@@ -73,6 +78,9 @@ public class Game implements ActionListener{
 
 		// Set this window's location and size:
 		window.setBounds(300, 300, 500, 600);
+		
+		menuBar = new GameMenuBar();
+		window.setJMenuBar(menuBar);
 
 		//  Create a Board, which is a kind of JPanel:
 		board = new Board(game);
@@ -113,4 +121,26 @@ public class Game implements ActionListener{
 	}	
 	
 	
+}
+
+class GameMenuBar extends JMenuBar {
+	JMenu game, difficulty;
+	JMenuItem reset;
+	JRadioButtonMenuItem easy, normal, hard;
+	
+	public GameMenuBar() {
+		game = new JMenu("Game");
+		difficulty = new JMenu("Chage Difficulty");
+		this.add(game);
+		reset = new JMenuItem("Reset Game");
+		game.add(reset);
+		easy = new JRadioButtonMenuItem("Easy");
+		normal = new JRadioButtonMenuItem("Normal");
+		hard = new JRadioButtonMenuItem("Hard");
+		difficulty.add(easy);
+		difficulty.add(normal);
+		difficulty.add(hard);
+		game.add(difficulty);			
+		
+		}
 }
