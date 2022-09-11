@@ -21,6 +21,18 @@ public class Code {
 		}
 	}
 	
+	//construct a random code with no repeated pegs
+	public Code(int codeLength, ArrayList<Peg> pegOptions, boolean easyMode) {
+		pegs = new Peg[codeLength];
+		ArrayList<Peg> remainingOpts = (ArrayList<Peg>)pegOptions.clone();
+		for (int i=0; i < pegs.length;i++) {
+			double rand = Math.random()*(remainingOpts.size());
+			int rInt = (int)rand;
+			pegs[i] = remainingOpts.remove(rInt);
+			
+		}
+	}
+	
 	public int getLength(){
 		return pegs.length;
 	}
