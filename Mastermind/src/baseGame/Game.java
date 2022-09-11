@@ -104,7 +104,7 @@ public class Game implements ActionListener {
 		// Registered on the "take turn" button on user input panel. Takes a turn.
 		if (e.getSource().equals(menuBar.reset)) {
 			reset();
-		} else {
+		} else if (e.getActionCommand().equals("Take Turn")){
 			Code guess = guessPanel.getUserCode();
 			takeTurn(guess);
 
