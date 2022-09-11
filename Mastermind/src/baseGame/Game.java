@@ -4,9 +4,12 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -16,7 +19,7 @@ import javax.swing.JRadioButtonMenuItem;
 
 import ai.AI;
 
-public class Game implements ActionListener {
+public class Game implements ActionListener,ItemListener{
 
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
@@ -83,6 +86,7 @@ public class Game implements ActionListener {
 		menuBar = new GameMenuBar();
 		window.setJMenuBar(menuBar);
 		menuBar.reset.addActionListener(game);
+		menuBar.easyMode.addItemListener(game);
 
 		// Create a Board, which is a kind of JPanel:
 		board = new Board(game);
@@ -114,6 +118,16 @@ public class Game implements ActionListener {
 			System.out.println(ai.toString());
 		}
 	}
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange()==ItemEvent.SELECTED) {
+        	settings.setEasyMode(true);
+        	reset();
+        }
+        else if (e.getStateChange()==ItemEvent.DESELECTED) {
+        	settings.setEasyMode(false);
+        	reset();
+        }
+    }
 
 	public static void main(String[] args) {
 
@@ -127,23 +141,23 @@ public class Game implements ActionListener {
 }
 
 class GameMenuBar extends JMenuBar {
-	JMenu game, difficulty;
+	
+	JMenu gameMenu;
 	JMenuItem reset;
-	JRadioButtonMenuItem easy, normal, hard;
+	JCheckBoxMenuItem easyMode;
+
 
 	public GameMenuBar() {
-		game = new JMenu("Game");
-		difficulty = new JMenu("Change Difficulty");
-		this.add(game);
+		gameMenu = new JMenu("Game");
+
+
+		this.add(gameMenu);
+		
 		reset = new JMenuItem("Reset");
-		game.add(reset);
-		easy = new JRadioButtonMenuItem("Easy");
-		normal = new JRadioButtonMenuItem("Normal");
-		hard = new JRadioButtonMenuItem("Hard");
-		difficulty.add(easy);
-		difficulty.add(normal);
-		difficulty.add(hard);
-		game.add(difficulty);
+		gameMenu.add(reset);
+		
+		easyMode = new JCheckBoxMenuItem("Easy Mode");
+		gameMenu.add(easyMode);
 
 	}
 }
