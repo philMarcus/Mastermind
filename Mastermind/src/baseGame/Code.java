@@ -11,24 +11,18 @@ public class Code {
 			pegs = givenPegs.clone(); //clone to ensure this turns pegs aren't updated later.
 	}
 	
-	// constructor to create Code with random pegs
-	public Code(int codeLength, ArrayList<Peg> pegOptions) {
-		pegs = new Peg[codeLength];
-		for (int i=0; i < pegs.length;i++) {
-			double rand = Math.random()*(pegOptions.size());
-			int rInt = (int)rand;
-			pegs[i] = pegOptions.get(rInt);
-		}
-	}
-	
-	//construct a random code with no repeated pegs
+
+	// constructor to create Code with random pegs, if easy mode is true, then no pegs are repeated.
 	public Code(int codeLength, ArrayList<Peg> pegOptions, boolean easyMode) {
 		pegs = new Peg[codeLength];
 		ArrayList<Peg> remainingOpts = (ArrayList<Peg>)pegOptions.clone();
 		for (int i=0; i < pegs.length;i++) {
 			double rand = Math.random()*(remainingOpts.size());
 			int rInt = (int)rand;
-			pegs[i] = remainingOpts.remove(rInt);
+			if (easyMode)
+				pegs[i] = remainingOpts.remove(rInt);
+			else 
+				pegs[i]=remainingOpts.get(rInt);
 			
 		}
 	}

@@ -10,7 +10,7 @@ public class GameSettings {
 	private boolean allowMultiples = true;
 	private int numPegOptions;
 	private ArrayList<Peg> pegOptions = new ArrayList<Peg>();
-	//private String difficulty = "Normal";
+	private boolean easyMode = false;
 	
 	//settings for swing display
 	private static int pegWidth = 30;
@@ -45,6 +45,14 @@ public class GameSettings {
 
 	public int getCodeLength() {
 		return codeLength;
+	}
+
+	public boolean isEasyMode() {
+		return easyMode;
+	}
+
+	public void setEasyMode(boolean easyMode) {
+		this.easyMode = easyMode;
 	}
 
 	public boolean allowsMultiples() {

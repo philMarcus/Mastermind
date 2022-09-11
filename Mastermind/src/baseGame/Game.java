@@ -21,7 +21,7 @@ public class Game implements ActionListener {
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
 	// initializes a random secret code
-	private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions());
+	private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
 
 	private static AI ai;
 
@@ -57,7 +57,7 @@ public class Game implements ActionListener {
 		board.clear();
 		turns.clear();
 		ai = new AI(getSettings());
-		secretCode = new Code(settings.getCodeLength(), settings.getPegOptions());
+		secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
 	}
 
 	public ArrayList<Turn> getTurns() {
