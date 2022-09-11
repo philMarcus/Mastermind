@@ -61,6 +61,7 @@ public class Game implements ActionListener,ItemListener{
 		turns.clear();
 		ai = new AI(getSettings());
 		secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
+		guessPanel.resetCBoxes();
 	}
 
 	public ArrayList<Turn> getTurns() {

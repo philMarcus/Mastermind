@@ -57,6 +57,13 @@ public class GuessInputPanel extends JPanel implements ActionListener {
 	public void setCBoxes(ArrayList<JComboBox<Peg>> cBoxes) {
 		this.cBoxes = cBoxes;
 	}
+	
+	public void resetCBoxes() {
+		userCode = new Code(len, opts,game.getSettings().isEasyMode());
+		for(int i=0;i<len;i++) {
+			cBoxes.get(i).setSelectedItem(userCode.getPeg(i));
+		}
+	}
 
 	// create and return the List of Peg options as a Combo Box Model to populate the combo boxes
 	private DefaultComboBoxModel<Peg> getComboModel(ArrayList<Peg> pegOpts){
