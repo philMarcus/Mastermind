@@ -98,6 +98,7 @@ public class Game implements ActionListener {
 
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
+		window.setResizable(false);
 	}
 
 	public void actionPerformed(ActionEvent e) {

@@ -4,6 +4,8 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,7 +29,8 @@ public class GuessInputPanel extends JPanel implements ActionListener {
 	
 	public GuessInputPanel(Game gameState) {
 
-		super(new FlowLayout());
+		super();
+		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		game = gameState;
 		opts = game.getSettings().getPegOptions();
 		len = game.getSettings().getCodeLength();
