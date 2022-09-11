@@ -14,9 +14,9 @@ import javax.swing.ListCellRenderer;
 //this component contains the combo boxes that the user uses to make a guess
 //and also the button to take the turn with the guess
 public class GuessInputPanel extends JPanel implements ActionListener {
+
 	private Game game;
 
-	
 	private ArrayList<Peg> opts;
 	private int len;
 	private Code userCode;
