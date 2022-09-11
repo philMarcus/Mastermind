@@ -8,22 +8,19 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButtonMenuItem;
-
 import ai.AI;
 
 public class Game implements ActionListener,ItemListener{
 
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
-	// initializes a random secret code
+	// initializes a random secret code; if easyMode is true, then the pegs won't repeat.
 	private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
 
 	private static AI ai;
@@ -55,7 +52,7 @@ public class Game implements ActionListener,ItemListener{
 	}
 
 	// clear the board and gamestate, select new secret code, and reset the AI
-	// analysis
+	// analysis, rerandomize the guess input combo boxes
 	public void reset() {
 		board.clear();
 		turns.clear();
@@ -119,6 +116,8 @@ public class Game implements ActionListener,ItemListener{
 			System.out.println(ai.toString());
 		}
 	}
+	
+	//listens to the menu for easy mode checkbox changes
     public void itemStateChanged(ItemEvent e) {
         if (e.getStateChange()==ItemEvent.SELECTED) {
         	settings.setEasyMode(true);
