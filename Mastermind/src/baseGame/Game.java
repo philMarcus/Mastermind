@@ -132,9 +132,9 @@ class GameMenuBar extends JMenuBar {
 
 	public GameMenuBar() {
 		game = new JMenu("Game");
-		difficulty = new JMenu("Chage Difficulty");
+		difficulty = new JMenu("Change Difficulty");
 		this.add(game);
-		reset = new JMenuItem("Reset Game");
+		reset = new JMenuItem("Reset");
 		game.add(reset);
 		easy = new JRadioButtonMenuItem("Easy");
 		normal = new JRadioButtonMenuItem("Normal");
