@@ -16,6 +16,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import ai.AI;
 
+
+//by Phil Marcus
 public class Game implements ActionListener,ItemListener{
 
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
