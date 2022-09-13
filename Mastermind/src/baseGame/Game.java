@@ -23,7 +23,8 @@ public class Game implements ActionListener,ItemListener{
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
 	// initializes a random secret code; if easyMode is true, then the pegs won't repeat.
-	private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
+	//private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
+	private Code secretCode = new Code(1,2,3,3, settings.getPegOptions());
 
 	private static AI ai;
 
@@ -59,7 +60,8 @@ public class Game implements ActionListener,ItemListener{
 		board.clear();
 		turns.clear();
 		ai = new AI(getSettings());
-		secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
+		//secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
+		secretCode = new Code(1,2,3,3, settings.getPegOptions());
 		guessPanel.resetCBoxes();
 	}
 

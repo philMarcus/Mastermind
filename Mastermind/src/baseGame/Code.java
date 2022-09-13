@@ -27,6 +27,15 @@ public class Code {
 		}
 	}
 	
+	//constructor for a test code of length 4
+	public Code(int p1, int p2, int p3, int p4, ArrayList<Peg> pegOptions) {
+		pegs = new Peg[4];
+		pegs[0]=pegOptions.get(p1);
+		pegs[1]=pegOptions.get(p2);
+		pegs[2]=pegOptions.get(p3);
+		pegs[3]=pegOptions.get(p4);
+	}
+	
 	public int getLength(){
 		return pegs.length;
 	}
