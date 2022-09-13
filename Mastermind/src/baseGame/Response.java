@@ -17,7 +17,19 @@ public class Response {
 				
 				// if this secret code peg was used to match an earlier white pin,
 				//then white pins are over-counted
-				if (matched[i]) numWhite--;
+				 //BUT ONLY IF check pegs AFTER i
+				// there are NO OTHER identical pegs to the right of the match.
+				if (matched[i]) {
+					int addl = 0;
+					for (int j = i+1; j<len; j++) {
+						if (guess.getPeg(i)==secretCode.getPeg(j)) {
+							addl++;
+						}
+					}
+					if (addl == 0)
+						numWhite--;
+				}
+				
 				
 				matched[i] = true;
 			}
