@@ -24,7 +24,7 @@ public class Game implements ActionListener,ItemListener{
 	private GameSettings settings = new GameSettings();
 	// initializes a random secret code; if easyMode is true, then the pegs won't repeat.
 	//private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
-	private Code secretCode = new Code(4,5,4,1, settings.getPegOptions());
+	private Code secretCode = new Code(2,0,1,2, settings.getPegOptions());
 
 	private static AI ai;
 
