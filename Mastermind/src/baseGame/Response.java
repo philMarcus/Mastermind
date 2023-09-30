@@ -74,6 +74,9 @@ public class Response {
 		return numBlack+numWhite;
 	}
 
+	public boolean equals(Response r) {
+		return (numBlack==r.getNumBlack()&&numWhite==r.getNumWhite());
+	}
 	public String toString() {
 		return "Black Pins: " + numBlack + " White Pins: " + numWhite;
 	}

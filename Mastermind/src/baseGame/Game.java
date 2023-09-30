@@ -15,6 +15,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import ai.AI;
+import ai.CodeUniverse;
 
 
 //by Phil Marcus
@@ -23,10 +24,11 @@ public class Game implements ActionListener,ItemListener{
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
 	// initializes a random secret code; if easyMode is true, then the pegs won't repeat.
-	//private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
-	private Code secretCode = new Code(2,0,1,2, settings.getPegOptions());
+	private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
 
-	private static AI ai;
+	private AI ai = new AI(settings);
+	//private CodeUniverse codeUniverse = new CodeUniverse(settings);
+
 
 	// GUI components
 	private static JFrame window;
@@ -37,11 +39,14 @@ public class Game implements ActionListener,ItemListener{
 	public void takeTurn(Code guess) {
 		// add a new turn to the gamestate, which consists of a guessed code and a
 		// calculated response
-		turns.add(new Turn(guess, new Response(guess, secretCode)));
+		Turn t = new Turn(guess, new Response(guess, secretCode));
+		turns.add(t);
 		// update the board display with the new turn
-		board.addTurn(turns.get(turns.size() - 1));
+		board.addTurn(t);
+		//process turn with AI
+		ai.processTurn(t);
 		// check the new turn for victory
-		if (turns.get(turns.size() - 1).isVictory()) {
+		if (t.isVictory()) {
 			JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
 			reset();
 		}
@@ -55,13 +60,13 @@ public class Game implements ActionListener,ItemListener{
 	}
 
 	// clear the board and gamestate, select new secret code, and reset the AI
-	// analysis, rerandomize the guess input combo boxes
+	//, rerandomize the guess input combo boxes
 	public void reset() {
 		board.clear();
 		turns.clear();
-		ai = new AI(getSettings());
-		//secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
+		secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),settings.isEasyMode());
 		guessPanel.resetCBoxes();
+		ai.reset();
 	}
 
 	public ArrayList<Turn> getTurns() {
@@ -78,7 +83,7 @@ public class Game implements ActionListener,ItemListener{
 
 	private static void createAndShowGUI() {
 		Game game = new Game();
-		ai = new AI(game.getSettings());
+
 		window = new JFrame("Marcus Mastermind");
 
 		// Set this window's location and size:
@@ -114,9 +119,7 @@ public class Game implements ActionListener,ItemListener{
 			Code guess = guessPanel.getUserCode();
 			takeTurn(guess);
 
-			// test new AI code
-			ai.analyze(turns);
-			System.out.println(ai.toString());
+
 		}
 	}
 	
