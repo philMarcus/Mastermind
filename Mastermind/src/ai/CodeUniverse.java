@@ -61,7 +61,10 @@ public class CodeUniverse {
 			}
 		}
 	}
-
+public int getSize() {
+	return codeUniverse.size();
+}
+	
 	public String toString() {
 		String s = "";
 		for (Code c : codeUniverse) {
@@ -69,5 +72,21 @@ public class CodeUniverse {
 		}
 		s += codeUniverse.size()+" possible codes.\n";
 		return s;
+	}
+
+	public int getLength() {
+		return len;
+	}
+
+	public ArrayList<Code> getCodeUniverse() {
+		return codeUniverse;
+	}
+
+	public ArrayList<Peg> getOpts() {
+		return opts;
+	}
+
+	public int getNumOpts() {
+		return numOpts;
 	}
 }

@@ -20,17 +20,25 @@ public class GameSettings {
 	private static int pinSlotWidth = pegSlotWidth/2;
 	private static int pinSlotHeight = pegSlotHeight/2;
 	
+	//displaying AI analyses in console
+	private boolean printCodeUniverse=false;
+	private boolean printPegPossibilities=false;
+	private boolean printPegProbabilities=true;
+	
+	
 	// add the six default colors to pegOptions list and set numPegOptions	
 	public GameSettings() {
-	pegOptions.add(new Peg(Color.BLACK, "Black", "b"));
-	pegOptions.add(new Peg(Color.WHITE, "White", "w"));
-	pegOptions.add(new Peg(Color.RED, "Red", "r"));
-	pegOptions.add(new Peg(Color.GREEN, "Green", "g"));
-	pegOptions.add(new Peg(Color.BLUE, "Blue", "u"));
-	pegOptions.add(new Peg(Color.YELLOW, "Yellow", "y"));
+	pegOptions.add(new Peg(Color.BLACK, "Black", "B"));
+	pegOptions.add(new Peg(Color.WHITE, "White", "W"));
+	pegOptions.add(new Peg(Color.RED, "Red", "R"));
+	pegOptions.add(new Peg(Color.GREEN, "Green", "G"));
+	pegOptions.add(new Peg(Color.BLUE, "Blue", "U"));
+	pegOptions.add(new Peg(Color.YELLOW, "Yellow", "Y"));
 	numPegOptions = pegOptions.size();
 
 	}
+	
+
 	
 	//construct a non-default color option Settings
 	public GameSettings (ArrayList<Peg> nonDefaultPegOption) {
@@ -91,6 +99,23 @@ public class GameSettings {
 		return pinSlotHeight;
 	}
 	
+
+	
+	public boolean isPrintCodeUniverse() {
+		return printCodeUniverse;
+	}
+
+
+	public boolean isPrintPegPossibilities() {
+		return printPegPossibilities;
+	}
+
+
+	public boolean isPrintPegProbabilities() {
+		return printPegProbabilities;
+	}
+
+
 	
 
 	

@@ -1,4 +1,5 @@
 package ai;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -9,23 +10,45 @@ import baseGame.Turn;
 //Calculations based on the game state; used to inform guesses by specific AI strategies(ists?).
 public class AI {
 	private CodeUniverse cU;
+	private ArrayList<PegPossibility> ps = new ArrayList<>();
 	private GameSettings settings;
-	
+	private ArrayList<Peg> opts;
+
 	public AI(GameSettings s) {
 		settings = s;
 		cU = new CodeUniverse(settings);
-		
+		opts = settings.getPegOptions();
+		setPegPossibilities();
+
+	}
+
+	public void setPegPossibilities() {
+		// initialize the peg-possibilities array
+		ps = new ArrayList<>();
+		Iterator<Peg> it = opts.iterator();
+		while (it.hasNext()) {
+			ps.add(new PegPossibility(it.next(), cU));
+		}
 	}
 
 	public void processTurn(Turn t) {
 		cU.processTurn(t);
-		System.out.println(cU.toString());
-		
+		setPegPossibilities();
+		if (settings.isPrintCodeUniverse())
+			System.out.println(cU.toString());
+		if (settings.isPrintPegPossibilities()) {
+			String s = "";
+			for (PegPossibility p : ps) {
+				s += p.toString(settings.isPrintPegProbabilities());
+			}
+			System.out.println(s);
+		}
+
 	}
 
 	public void reset() {
 		cU = new CodeUniverse(settings);
-		
+
 	}
 }
 
@@ -336,15 +359,8 @@ public class AI {
 //	public String toString() {
 //		String s = new String();
 //		for (PegPossibility p:ps) {
-//			s += p.getPeg().toString()+" Min: "+p.getNumIdentified()+" Max: "+p.getMaxNum()+" [";
-//			for(int i=0; i<len;i++) {
-//				if (p.isLocatedAt(i)) s+="O";
-//				else if (p.isExcludedAt(i)) s+="x";
-//				else s+=".";
-//			}
-//			s += "]"+System.lineSeparator();
+//		s+=p.toString();
 //		}
 //		return s;
 //	}
 //}
-
