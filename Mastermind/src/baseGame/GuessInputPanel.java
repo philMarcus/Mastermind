@@ -105,8 +105,6 @@ class PegRenderer extends JPanel implements ListCellRenderer<Peg> {
                                                   boolean isSelected,
                                                   boolean cellHasFocus) {
         PegPanel pegPanel = new PegPanel(value);
-    	//pegPanel.setText(value.toString());
-        //pegPAnel.setBackground(value.getColor());
 
         return pegPanel;
     }

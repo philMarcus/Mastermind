@@ -46,6 +46,14 @@ public class AI {
 
 	}
 
+	public CodeUniverse getCodeUniverse() {
+		return cU;
+	}
+
+	public ArrayList<PegPossibility> getPegPossibilities() {
+		return ps;
+	}
+
 }
 
 //DEPRECATED OLD HUMANISH BUGGY AI	

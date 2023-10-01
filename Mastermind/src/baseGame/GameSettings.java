@@ -14,7 +14,7 @@ public class GameSettings {
 	//setting to disallow repeating pegs in secret code
 	private boolean easyMode = false;
 	//setting to have ai guess codes
-	private boolean aiGuesser=false;
+	private boolean aiGuesser=true;
 	
 	//settings for swing display
 	private static int pegWidth = 30;

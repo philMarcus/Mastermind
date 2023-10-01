@@ -7,9 +7,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -18,6 +20,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JRadioButtonMenuItem;
 
 import ai.AI;
+import ai.AIPersonality;
+import ai.TheProfessorAI;
 
 //by Phil Marcus
 public class Game implements ActionListener, ItemListener {
@@ -37,7 +41,7 @@ public class Game implements ActionListener, ItemListener {
 	private static Board board;
 	private static GameMenuBar menuBar;
 
-	public void takeTurn(Code guess) {
+	public boolean takeTurn(Code guess) {
 		// add a new turn to the gamestate, which consists of a guessed code and a
 		// calculated response
 		Turn t = new Turn(guess, new Response(guess, secretCode));
@@ -50,6 +54,7 @@ public class Game implements ActionListener, ItemListener {
 		if (t.isVictory()) {
 			JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
 			reset();
+
 		}
 		// check new turn for a loss
 		else if (turns.size() >= settings.getMaxTries()) {
@@ -57,7 +62,21 @@ public class Game implements ActionListener, ItemListener {
 			reset();
 
 		}
+		return t.isVictory();
 
+	}
+
+	public void aiPlayTurn() {
+		// an AI personality makes a choice of code
+		AIPersonality pers = new TheProfessorAI(ai.getCodeUniverse());
+		Code choice = pers.getChoice();
+		// update combo boxes with chosen code
+		ArrayList<JComboBox<Peg>> cbs = guessPanel.getCBoxes();
+		for (int i = 0; i < settings.getCodeLength(); i++) {
+			cbs.get(i).setSelectedItem(choice.getPeg(i));
+		}
+		// take the turn with chosen code
+		takeTurn(choice);
 	}
 
 	// clear the board and gamestate, select new secret code, and reset the AI
@@ -96,11 +115,9 @@ public class Game implements ActionListener, ItemListener {
 		menuBar.easyMode.addItemListener(game);
 		menuBar.humanGuesser.addActionListener(game);
 		menuBar.aiGuesser.addActionListener(game);
-		
-
 
 		// Create a Board, which is a kind of JPanel:
-				board = new Board(game);
+		board = new Board(game);
 
 		// Create the user input panel
 		guessPanel = new GuessInputPanel(game);
@@ -110,10 +127,10 @@ public class Game implements ActionListener, ItemListener {
 		c.setLayout(new FlowLayout());
 		c.add(board);
 		c.add(guessPanel);
-		
-		//check settings for human or ai player
+
+		// check settings for human or ai player
 		menuBar.humanGuesser.setSelected(true);
-		if(game.getSettings().isAiGuesser())
+		if (game.getSettings().isAiGuesser())
 			menuBar.aiGuesser.doClick();
 
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -128,19 +145,17 @@ public class Game implements ActionListener, ItemListener {
 		} else if (e.getActionCommand().equals("Take Turn")) {
 			Code guess = guessPanel.getUserCode();
 			takeTurn(guess);
-		}
-		else if (e.getActionCommand().equals(("Human Guesser"))){
+		} else if (e.getActionCommand().equals(("Human Guesser"))) {
 			settings.setAiGuesser(false);
 			guessPanel.getTakeTurn().setText("Take Turn");
 			reset();
-		}
-		else if (e.getActionCommand().equals(("AI Guesser"))){
+		} else if (e.getActionCommand().equals(("AI Guesser"))) {
 			settings.setAiGuesser(true);
-			guessPanel.getTakeTurn().setText("Begin Game");
+			guessPanel.getTakeTurn().setText("AI Game");
 			reset();
-		}
-		else if (e.getActionCommand().equals("Begin Game")) {
-			
+		} else if (e.getActionCommand().equals("AI Game")) {
+
+			aiPlayTurn();
 		}
 	}
 
