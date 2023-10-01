@@ -30,10 +30,15 @@ public class ResponseInputDialog extends JDialog {
 			for(int w=0;w<=(len-b);w++) {
 				ResponseButton btn =new ResponseButton(new Response(b,w,len));
 				buttons.add(btn);
+				btn.addActionListener(game);
 				this.add(btn);
 			}
 		}
 		this.setBounds(750, 500, 400, 200);
+	}
+
+	public ArrayList<ResponseButton> getButtons() {
+		return buttons;
 	}
 
 }
@@ -47,6 +52,10 @@ class ResponseButton extends JButton {
 		super(r.toString());
 		rsp = r;
 
+	}
+
+	public Response getResponse() {
+		return rsp;
 	}
 }
 

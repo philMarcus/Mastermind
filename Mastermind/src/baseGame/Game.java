@@ -79,6 +79,12 @@ public class Game implements ActionListener, ItemListener {
 		// take the turn with chosen code
 		takeTurn(choice);
 	}
+	
+
+	private void humanResponds(Response response) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	// clear the board and gamestate, select new secret code, and reset the AI
 	// , rerandomize the guess input combo boxes
@@ -182,8 +188,16 @@ public class Game implements ActionListener, ItemListener {
 		} else if (e.getActionCommand().equals("AI Game")) {
 
 			aiPlayTurn();
+		} else {
+			
+			for(int i =0;i<responseDialog.getButtons().size();i++)
+				if(e.getSource().equals(responseDialog.getButtons().get(i))) {
+					humanResponds(responseDialog.getButtons().get(i).getResponse());
+				}
+					
 		}
 	}
+
 
 	// listens to the menu for easy mode checkbox changes
 	public void itemStateChanged(ItemEvent e) {
