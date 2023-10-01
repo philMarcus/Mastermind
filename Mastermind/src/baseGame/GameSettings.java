@@ -22,7 +22,7 @@ public class GameSettings {
 	
 	//displaying AI analyses in console
 	private boolean printCodeUniverse=false;
-	private boolean printPegPossibilities=false;
+	private boolean printPegPossibilities=true;
 	private boolean printPegProbabilities=true;
 	
 	
