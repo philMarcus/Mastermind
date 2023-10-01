@@ -46,10 +46,6 @@ public class AI {
 
 	}
 
-	public void reset() {
-		cU = new CodeUniverse(settings);
-
-	}
 }
 
 //DEPRECATED OLD HUMANISH BUGGY AI	

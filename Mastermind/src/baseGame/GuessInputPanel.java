@@ -24,6 +24,7 @@ public class GuessInputPanel extends JPanel implements ActionListener {
 	private Code userCode;
 	
 	private ArrayList<JComboBox<Peg>> cBoxes = new ArrayList<>();
+	private JButton takeTurn;
 
 
 	
@@ -45,7 +46,7 @@ public class GuessInputPanel extends JPanel implements ActionListener {
 			cb.setSelectedItem(userCode.getPeg(i));
 			cBoxes.add(cb);
 		}
-		JButton takeTurn = new JButton("Take Turn");
+		takeTurn = new JButton("Take Turn");
 		takeTurn.addActionListener(game);
 		this.add(takeTurn);
 	}
@@ -63,6 +64,10 @@ public class GuessInputPanel extends JPanel implements ActionListener {
 		for(int i=0;i<len;i++) {
 			cBoxes.get(i).setSelectedItem(userCode.getPeg(i));
 		}
+	}
+
+	public JButton getTakeTurn() {
+		return takeTurn;
 	}
 
 	// create and return the List of Peg options as a Combo Box Model to populate the combo boxes

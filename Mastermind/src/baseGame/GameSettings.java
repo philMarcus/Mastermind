@@ -10,7 +10,11 @@ public class GameSettings {
 	private boolean allowMultiples = true;
 	private int numPegOptions;
 	private ArrayList<Peg> pegOptions = new ArrayList<Peg>();
+	
+	//setting to disallow repeating pegs in secret code
 	private boolean easyMode = false;
+	//setting to have ai guess codes
+	private boolean aiGuesser=false;
 	
 	//settings for swing display
 	private static int pegWidth = 30;
@@ -113,6 +117,18 @@ public class GameSettings {
 
 	public boolean isPrintPegProbabilities() {
 		return printPegProbabilities;
+	}
+
+
+
+	public boolean isAiGuesser() {
+		return aiGuesser;
+	}
+
+
+
+	public void setAiGuesser(boolean aiGuesser) {
+		this.aiGuesser = aiGuesser;
 	}
 
 
