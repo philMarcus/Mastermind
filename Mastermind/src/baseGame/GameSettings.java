@@ -13,8 +13,9 @@ public class GameSettings {
 	
 	//setting to disallow repeating pegs in secret code
 	private boolean easyMode = false;
-	//setting to have ai guess codes
+	//settings to have ai guess and set codes
 	private boolean aiGuesser=false;
+	private boolean aiSetter=true;
 	
 	//settings for swing display
 	private static int pegWidth = 30;
@@ -129,6 +130,18 @@ public class GameSettings {
 
 	public void setAiGuesser(boolean aiGuesser) {
 		this.aiGuesser = aiGuesser;
+	}
+
+
+
+	public boolean isAiSetter() {
+		return aiSetter;
+	}
+
+
+
+	public void setAiSetter(boolean aiSetter) {
+		this.aiSetter = aiSetter;
 	}
 
 

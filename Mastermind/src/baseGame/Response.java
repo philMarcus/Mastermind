@@ -53,6 +53,12 @@ public class Response {
 	
 		len = numEmpty;
 	}
+	//construct any response, e.g. for iterating over all possible responses
+	public Response(int b, int w, int l) {
+		numBlack = b;
+		numWhite = w;
+		len = l;
+	}
 
 	public int getNumBlack() {
 		return numBlack;
@@ -73,11 +79,26 @@ public class Response {
 	public int getNumPins() {
 		return numBlack+numWhite;
 	}
+	//if all pins are black, it's a win!
+	public boolean isVictory() {
+		return (numBlack==len);
+	}
 
 	public boolean equals(Response r) {
 		return (numBlack==r.getNumBlack()&&numWhite==r.getNumWhite());
 	}
 	public String toString() {
-		return "Black Pins: " + numBlack + " White Pins: " + numWhite;
+		String s ="";
+		for(int i=0;i<numBlack;i++) 
+			s+="b";
+		for(int i=0;i<numWhite;i++)
+			s+="w";
+		if (isVictory())
+			s+=" WIN!";
+		if(getNumEmpty()==len)
+			s="No Pins";
+		
+		return s;
+	//	return "Black Pins: " + numBlack + " White Pins: " + numWhite;
 	}
 }
