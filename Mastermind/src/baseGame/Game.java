@@ -1,6 +1,8 @@
 package baseGame;
 
 import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Dialog.ModalityType;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,10 +44,10 @@ public class Game implements ActionListener, ItemListener {
 	private static Board board;
 	private static GameMenuBar menuBar;
 
-	public boolean takeTurn(Code guess) {
+	public boolean takeTurn(Turn t) {
 		// add a new turn to the gamestate, which consists of a guessed code and a
 		// calculated response
-		Turn t = new Turn(guess, new Response(guess, secretCode));
+		//Turn t = new Turn(guess, new Response(guess, secretCode));
 		turns.add(t);
 		// update the board display with the new turn
 		board.addTurn(t);
@@ -67,7 +69,7 @@ public class Game implements ActionListener, ItemListener {
 
 	}
 
-	public void aiPlayTurn() {
+	public void aiPlayTurn(boolean aiSet) {
 		// an AI personality makes a choice of code
 		AIPersonality pers = new TheProfessorAI(ai.getCodeUniverse());
 		Code choice = pers.getChoice();
@@ -76,14 +78,20 @@ public class Game implements ActionListener, ItemListener {
 		for (int i = 0; i < settings.getCodeLength(); i++) {
 			cbs.get(i).setSelectedItem(choice.getPeg(i));
 		}
-		// take the turn with chosen code
-		takeTurn(choice);
-	}
-	
+		if (aiSet)
+			// take the turn with chosen code
+			takeTurn(new Turn(choice, new Response(choice, secretCode)));
+		else
+		board.addTurnGuess(new Turn(choice, new Response(settings.getCodeLength())));
 
-	private void humanResponds(Response response) {
-		// TODO Auto-generated method stub
-		
+		responseDialog.requestFocus();
+		responseDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+	}
+
+	private void humanResponds(Response response, Code choice) {
+		board.removeTurnGuess();
+		takeTurn(new Turn(choice, response));
+
 	}
 
 	// clear the board and gamestate, select new secret code, and reset the AI
@@ -164,7 +172,7 @@ public class Game implements ActionListener, ItemListener {
 			reset();
 		} else if (e.getActionCommand().equals("Take Turn")) {
 			Code guess = guessPanel.getUserCode();
-			takeTurn(guess);
+			takeTurn(new Turn(guess, new Response(guess, secretCode)));
 		} else if (e.getActionCommand().equals(("Human Guesser"))) {
 			settings.setAiGuesser(false);
 			guessPanel.getTakeTurn().setText("Take Turn");
@@ -186,18 +194,18 @@ public class Game implements ActionListener, ItemListener {
 			reset();
 
 		} else if (e.getActionCommand().equals("AI Game")) {
+			aiPlayTurn(settings.isAiSetter());				
+			}
+		else{
 
-			aiPlayTurn();
-		} else {
-			
-			for(int i =0;i<responseDialog.getButtons().size();i++)
-				if(e.getSource().equals(responseDialog.getButtons().get(i))) {
-					humanResponds(responseDialog.getButtons().get(i).getResponse());
+			for (int i = 0; i < responseDialog.getButtons().size(); i++)
+				if (e.getSource().equals(responseDialog.getButtons().get(i))) {
+					Response r = (responseDialog.getButtons().get(i).getResponse());
+					humanResponds(r, guessPanel.getUserCode());
 				}
-					
+
 		}
 	}
-
 
 	// listens to the menu for easy mode checkbox changes
 	public void itemStateChanged(ItemEvent e) {

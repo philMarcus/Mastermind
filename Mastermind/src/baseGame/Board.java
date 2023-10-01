@@ -35,6 +35,17 @@ public class Board extends JPanel {
 		this.revalidate();
 		this.repaint();
 	}
+	
+	public void addTurnGuess(Turn turn) {
+		this.add(new TurnPanel(turn), turnsTaken);
+		this.remove(this.getComponentCount() - 1);
+		// redraw the board
+		this.revalidate();
+		this.repaint();
+	}
+	public void removeTurnGuess() {
+		this.remove(turnsTaken);
+	}
 
 	public void clear() {
 		// remove all the "taken" turn panels and add that many "untaken" turn panels
