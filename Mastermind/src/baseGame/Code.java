@@ -27,6 +27,14 @@ public class Code {
 		}
 	}
 	
+	//constructor for an array of integers
+	public Code(int[] ints, ArrayList<Peg> pegOptions) {
+		pegs = new Peg[ints.length];
+		for (int i=0;i<pegs.length;i++) {
+			pegs[i] = pegOptions.get(ints[i]);
+		}
+	}
+	
 	public int getLength(){
 		return pegs.length;
 	}

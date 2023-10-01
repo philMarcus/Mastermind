@@ -1,4 +1,6 @@
 package ai;
+
+import baseGame.Code;
 import baseGame.Peg;
 
 //For each peg we need to keep track of the min and max number there could be in the code, as well
@@ -6,22 +8,58 @@ import baseGame.Peg;
 public class PegPossibility {
 	private Peg p;
 	private int maxNum;
-	private int minNum = 0;
+	private int minNum;
 	private int len;
 	private boolean[] excludedSlots;
 	private boolean[] locatedSlots;
+	private double[] probabilityPerSlot;
 	private static boolean update = true;
 
-	public PegPossibility(Peg peg, int length) {
-		len = length;
+	public PegPossibility(Peg peg, CodeUniverse cU) {
+		len = cU.getLength();
 		// initially there could be any number of a peg, up to the length of the code
 		// itself
-		maxNum = length;
+		minNum = len;
+		maxNum = 0;
 		p = peg;
 		// flags slots this peg can't be in
 		excludedSlots = new boolean[len];
 		// flags slots this peg is definitely in
 		locatedSlots = new boolean[len];
+		// fraction of remaining codes containing this peg in each slot
+		probabilityPerSlot = new double[len];
+
+		processCU(cU);
+
+	}
+
+	private void processCU(CodeUniverse cU) {
+		int tot = cU.getSize();
+		// iterate through possible codes and count how many matches the peg has in each
+		// slot
+		for (Code c : cU.getCodeUniverse()) {
+			int count = 0;
+			for (int slot = 0; slot < len; slot++) {
+				if (c.getPeg(slot) == p) {
+					probabilityPerSlot[slot]++;
+					count++;
+				}
+			}
+			if (count < minNum)
+				setMinNum(count);
+			if (count > maxNum)
+				setMaxNum(count);
+		}
+		// divide count by total for probability
+		for (int slot = 0; slot < len; slot++) {
+			probabilityPerSlot[slot] /= tot;
+			// exclude slots with no possible codes
+			if (probabilityPerSlot[slot] <= 0)
+				excludeSlot(slot);
+			// mark as located slots in which every code contains this peg
+			if (probabilityPerSlot[slot] >= 1)
+				setLocatedSlot(slot);
+		}
 
 	}
 
@@ -115,6 +153,28 @@ public class PegPossibility {
 
 	public static void setNeedsUpdate() {
 		update = true;
+	}
+
+	public String toString(Boolean probs) {
+		String s = new String();
+		s += getPeg().getKey()+" "+getNumIdentified()+"-"+getMaxNum();
+		s +=" [";
+		for(int i=0; i<len;i++) {
+			if (isLocatedAt(i)) s+="O";
+			else if (isExcludedAt(i)) s+="x";
+			else s+=".";
+		}
+		s += "]";
+		if(probs) {
+			s+="[";
+			for(int i=0; i<len;i++) {
+				int pct = (int)(probabilityPerSlot[i]*100+0.5);
+				s+=" "+pct+"%";
+			}
+			s+="]";
+		}
+		s+=System.lineSeparator();
+		return s;
 	}
 
 }
