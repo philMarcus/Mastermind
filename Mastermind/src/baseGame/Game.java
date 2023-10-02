@@ -58,16 +58,19 @@ public class Game implements ActionListener, ItemListener {
 			if (settings.isAiGuesser() && !settings.isAiSetter())
 				JOptionPane.showMessageDialog(window,
 						"I win of course. \n" + "You responded correctly. You may be spared.");
+			else if (!settings.isAiGuesser() && !settings.isAiSetter())
+				JOptionPane.showMessageDialog(window, "Victory. According to a human.");
 			else {
 				JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
-
 			}
 			reset();
 
 		}
 		// check new turn for a loss
 		else if (turns.size() >= settings.getMaxTries()) {
-			JOptionPane.showMessageDialog(window, "Lose. The secret code was" + secretCode);
+			if (settings.isAiSetter())
+				JOptionPane.showMessageDialog(window, "Lose. The secret code was" + secretCode);
+			else JOptionPane.showMessageDialog(window, "Lose.");
 			reset();
 
 		}
