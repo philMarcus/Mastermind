@@ -198,7 +198,8 @@ public class Game implements ActionListener, ItemListener {
 				// take the turn with chosen code
 				takeTurn(new Turn(guess, new Response(guess, secretCode)));
 			else
-				// draw the guess with empty response until human chooses
+			// draw the guess with empty response until human chooses
+			if (!board.isGuessShown())
 				board.addTurnGuess(new Turn(guess, new Response(settings.getCodeLength())));
 
 			responseDialog.requestFocus();
@@ -228,7 +229,7 @@ public class Game implements ActionListener, ItemListener {
 		} else {
 
 			for (int i = 0; i < responseDialog.getButtons().size(); i++)
-				if (e.getSource().equals(responseDialog.getButtons().get(i))) {
+				if (e.getSource().equals(responseDialog.getButtons().get(i))&&board.isGuessShown()) {
 					Response r = (responseDialog.getButtons().get(i).getResponse());
 					humanResponds(r, guessPanel.getUserCode());
 				}
