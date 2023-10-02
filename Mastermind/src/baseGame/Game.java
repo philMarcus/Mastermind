@@ -221,6 +221,8 @@ public class Game implements ActionListener, ItemListener {
 		} else if (e.getActionCommand().equals(("Human Code Setter"))) {
 
 			settings.setAiSetter(false);
+			//can't manually close response dialog
+			responseDialog.setDefaultCloseOperation(0);
 			responseDialog.setVisible(true);
 			reset();
 
