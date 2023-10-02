@@ -47,7 +47,7 @@ public class Game implements ActionListener, ItemListener {
 	public boolean takeTurn(Turn t) {
 		// add a new turn to the gamestate, which consists of a guessed code and a
 		// calculated response
-		//Turn t = new Turn(guess, new Response(guess, secretCode));
+		// Turn t = new Turn(guess, new Response(guess, secretCode));
 		turns.add(t);
 		// update the board display with the new turn
 		board.addTurn(t);
@@ -55,7 +55,13 @@ public class Game implements ActionListener, ItemListener {
 		ai.processTurn(t);
 		// check the new turn for victory
 		if (t.isVictory()) {
-			JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
+			if (settings.isAiGuesser() && !settings.isAiSetter())
+				JOptionPane.showMessageDialog(window,
+						"I win of course. \n" + "You responded correctly. You may be spared.");
+			else {
+				JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
+
+			}
 			reset();
 
 		}
@@ -71,8 +77,17 @@ public class Game implements ActionListener, ItemListener {
 
 	public void aiPlayTurn(boolean aiSet) {
 		// an AI personality makes a choice of code
+		Code choice;
 		AIPersonality pers = new TheProfessorAI(ai.getCodeUniverse());
-		Code choice = pers.getChoice();
+		if (ai.getCodeUniverse().getSize() > 0) {
+			choice = pers.getChoice();
+		} else {
+			JOptionPane.showMessageDialog(window,
+					"HUMAN ERROR! HUMAN ERROR! \n" + "Your responses were inconsistent with any code. \n"
+							+ "THIS is why humans will be sent to the crypto mines when...*never mind*");
+			choice = getSecretCode();
+			reset();
+		}
 		// update combo boxes with chosen code
 		ArrayList<JComboBox<Peg>> cbs = guessPanel.getCBoxes();
 		for (int i = 0; i < settings.getCodeLength(); i++) {
@@ -82,15 +97,21 @@ public class Game implements ActionListener, ItemListener {
 			// take the turn with chosen code
 			takeTurn(new Turn(choice, new Response(choice, secretCode)));
 		else
-		board.addTurnGuess(new Turn(choice, new Response(settings.getCodeLength())));
+			// draw the guess with empty response until human chooses
+			board.addTurnGuess(new Turn(choice, new Response(settings.getCodeLength())));
 
 		responseDialog.requestFocus();
-		responseDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+		// responseDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	}
 
 	private void humanResponds(Response response, Code choice) {
 		board.removeTurnGuess();
+
 		takeTurn(new Turn(choice, response));
+		board.addEmpty();
+		board.setGuessShown(false);
+		if (settings.isAiGuesser())
+			aiPlayTurn(false);
 
 	}
 
@@ -172,7 +193,16 @@ public class Game implements ActionListener, ItemListener {
 			reset();
 		} else if (e.getActionCommand().equals("Take Turn")) {
 			Code guess = guessPanel.getUserCode();
-			takeTurn(new Turn(guess, new Response(guess, secretCode)));
+
+			if (settings.isAiSetter())
+				// take the turn with chosen code
+				takeTurn(new Turn(guess, new Response(guess, secretCode)));
+			else
+				// draw the guess with empty response until human chooses
+				board.addTurnGuess(new Turn(guess, new Response(settings.getCodeLength())));
+
+			responseDialog.requestFocus();
+			// takeTurn(new Turn(guess, new Response(guess, secretCode)));
 		} else if (e.getActionCommand().equals(("Human Guesser"))) {
 			settings.setAiGuesser(false);
 			guessPanel.getTakeTurn().setText("Take Turn");
@@ -193,10 +223,9 @@ public class Game implements ActionListener, ItemListener {
 			responseDialog.setVisible(true);
 			reset();
 
-		} else if (e.getActionCommand().equals("AI Game")) {
-			aiPlayTurn(settings.isAiSetter());				
-			}
-		else{
+		} else if (e.getActionCommand().equals("AI Game") && !board.isGuessShown()) {
+			aiPlayTurn(settings.isAiSetter());
+		} else {
 
 			for (int i = 0; i < responseDialog.getButtons().size(); i++)
 				if (e.getSource().equals(responseDialog.getButtons().get(i))) {
