@@ -57,7 +57,7 @@ public class Game implements ActionListener, ItemListener {
 		if (t.isVictory()) {
 			if (settings.isAiGuesser() && !settings.isAiSetter())
 				JOptionPane.showMessageDialog(window,
-						"I win of course. \n" + "You responded correctly. You may be spared.");
+						"I win of course. \n" + "You responded correctly, human. You may be spared.");
 			else if (!settings.isAiGuesser() && !settings.isAiSetter())
 				JOptionPane.showMessageDialog(window, "Victory. According to a human.");
 			else {
@@ -70,7 +70,8 @@ public class Game implements ActionListener, ItemListener {
 		else if (turns.size() >= settings.getMaxTries()) {
 			if (settings.isAiSetter())
 				JOptionPane.showMessageDialog(window, "Lose. The secret code was" + secretCode);
-			else JOptionPane.showMessageDialog(window, "Lose.");
+			else
+				JOptionPane.showMessageDialog(window, "Lose.");
 			reset();
 
 		}
@@ -148,12 +149,12 @@ public class Game implements ActionListener, ItemListener {
 		Game game = new Game();
 
 		window = new JFrame("Marcus Mastermind");
-
 		// Set this window's location and size:
 		window.setBounds(300, 300, 500, 600);
-
+		//create menu bar
 		menuBar = new GameMenuBar();
 		window.setJMenuBar(menuBar);
+		//listen to menu selections
 		menuBar.reset.addActionListener(game);
 		menuBar.easyMode.addItemListener(game);
 		menuBar.humanGuesser.addActionListener(game);
@@ -164,9 +165,9 @@ public class Game implements ActionListener, ItemListener {
 		// Create a Board, which is a kind of JPanel:
 		board = new Board(game);
 
-		// Create the user input panel
+		// Create the user input panel for guessing a code
 		guessPanel = new GuessInputPanel(game);
-
+		//Create the user input dialog for entering a response
 		responseDialog = new ResponseInputDialog(game);
 
 		// Add panels to window:
@@ -204,9 +205,8 @@ public class Game implements ActionListener, ItemListener {
 			// draw the guess with empty response until human chooses
 			if (!board.isGuessShown())
 				board.addTurnGuess(new Turn(guess, new Response(settings.getCodeLength())));
-
 			responseDialog.requestFocus();
-			// takeTurn(new Turn(guess, new Response(guess, secretCode)));
+
 		} else if (e.getActionCommand().equals(("Human Guesser"))) {
 			settings.setAiGuesser(false);
 			guessPanel.getTakeTurn().setText("Take Turn");
@@ -224,7 +224,7 @@ public class Game implements ActionListener, ItemListener {
 		} else if (e.getActionCommand().equals(("Human Code Setter"))) {
 
 			settings.setAiSetter(false);
-			//can't manually close response dialog
+			// can't manually close response dialog
 			responseDialog.setDefaultCloseOperation(0);
 			responseDialog.setVisible(true);
 			reset();
@@ -234,7 +234,7 @@ public class Game implements ActionListener, ItemListener {
 		} else {
 
 			for (int i = 0; i < responseDialog.getButtons().size(); i++)
-				if (e.getSource().equals(responseDialog.getButtons().get(i))&&board.isGuessShown()) {
+				if (e.getSource().equals(responseDialog.getButtons().get(i)) && board.isGuessShown()) {
 					Response r = (responseDialog.getButtons().get(i).getResponse());
 					humanResponds(r, guessPanel.getUserCode());
 				}

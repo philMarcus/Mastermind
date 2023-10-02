@@ -45,11 +45,6 @@ public class AI {
 			}
 			System.out.println(s);
 		}
-//		boolean ok=true;
-//		if (cU.getSize()==0)
-//			ok=false;
-//		return ok;
-
 	}
 
 	public CodeUniverse getCodeUniverse() {
