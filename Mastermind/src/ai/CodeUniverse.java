@@ -70,7 +70,7 @@ public int getSize() {
 		for (Code c : codeUniverse) {
 			s += c.toString() + "\n";
 		}
-		s += codeUniverse.size()+" possible codes.\n";
+		
 		return s;
 	}
 

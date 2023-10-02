@@ -1,6 +1,8 @@
 package baseGame;
 
 import java.awt.Container;
+import java.awt.Dialog;
+import java.awt.Dialog.ModalityType;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,13 +40,14 @@ public class Game implements ActionListener, ItemListener {
 	// GUI components
 	private static JFrame window;
 	private static GuessInputPanel guessPanel;
+	private static ResponseInputDialog responseDialog;
 	private static Board board;
 	private static GameMenuBar menuBar;
 
-	public boolean takeTurn(Code guess) {
+	public boolean takeTurn(Turn t) {
 		// add a new turn to the gamestate, which consists of a guessed code and a
 		// calculated response
-		Turn t = new Turn(guess, new Response(guess, secretCode));
+		// Turn t = new Turn(guess, new Response(guess, secretCode));
 		turns.add(t);
 		// update the board display with the new turn
 		board.addTurn(t);
@@ -52,7 +55,13 @@ public class Game implements ActionListener, ItemListener {
 		ai.processTurn(t);
 		// check the new turn for victory
 		if (t.isVictory()) {
-			JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
+			if (settings.isAiGuesser() && !settings.isAiSetter())
+				JOptionPane.showMessageDialog(window,
+						"I win of course. \n" + "You responded correctly. You may be spared.");
+			else {
+				JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
+
+			}
 			reset();
 
 		}
@@ -66,17 +75,44 @@ public class Game implements ActionListener, ItemListener {
 
 	}
 
-	public void aiPlayTurn() {
+	public void aiPlayTurn(boolean aiSet) {
 		// an AI personality makes a choice of code
+		Code choice;
 		AIPersonality pers = new TheProfessorAI(ai.getCodeUniverse());
-		Code choice = pers.getChoice();
+		if (ai.getCodeUniverse().getSize() > 0) {
+			choice = pers.getChoice();
+		} else {
+			JOptionPane.showMessageDialog(window,
+					"HUMAN ERROR! HUMAN ERROR! \n" + "Your responses were inconsistent with any code. \n"
+							+ "THIS is why humans will be sent to the crypto mines when...*never mind*");
+			choice = getSecretCode();
+			reset();
+		}
 		// update combo boxes with chosen code
 		ArrayList<JComboBox<Peg>> cbs = guessPanel.getCBoxes();
 		for (int i = 0; i < settings.getCodeLength(); i++) {
 			cbs.get(i).setSelectedItem(choice.getPeg(i));
 		}
-		// take the turn with chosen code
-		takeTurn(choice);
+		if (aiSet)
+			// take the turn with chosen code
+			takeTurn(new Turn(choice, new Response(choice, secretCode)));
+		else
+			// draw the guess with empty response until human chooses
+			board.addTurnGuess(new Turn(choice, new Response(settings.getCodeLength())));
+
+		responseDialog.requestFocus();
+		// responseDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+	}
+
+	private void humanResponds(Response response, Code choice) {
+		board.removeTurnGuess();
+
+		takeTurn(new Turn(choice, response));
+		board.addEmpty();
+		board.setGuessShown(false);
+		if (settings.isAiGuesser())
+			aiPlayTurn(false);
+
 	}
 
 	// clear the board and gamestate, select new secret code, and reset the AI
@@ -101,6 +137,10 @@ public class Game implements ActionListener, ItemListener {
 		return secretCode;
 	}
 
+	public static JFrame getWindow() {
+		return window;
+	}
+
 	private static void createAndShowGUI() {
 		Game game = new Game();
 
@@ -115,12 +155,16 @@ public class Game implements ActionListener, ItemListener {
 		menuBar.easyMode.addItemListener(game);
 		menuBar.humanGuesser.addActionListener(game);
 		menuBar.aiGuesser.addActionListener(game);
+		menuBar.aiSetter.addActionListener(game);
+		menuBar.humanSetter.addActionListener(game);
 
 		// Create a Board, which is a kind of JPanel:
 		board = new Board(game);
 
 		// Create the user input panel
 		guessPanel = new GuessInputPanel(game);
+
+		responseDialog = new ResponseInputDialog(game);
 
 		// Add panels to window:
 		Container c = window.getContentPane();
@@ -133,6 +177,11 @@ public class Game implements ActionListener, ItemListener {
 		if (game.getSettings().isAiGuesser())
 			menuBar.aiGuesser.doClick();
 
+		// check settings for human or ai setter
+		menuBar.aiSetter.setSelected(true);
+		if (!game.getSettings().isAiSetter())
+			menuBar.humanSetter.doClick();
+
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
 		window.setResizable(false);
@@ -144,7 +193,17 @@ public class Game implements ActionListener, ItemListener {
 			reset();
 		} else if (e.getActionCommand().equals("Take Turn")) {
 			Code guess = guessPanel.getUserCode();
-			takeTurn(guess);
+
+			if (settings.isAiSetter())
+				// take the turn with chosen code
+				takeTurn(new Turn(guess, new Response(guess, secretCode)));
+			else
+			// draw the guess with empty response until human chooses
+			if (!board.isGuessShown())
+				board.addTurnGuess(new Turn(guess, new Response(settings.getCodeLength())));
+
+			responseDialog.requestFocus();
+			// takeTurn(new Turn(guess, new Response(guess, secretCode)));
 		} else if (e.getActionCommand().equals(("Human Guesser"))) {
 			settings.setAiGuesser(false);
 			guessPanel.getTakeTurn().setText("Take Turn");
@@ -153,9 +212,30 @@ public class Game implements ActionListener, ItemListener {
 			settings.setAiGuesser(true);
 			guessPanel.getTakeTurn().setText("AI Game");
 			reset();
-		} else if (e.getActionCommand().equals("AI Game")) {
 
-			aiPlayTurn();
+		} else if (e.getActionCommand().equals(("AI Code Setter"))) {
+			settings.setAiSetter(true);
+			responseDialog.dispose();
+			reset();
+
+		} else if (e.getActionCommand().equals(("Human Code Setter"))) {
+
+			settings.setAiSetter(false);
+			//can't manually close response dialog
+			responseDialog.setDefaultCloseOperation(0);
+			responseDialog.setVisible(true);
+			reset();
+
+		} else if (e.getActionCommand().equals("AI Game") && !board.isGuessShown()) {
+			aiPlayTurn(settings.isAiSetter());
+		} else {
+
+			for (int i = 0; i < responseDialog.getButtons().size(); i++)
+				if (e.getSource().equals(responseDialog.getButtons().get(i))&&board.isGuessShown()) {
+					Response r = (responseDialog.getButtons().get(i).getResponse());
+					humanResponds(r, guessPanel.getUserCode());
+				}
+
 		}
 	}
 
@@ -181,37 +261,49 @@ public class Game implements ActionListener, ItemListener {
 
 }
 
-class GameMenuBar extends JMenuBar {
-
-	JMenu gameMenu;
-	JMenu settingsMenu;
-	JMenuItem reset;
-	JCheckBoxMenuItem easyMode;
-	JRadioButtonMenuItem humanGuesser;
-	JRadioButtonMenuItem aiGuesser;
-
-	public GameMenuBar() {
-		gameMenu = new JMenu("Game");
-		settingsMenu = new JMenu("Settings");
-
-		this.add(gameMenu);
-		this.add(settingsMenu);
-
-		reset = new JMenuItem("Reset");
-		gameMenu.add(reset);
-
-		easyMode = new JCheckBoxMenuItem("Easy Mode");
-		settingsMenu.add(easyMode);
-
-		ButtonGroup guessers = new ButtonGroup();
-		humanGuesser = new JRadioButtonMenuItem("Human Guesser");
-		aiGuesser = new JRadioButtonMenuItem("AI Guesser");
-		guessers.add(humanGuesser);
-		guessers.add(aiGuesser);
-
-		settingsMenu.addSeparator();
-		settingsMenu.add(humanGuesser);
-		settingsMenu.add(aiGuesser);
-
-	}
-}
+//class GameMenuBar extends JMenuBar {
+//
+//	JMenu gameMenu;
+//	JMenu settingsMenu;
+//	JMenuItem reset;
+//	JCheckBoxMenuItem easyMode;
+//	JRadioButtonMenuItem humanGuesser;
+//	JRadioButtonMenuItem aiGuesser;
+//	JRadioButtonMenuItem humanSetter;
+//	JRadioButtonMenuItem aiSetter;
+//
+//	public GameMenuBar() {
+//		gameMenu = new JMenu("Game");
+//		settingsMenu = new JMenu("Settings");
+//
+//		this.add(gameMenu);
+//		this.add(settingsMenu);
+//
+//		reset = new JMenuItem("Reset");
+//		gameMenu.add(reset);
+//
+//		easyMode = new JCheckBoxMenuItem("Easy Mode");
+//		settingsMenu.add(easyMode);
+//
+//		ButtonGroup guessers = new ButtonGroup();
+//		humanGuesser = new JRadioButtonMenuItem("Human Guesser");
+//		aiGuesser = new JRadioButtonMenuItem("AI Guesser");
+//		guessers.add(humanGuesser);
+//		guessers.add(aiGuesser);
+//
+//		settingsMenu.addSeparator();
+//		settingsMenu.add(humanGuesser);
+//		settingsMenu.add(aiGuesser);
+//		
+//		ButtonGroup setters = new ButtonGroup();
+//		humanSetter = new JRadioButtonMenuItem("Human Code Setter");
+//		aiSetter = new JRadioButtonMenuItem("AI CodeSetter");
+//		setters.add(humanSetter);
+//		setters.add(aiSetter);
+//
+//		settingsMenu.addSeparator();
+//		settingsMenu.add(humanSetter);
+//		settingsMenu.add(aiSetter);
+//
+//	}
+//}

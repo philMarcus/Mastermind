@@ -12,6 +12,8 @@ public class Board extends JPanel {
 
 	private GameSettings settings;
 	private int turnsTaken = 0;
+	//true if displaying the guess while a human chooses a response
+	private boolean guessShown;
 
 	// construct empty board display
 	public Board(Game gameState) {
@@ -35,8 +37,25 @@ public class Board extends JPanel {
 		this.revalidate();
 		this.repaint();
 	}
+	
+	public void addTurnGuess(Turn turn) {
+		this.add(new TurnPanel(turn), turnsTaken);
+		this.remove(this.getComponentCount() - 1);
+		this.setGuessShown(true);
+		// redraw the board
+		this.revalidate();
+		this.repaint();
+	}
+	public void removeTurnGuess() {
+		this.remove(turnsTaken);
+		guessShown=false;
+	}
 
 	public void clear() {
+		if (guessShown) {
+			removeTurnGuess();
+			this.add(new TurnPanel(settings.getCodeLength()));
+		}
 		// remove all the "taken" turn panels and add that many "untaken" turn panels
 		for (int i = 0; i < turnsTaken; i++) {
 			this.remove(0);
@@ -44,12 +63,26 @@ public class Board extends JPanel {
 
 		}
 		turnsTaken = 0;
+		guessShown=false;
 		// redraw the board
 		this.revalidate();
 		this.repaint();
 	}
+	
+	public void addEmpty() {
+		this.add(new TurnPanel(settings.getCodeLength()));
+	}
+
+	public boolean isGuessShown() {
+		return guessShown;
+	}
+
+	public void setGuessShown(boolean guessShown) {
+		this.guessShown = guessShown;
+	}
 
 }
+
 
 class TurnPanel extends JPanel {
 	private Turn turn;

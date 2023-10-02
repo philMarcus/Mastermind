@@ -36,6 +36,8 @@ public class AI {
 		setPegPossibilities();
 		if (settings.isPrintCodeUniverse())
 			System.out.println(cU.toString());
+		if(settings.isPrintNumCodes())
+			System.out.println(cU.getSize()+" possible codes.\n");
 		if (settings.isPrintPegPossibilities()) {
 			String s = "";
 			for (PegPossibility p : ps) {
@@ -43,6 +45,10 @@ public class AI {
 			}
 			System.out.println(s);
 		}
+//		boolean ok=true;
+//		if (cU.getSize()==0)
+//			ok=false;
+//		return ok;
 
 	}
 
