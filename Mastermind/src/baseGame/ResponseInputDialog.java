@@ -7,14 +7,14 @@ import javax.swing.JDialog;
 
 
 public class ResponseInputDialog extends JDialog {
-	private Game game;
+	private MastermindGUI game;
 	private int len;
 	private ArrayList<ResponseButton> buttons = new ArrayList<>();
 	
 	private GridLayout layout;
 	
-	public ResponseInputDialog(Game gameState) {
-		super(Game.getWindow(),"Response Input");
+	public ResponseInputDialog(MastermindGUI gameState) {
+		super(MastermindGUI.getWindow(),"Response Input");
 		game = gameState;
 		len = game.getSettings().getCodeLength();
 		layout= new GridLayout(len, 0);

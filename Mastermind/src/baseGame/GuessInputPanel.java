@@ -14,7 +14,7 @@ import javax.swing.ListCellRenderer;
 //and also the button to take the turn with the guess
 public class GuessInputPanel extends JPanel implements ActionListener {
 
-	private Game game;
+	private MastermindGUI game;
 
 	private ArrayList<Peg> opts;
 	private int len;
@@ -25,7 +25,7 @@ public class GuessInputPanel extends JPanel implements ActionListener {
 
 
 	
-	public GuessInputPanel(Game gameState) {
+	public GuessInputPanel(MastermindGUI gameState) {
 
 		super();
 		//this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));

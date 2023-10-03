@@ -18,7 +18,7 @@ import ai.AITurnPanel;
 import ai.TheProfessorAI;
 
 //by Phil Marcus
-public class Game implements ActionListener, ItemListener {
+public class MastermindGUI implements ActionListener, ItemListener {
 
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
@@ -148,7 +148,7 @@ public class Game implements ActionListener, ItemListener {
 	}
 
 	private static void createAndShowGUI() {
-		Game game = new Game();
+		MastermindGUI game = new MastermindGUI();
 
 		window = new JFrame("Marcus Mastermind");
 		// Set this window's location and size:

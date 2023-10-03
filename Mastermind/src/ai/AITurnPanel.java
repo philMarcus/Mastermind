@@ -4,12 +4,12 @@ package ai;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import baseGame.Game;
+import baseGame.MastermindGUI;
 
 public class AITurnPanel extends JPanel {
 	private JButton aiTurnButton;
 
-	public AITurnPanel(Game gameState) {
+	public AITurnPanel(MastermindGUI gameState) {
 		super();
 		aiTurnButton = new JButton("AI Take Turn");
 		aiTurnButton.addActionListener(gameState);

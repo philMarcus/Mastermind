@@ -14,7 +14,7 @@ public class Board extends JPanel {
 	private boolean guessShown;
 
 	// construct empty board display
-	public Board(Game gameState) {
+	public Board(MastermindGUI gameState) {
 		super();
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		settings = gameState.getSettings();
