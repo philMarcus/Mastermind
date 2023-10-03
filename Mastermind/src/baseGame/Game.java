@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.Dialog;
 import java.awt.Dialog.ModalityType;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.ButtonGroup;
+import javax.swing.GroupLayout;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -23,6 +25,7 @@ import javax.swing.JRadioButtonMenuItem;
 
 import ai.AI;
 import ai.AIPersonality;
+import ai.AITurnPanel;
 import ai.TheProfessorAI;
 
 //by Phil Marcus
@@ -41,8 +44,30 @@ public class Game implements ActionListener, ItemListener {
 	private static JFrame window;
 	private static GuessInputPanel guessPanel;
 	private static ResponseInputDialog responseDialog;
+	private static AITurnPanel aiTurnPanel;
 	private static Board board;
 	private static GameMenuBar menuBar;
+
+	private void showVictoryDialog() {
+		if (!settings.isAiSetter()) {
+
+			if (settings.isAiGuesser())
+				JOptionPane.showMessageDialog(window,
+						"I win of course. \n" + "You responded correctly, human. You may be spared.");
+			else if (!settings.isAiGuesser())
+				JOptionPane.showMessageDialog(window, "Victory. According to a human.");
+
+		} else {
+			JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
+		}
+	}
+	
+	private void showLoseDialog() {
+		if (settings.isAiSetter())
+			JOptionPane.showMessageDialog(window, "Lose. The secret code was" + secretCode);
+		else
+			JOptionPane.showMessageDialog(window, "Lose.");	
+	}
 
 	public boolean takeTurn(Turn t) {
 		// add a new turn to the gamestate, which consists of a guessed code and a
@@ -55,23 +80,12 @@ public class Game implements ActionListener, ItemListener {
 		ai.processTurn(t);
 		// check the new turn for victory
 		if (t.isVictory()) {
-			if (settings.isAiGuesser() && !settings.isAiSetter())
-				JOptionPane.showMessageDialog(window,
-						"I win of course. \n" + "You responded correctly, human. You may be spared.");
-			else if (!settings.isAiGuesser() && !settings.isAiSetter())
-				JOptionPane.showMessageDialog(window, "Victory. According to a human.");
-			else {
-				JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
-			}
+			showVictoryDialog();
 			reset();
-
 		}
 		// check new turn for a loss
 		else if (turns.size() >= settings.getMaxTries()) {
-			if (settings.isAiSetter())
-				JOptionPane.showMessageDialog(window, "Lose. The secret code was" + secretCode);
-			else
-				JOptionPane.showMessageDialog(window, "Lose.");
+			showLoseDialog();
 			reset();
 
 		}
@@ -109,10 +123,10 @@ public class Game implements ActionListener, ItemListener {
 	}
 
 	private void humanResponds(Response response, Code choice) {
-		board.removeTurnGuess();
 
 		takeTurn(new Turn(choice, response));
-		board.addEmpty();
+		board.removeTurnGuess();
+		board.addEmptyTurn();
 		board.setGuessShown(false);
 		if (settings.isAiGuesser())
 			aiPlayTurn(false);
@@ -151,10 +165,11 @@ public class Game implements ActionListener, ItemListener {
 		window = new JFrame("Marcus Mastermind");
 		// Set this window's location and size:
 		window.setBounds(300, 300, 500, 600);
-		//create menu bar
+
+		// create menu bar
 		menuBar = new GameMenuBar();
 		window.setJMenuBar(menuBar);
-		//listen to menu selections
+		// listen to menu selections
 		menuBar.reset.addActionListener(game);
 		menuBar.easyMode.addItemListener(game);
 		menuBar.humanGuesser.addActionListener(game);
@@ -167,22 +182,29 @@ public class Game implements ActionListener, ItemListener {
 
 		// Create the user input panel for guessing a code
 		guessPanel = new GuessInputPanel(game);
-		//Create the user input dialog for entering a response
+		// Create the user input dialog for entering a response
 		responseDialog = new ResponseInputDialog(game);
+		// Create Panel for taking an AI turn
+		aiTurnPanel = new AITurnPanel(game);
 
 		// Add panels to window:
 		Container c = window.getContentPane();
-		c.setLayout(new FlowLayout());
-		c.add(board);
-		c.add(guessPanel);
+		GroupLayout layout = new GroupLayout(c);
+		c.setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(board)
+				.addComponent(guessPanel).addComponent(aiTurnPanel));
+		layout.setVerticalGroup(
+				layout.createSequentialGroup().addComponent(board).addComponent(guessPanel).addComponent(aiTurnPanel));
 
 		// check settings for human or ai player
-		menuBar.humanGuesser.setSelected(true);
+		menuBar.humanGuesser.doClick();
 		if (game.getSettings().isAiGuesser())
 			menuBar.aiGuesser.doClick();
 
 		// check settings for human or ai setter
-		menuBar.aiSetter.setSelected(true);
+		menuBar.aiSetter.doClick();
 		if (!game.getSettings().isAiSetter())
 			menuBar.humanSetter.doClick();
 
@@ -209,11 +231,15 @@ public class Game implements ActionListener, ItemListener {
 
 		} else if (e.getActionCommand().equals(("Human Guesser"))) {
 			settings.setAiGuesser(false);
-			guessPanel.getTakeTurn().setText("Take Turn");
+			// guessPanel.getTakeTurn().setText("Take Turn");
+			guessPanel.setVisible(true);
+			aiTurnPanel.setVisible(false);
 			reset();
 		} else if (e.getActionCommand().equals(("AI Guesser"))) {
 			settings.setAiGuesser(true);
-			guessPanel.getTakeTurn().setText("AI Game");
+			// guessPanel.getTakeTurn().setText("AI Game");
+			guessPanel.setVisible(false);
+			aiTurnPanel.setVisible(true);
 			reset();
 
 		} else if (e.getActionCommand().equals(("AI Code Setter"))) {
@@ -229,7 +255,7 @@ public class Game implements ActionListener, ItemListener {
 			responseDialog.setVisible(true);
 			reset();
 
-		} else if (e.getActionCommand().equals("AI Game") && !board.isGuessShown()) {
+		} else if (e.getActionCommand().equals("AI Take Turn") && !board.isGuessShown()) {
 			aiPlayTurn(settings.isAiSetter());
 		} else {
 

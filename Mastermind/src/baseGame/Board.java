@@ -23,9 +23,14 @@ public class Board extends JPanel {
 
 		// add an empty turn panel for each "untaken" turn
 		for (int i = 0; i < settings.getMaxTries(); i++) {
-			this.add(new TurnPanel(settings.getCodeLength()));
+			//this.add(new TurnPanel(settings.getCodeLength()));
+			addEmptyTurn();
 		}
 
+	}
+	
+	public void addEmptyTurn() {
+		this.add(new TurnPanel(settings.getCodeLength()));
 	}
 
 	public void addTurn(Turn turn) {
@@ -52,9 +57,9 @@ public class Board extends JPanel {
 	}
 
 	public void clear() {
-		if (guessShown) {
+		if (guessShown&&turnsTaken<10) {
 			removeTurnGuess();
-			this.add(new TurnPanel(settings.getCodeLength()));
+			addEmptyTurn();
 		}
 		// remove all the "taken" turn panels and add that many "untaken" turn panels
 		for (int i = 0; i < turnsTaken; i++) {
@@ -69,9 +74,9 @@ public class Board extends JPanel {
 		this.repaint();
 	}
 	
-	public void addEmpty() {
-		this.add(new TurnPanel(settings.getCodeLength()));
-	}
+//	public void addEmpty() {
+//		this.add(new TurnPanel(settings.getCodeLength()));
+//	}
 
 	public boolean isGuessShown() {
 		return guessShown;
