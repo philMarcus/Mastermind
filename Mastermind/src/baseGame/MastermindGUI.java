@@ -18,7 +18,7 @@ import ai.AITurnPanel;
 import ai.TheProfessorAI;
 
 //by Phil Marcus
-public class MastermindGUI implements ActionListener, ItemListener {
+public class MastermindGUI extends JFrame implements ActionListener, ItemListener {
 
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
@@ -30,7 +30,7 @@ public class MastermindGUI implements ActionListener, ItemListener {
 
 
 	// GUI components
-	private static JFrame window;
+	//private static JFrame window;
 	private static GuessInputPanel guessPanel;
 	private static ResponseInputDialog responseDialog;
 	private static AITurnPanel aiTurnPanel;
@@ -40,21 +40,21 @@ public class MastermindGUI implements ActionListener, ItemListener {
 	private void showVictoryDialog() {
 		if (!settings.isAiSetter()) {
 			if (settings.isAiGuesser())
-				JOptionPane.showMessageDialog(window,
+				JOptionPane.showMessageDialog(this,
 						"I win of course. \n" + "You responded correctly, human. You may be spared.");
 			else if (!settings.isAiGuesser())
-				JOptionPane.showMessageDialog(window, "Victory. According to a human.");
+				JOptionPane.showMessageDialog(this, "Victory. According to a human.");
 
 		} else {
-			JOptionPane.showMessageDialog(window, "Win! The secret code was indeed" + secretCode);
+			JOptionPane.showMessageDialog(this, "Win! The secret code was indeed" + secretCode);
 		}
 	}
 	
 	private void showLoseDialog() {
 		if (settings.isAiSetter())
-			JOptionPane.showMessageDialog(window, "Lose. The secret code was" + secretCode);
+			JOptionPane.showMessageDialog(this, "Lose. The secret code was" + secretCode);
 		else
-			JOptionPane.showMessageDialog(window, "Lose.");	
+			JOptionPane.showMessageDialog(this, "Lose.");	
 	}
 
 	public boolean takeTurn(Turn t) {
@@ -88,7 +88,7 @@ public class MastermindGUI implements ActionListener, ItemListener {
 		if (ai.getCodeUniverse().getSize() > 0) {
 			choice = pers.getChoice();
 		} else {
-			JOptionPane.showMessageDialog(window,
+			JOptionPane.showMessageDialog(this,
 					"HUMAN ERROR! HUMAN ERROR! \n" + "Your responses were inconsistent with any code. \n"
 							+ "THIS is why humans will be sent to the crypto mines when...*never mind*");
 			choice = getSecretCode();
@@ -143,20 +143,21 @@ public class MastermindGUI implements ActionListener, ItemListener {
 		return secretCode;
 	}
 
-	public static JFrame getWindow() {
-		return window;
-	}
+//	public static JFrame getWindow() {
+//		return window;
+//	}
 
-	private static void createAndShowGUI() {
+	private void createAndShowGUI() {
 		MastermindGUI game = new MastermindGUI();
+		this.setTitle("Marcus Mastermind");
 
-		window = new JFrame("Marcus Mastermind");
+
 		// Set this window's location and size:
-		window.setBounds(300, 300, 500, 600);
+		setBounds(300, 300, 500, 600);
 
 		// create menu bar
 		menuBar = new GameMenuBar();
-		window.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		// listen to menu selections
 		menuBar.reset.addActionListener(game);
 		menuBar.easyMode.addItemListener(game);
@@ -176,7 +177,8 @@ public class MastermindGUI implements ActionListener, ItemListener {
 		aiTurnPanel = new AITurnPanel(game);
 
 		// Add panels to window:
-		Container c = window.getContentPane();
+		Container c = getContentPane();
+		//layout stuff
 		GroupLayout layout = new GroupLayout(c);
 		c.setLayout(layout);
 		layout.setAutoCreateGaps(true);
@@ -196,9 +198,9 @@ public class MastermindGUI implements ActionListener, ItemListener {
 		if (!game.getSettings().isAiSetter())
 			menuBar.humanSetter.doClick();
 
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		window.setVisible(true);
-		window.setResizable(false);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		setResizable(false);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -271,7 +273,8 @@ public class MastermindGUI implements ActionListener, ItemListener {
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				createAndShowGUI();
+				MastermindGUI gameGUI = new MastermindGUI();
+				gameGUI.createAndShowGUI();
 			}
 		});
 	}

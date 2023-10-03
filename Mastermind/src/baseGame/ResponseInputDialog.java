@@ -14,7 +14,7 @@ public class ResponseInputDialog extends JDialog {
 	private GridLayout layout;
 	
 	public ResponseInputDialog(MastermindGUI gameState) {
-		super(MastermindGUI.getWindow(),"Response Input");
+		super(gameState ,"Response Input");
 		game = gameState;
 		len = game.getSettings().getCodeLength();
 		layout= new GridLayout(len, 0);
