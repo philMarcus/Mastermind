@@ -1,7 +1,6 @@
 package ai;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import baseGame.GameSettings;
 import baseGame.Peg;

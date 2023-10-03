@@ -1,14 +1,10 @@
 package baseGame;
 
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JPanel;
+
 
 public class ResponseInputDialog extends JDialog {
 	private Game game;
@@ -18,7 +14,7 @@ public class ResponseInputDialog extends JDialog {
 	private GridLayout layout;
 	
 	public ResponseInputDialog(Game gameState) {
-		super(gameState.getWindow(),"Response Input");
+		super(Game.getWindow(),"Response Input");
 		game = gameState;
 		len = game.getSettings().getCodeLength();
 		layout= new GridLayout(len, 0);

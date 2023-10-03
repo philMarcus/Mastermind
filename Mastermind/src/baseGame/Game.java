@@ -1,27 +1,16 @@
 package baseGame;
 
 import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Dialog.ModalityType;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JRadioButtonMenuItem;
+
 
 import ai.AI;
 import ai.AIPersonality;
@@ -38,7 +27,7 @@ public class Game implements ActionListener, ItemListener {
 	private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(), settings.isEasyMode());
 
 	private AI ai = new AI(settings);
-	// private CodeUniverse codeUniverse = new CodeUniverse(settings);
+
 
 	// GUI components
 	private static JFrame window;
@@ -50,7 +39,6 @@ public class Game implements ActionListener, ItemListener {
 
 	private void showVictoryDialog() {
 		if (!settings.isAiSetter()) {
-
 			if (settings.isAiGuesser())
 				JOptionPane.showMessageDialog(window,
 						"I win of course. \n" + "You responded correctly, human. You may be spared.");
