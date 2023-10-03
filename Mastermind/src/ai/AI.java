@@ -12,12 +12,11 @@ public class AI {
 	private CodeUniverse cU;
 	private ArrayList<PegPossibility> ps = new ArrayList<>();
 	private GameSettings settings;
-	private ArrayList<Peg> opts;
+
 
 	public AI(GameSettings s) {
 		settings = s;
 		cU = new CodeUniverse(settings);
-		opts = settings.getPegOptions();
 		setPegPossibilities();
 
 	}
@@ -25,6 +24,7 @@ public class AI {
 	public void setPegPossibilities() {
 		// initialize the peg-possibilities array
 		ps = new ArrayList<>();
+		ArrayList<Peg> opts = settings.getPegOptions();
 		Iterator<Peg> it = opts.iterator();
 		while (it.hasNext()) {
 			ps.add(new PegPossibility(it.next(), cU));
