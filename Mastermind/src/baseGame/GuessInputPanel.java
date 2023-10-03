@@ -31,7 +31,7 @@ public class GuessInputPanel extends JPanel implements ActionListener {
 	public GuessInputPanel(Game gameState) {
 
 		super();
-		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		//this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		game = gameState;
 		opts = game.getSettings().getPegOptions();
 		len = game.getSettings().getCodeLength();
@@ -65,6 +65,7 @@ public class GuessInputPanel extends JPanel implements ActionListener {
 			cBoxes.get(i).setSelectedItem(userCode.getPeg(i));
 		}
 	}
+	
 
 	public JButton getTakeTurn() {
 		return takeTurn;
