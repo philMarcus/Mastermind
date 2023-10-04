@@ -2,6 +2,7 @@ package ai;
 
 import java.util.ArrayList;
 
+import baseGame.Code;
 import baseGame.GameEngine;
 import baseGame.GameSettings;
 import baseGame.Turn;
@@ -30,20 +31,30 @@ public class AnalyzedGame extends GameEngine {
 		ai.setPegPossibilities();
 	}
 	
-	public boolean takeTurn(Turn t) {
+	public Turn takeTurn(Turn t) {
 		super.takeTurn(t);
+		processTurn(t);
+		return t;
+		
+	}
+	
+	public Turn takeTurn(Code c) {
+		Turn t = super.takeTurn(c);
+		processTurn(t);
+		return t;
+	}
+	
+	private void processTurn(Turn t) {
 		turnsTaken++;
 		ai.processTurn(t);
 		//don't add more analyses to the arrays once the game is over.
 		if(t.isVictory())
-			return true;
+			return;
 		cUs.add(ai.getCodeUniverse());
 		ai.setPegPossibilities();
 		pegAnalyses.add(ai.getPegPossibilities());
-		return(t.isVictory());
-		
 	}
-
+	
 	public int getTurnsTaken() {
 		return turnsTaken;
 	}

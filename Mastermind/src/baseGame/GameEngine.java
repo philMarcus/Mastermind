@@ -24,20 +24,20 @@ public class GameEngine {
 		this.secretCode = new Code(settings.getCodeLength(), settings.getPegOptions());
 	}
 	
-	public boolean takeTurn(Turn t) {
+	public Turn takeTurn(Turn t) {
 		// add a new turn to the gamestate, which consists of a guessed code and a
 		// calculated response
 		turns.add(t);
-		return t.isVictory();
+		return t;
 
 	}
 
-	public boolean takeTurn(Code c) {
+	public Turn takeTurn(Code c) {
 		// When given a code (without a response) as a parameter, takeTurn will
 		// generate a response from the secret code
 		Turn t = new Turn(c, new Response(c, secretCode));
 		takeTurn(t);
-		return t.isVictory();
+		return t;
 	}
 
 	public ArrayList<Turn> getTurns() {

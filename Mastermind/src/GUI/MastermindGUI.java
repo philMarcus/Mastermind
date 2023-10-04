@@ -55,7 +55,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			JOptionPane.showMessageDialog(this, "Lose.");
 	}
 
-	public boolean takeTurn(Turn t) {
+	public Turn takeTurn(Turn t) {
 
 		game.takeTurn(t);
 		// update the board display with the new turn
@@ -75,7 +75,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		}
 		}
 
-		return t.isVictory();
+		return t;
 	}
 
 	public void aiPlayTurn() {
