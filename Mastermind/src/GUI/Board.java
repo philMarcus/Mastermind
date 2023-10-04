@@ -45,6 +45,7 @@ public class Board extends JPanel {
 		this.repaint();
 	}
 	
+	//add the first half of a turn, the guess,
 	public void addTurnGuess(Turn turn) {
 		this.add(new TurnPanel(turn), turnsTaken);
 		this.remove(this.getComponentCount() - 1);
@@ -53,6 +54,8 @@ public class Board extends JPanel {
 		this.revalidate();
 		this.repaint();
 	}
+	
+	//remove the half-turn
 	public void removeTurnGuess() {
 		this.remove(turnsTaken);
 		guessShown=false;
@@ -67,7 +70,6 @@ public class Board extends JPanel {
 		for (int i = 0; i < turnsTaken; i++) {
 			this.remove(0);
 			this.add(new TurnPanel(settings.getCodeLength()));
-
 		}
 		turnsTaken = 0;
 		guessShown=false;
@@ -76,10 +78,6 @@ public class Board extends JPanel {
 		this.repaint();
 	}
 	
-//	public void addEmpty() {
-//		this.add(new TurnPanel(settings.getCodeLength()));
-//	}
-
 	public boolean isGuessShown() {
 		return guessShown;
 	}

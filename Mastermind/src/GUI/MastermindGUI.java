@@ -26,17 +26,11 @@ import baseGame.Turn;
 //by Phil Marcus
 public class MastermindGUI extends JFrame implements ActionListener, ItemListener {
 
-//	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
 	private AnalyzedGame game = new AnalyzedGame(settings);
-	// initializes a random secret code; if easyMode is true, then the pegs won't
-	// repeat.
-//	private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(), settings.isEasyMode());
 	private Code secretCode = game.getSecretCode();
-	// private AI ai = new AI(settings);
 
 	// GUI components
-	// private static JFrame window;
 	private static GuessInputPanel guessPanel;
 	private static ResponseInputDialog responseDialog;
 	private static AITurnPanel aiTurnPanel;
@@ -65,7 +59,6 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 
 	public boolean takeTurn(Turn t) {
 
-		// Turn t = new Turn(guess, new Response(guess, secretCode));
 		game.takeTurn(t);
 		// update the board display with the new turn
 		board.addTurn(t);
@@ -108,7 +101,6 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		}
 		if (settings.isAiSetter())
 			// take the turn with chosen code
-			// takeTurn(new Turn(choice, new Response(choice, secretCode)));
 			this.takeTurn(new Turn(choice, new Response(choice, secretCode)));
 		else {
 			// draw the guess with empty response until human chooses
@@ -126,9 +118,6 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		this.takeTurn(t);
 		if (!t.isVictory()) {
 
-//		board.setGuessShown(false);
-		if (settings.isAiGuesser())
-			aiPlayTurn();
 		}
 
 	}
@@ -138,15 +127,9 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	public void reset() {
 		board.clear();
 		game = new AnalyzedGame(settings);
-		// secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),
-		// settings.isEasyMode());
 		guessPanel.resetCBoxes();
-		// ai = new AI(settings);
-	}
 
-//	public ArrayList<Turn> getTurns() {
-//		return turns;
-//	}
+	}
 
 	public GameSettings getSettings() {
 		return settings;
@@ -155,10 +138,6 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	public Code getSecretCode() {
 		return secretCode;
 	}
-
-//	public static JFrame getWindow() {
-//		return window;
-//	}
 
 	private void createAndShowGUI() {
 		MastermindGUI window = new MastermindGUI();
