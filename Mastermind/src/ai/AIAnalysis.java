@@ -8,13 +8,13 @@ import baseGame.Peg;
 import baseGame.Turn;
 
 //Calculations based on the game state; used to inform guesses by specific AI strategies(ists?).
-public class AI {
+public class AIAnalysis {
 	private CodeUniverse cU;
 	private ArrayList<PegPossibility> ps = new ArrayList<>();
 	private GameSettings settings;
 
 
-	public AI(GameSettings s) {
+	public AIAnalysis(GameSettings s) {
 		settings = s;
 		cU = new CodeUniverse(settings);
 		setPegPossibilities();

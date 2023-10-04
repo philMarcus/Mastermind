@@ -7,14 +7,14 @@ import baseGame.GameSettings;
 import baseGame.Turn;
 
 public class AnalyzedGame extends GameEngine {
-	private AI ai;
+	private AIAnalysis ai;
 	private int turnsTaken;
 	ArrayList<CodeUniverse> cUs= new ArrayList<>();
 	ArrayList<ArrayList<PegPossibility>> pegAnalyses = new ArrayList<>();
 
 	public AnalyzedGame(GameSettings settings) {
 		super(settings);
-		ai = new AI(settings);
+		ai = new AIAnalysis(settings);
 		//first element in the codeUniverse array correspond to the initial codeUniverse
 		//so indices match the turn to the code universe it was chosen from.
 		cUs.add(ai.getCodeUniverse());
@@ -23,7 +23,7 @@ public class AnalyzedGame extends GameEngine {
 	
 	public AnalyzedGame() {
 		super();
-		ai = new AI(this.getSettings());
+		ai = new AIAnalysis(this.getSettings());
 		//first element in the codeUniverse array correspond to the initial codeUniverse
 		//so indices match the turn to the code universe it was chosen from.
 		cUs.add(ai.getCodeUniverse());

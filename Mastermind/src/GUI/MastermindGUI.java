@@ -11,7 +11,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import ai.AI;
+import ai.AIAnalysis;
 import ai.AIPersonality;
 import ai.AITurnPanel;
 import ai.AnalyzedGame;
@@ -115,13 +115,15 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	}
 
 	private void humanResponds(Response response, Code choice) {
-
-		this.takeTurn(new Turn(choice, response));
+		Turn t = new Turn(choice, response);
+		this.takeTurn(t);
+		if (!t.isVictory()) {
 		board.removeTurnGuess();
 		board.addEmptyTurn();
 		board.setGuessShown(false);
 		if (settings.isAiGuesser())
 			aiPlayTurn();
+		}
 
 	}
 
