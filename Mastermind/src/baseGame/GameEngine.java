@@ -10,7 +10,6 @@ public class GameEngine {
 	private Code secretCode;
 	
 	public GameEngine(GameSettings settings, Code secretCode) {
-
 		this.settings = settings;
 		this.secretCode = secretCode;
 	}
@@ -29,7 +28,6 @@ public class GameEngine {
 		// add a new turn to the gamestate, which consists of a guessed code and a
 		// calculated response
 		turns.add(t);
-		// check the new turn for victory
 		return t.isVictory();
 
 	}

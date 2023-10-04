@@ -74,12 +74,16 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			showVictoryDialog();
 			reset();
 		}
+		else {
+
 		// check new turn for a loss
-		else if (game.getTurnsTaken() >= settings.getMaxTries()) {
+		if (game.getTurnsTaken() >= settings.getMaxTries()) {
 			showLoseDialog();
 			reset();
 
 		}
+		}
+
 		return t.isVictory();
 	}
 
@@ -115,12 +119,14 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	}
 
 	private void humanResponds(Response response, Code choice) {
+		board.removeTurnGuess();
+		board.addEmptyTurn();
+		
 		Turn t = new Turn(choice, response);
 		this.takeTurn(t);
 		if (!t.isVictory()) {
-		board.removeTurnGuess();
-		board.addEmptyTurn();
-		board.setGuessShown(false);
+
+//		board.setGuessShown(false);
 		if (settings.isAiGuesser())
 			aiPlayTurn();
 		}
