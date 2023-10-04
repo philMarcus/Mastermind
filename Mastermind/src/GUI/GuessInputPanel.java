@@ -1,4 +1,4 @@
-package baseGame;
+package GUI;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +9,9 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.ListCellRenderer;
+
+import baseGame.Code;
+import baseGame.Peg;
 
 //this component contains the combo boxes that the user uses to make a guess
 //and also the button to take the turn with the guess

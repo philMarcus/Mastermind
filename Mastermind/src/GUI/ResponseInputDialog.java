@@ -1,9 +1,11 @@
-package baseGame;
+package GUI;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+
+import baseGame.Response;
 
 
 public class ResponseInputDialog extends JDialog {

@@ -1,4 +1,4 @@
-package baseGame;
+package GUI;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -11,26 +11,32 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-
 import ai.AI;
 import ai.AIPersonality;
 import ai.AITurnPanel;
+import ai.AnalyzedGame;
+import ai.CodeUniverse;
 import ai.TheProfessorAI;
+import baseGame.Code;
+import baseGame.GameSettings;
+import baseGame.Peg;
+import baseGame.Response;
+import baseGame.Turn;
 
 //by Phil Marcus
 public class MastermindGUI extends JFrame implements ActionListener, ItemListener {
 
-	private ArrayList<Turn> turns = new ArrayList<Turn>();
+//	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
+	private AnalyzedGame game = new AnalyzedGame(settings);
 	// initializes a random secret code; if easyMode is true, then the pegs won't
 	// repeat.
-	private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(), settings.isEasyMode());
-
-	private AI ai = new AI(settings);
-
+//	private Code secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(), settings.isEasyMode());
+	private Code secretCode = game.getSecretCode();
+	// private AI ai = new AI(settings);
 
 	// GUI components
-	//private static JFrame window;
+	// private static JFrame window;
 	private static GuessInputPanel guessPanel;
 	private static ResponseInputDialog responseDialog;
 	private static AITurnPanel aiTurnPanel;
@@ -49,43 +55,40 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			JOptionPane.showMessageDialog(this, "Win! The secret code was indeed" + secretCode);
 		}
 	}
-	
+
 	private void showLoseDialog() {
 		if (settings.isAiSetter())
 			JOptionPane.showMessageDialog(this, "Lose. The secret code was" + secretCode);
 		else
-			JOptionPane.showMessageDialog(this, "Lose.");	
+			JOptionPane.showMessageDialog(this, "Lose.");
 	}
 
 	public boolean takeTurn(Turn t) {
-		// add a new turn to the gamestate, which consists of a guessed code and a
-		// calculated response
+
 		// Turn t = new Turn(guess, new Response(guess, secretCode));
-		turns.add(t);
+		game.takeTurn(t);
 		// update the board display with the new turn
 		board.addTurn(t);
-		// process turn with AI
-		ai.processTurn(t);
 		// check the new turn for victory
 		if (t.isVictory()) {
 			showVictoryDialog();
 			reset();
 		}
 		// check new turn for a loss
-		else if (turns.size() >= settings.getMaxTries()) {
+		else if (game.getTurnsTaken() >= settings.getMaxTries()) {
 			showLoseDialog();
 			reset();
 
 		}
 		return t.isVictory();
-
 	}
 
-	public void aiPlayTurn(boolean aiSet) {
+	public void aiPlayTurn() {
 		// an AI personality makes a choice of code
 		Code choice;
-		AIPersonality pers = new TheProfessorAI(ai.getCodeUniverse());
-		if (ai.getCodeUniverse().getSize() > 0) {
+		CodeUniverse cU = game.getCodeUniverse(game.getTurnsTaken());
+		AIPersonality pers = new TheProfessorAI(cU);
+		if (cU.getSize() > 0) {
 			choice = pers.getChoice();
 		} else {
 			JOptionPane.showMessageDialog(this,
@@ -99,25 +102,26 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		for (int i = 0; i < settings.getCodeLength(); i++) {
 			cbs.get(i).setSelectedItem(choice.getPeg(i));
 		}
-		if (aiSet)
+		if (settings.isAiSetter())
 			// take the turn with chosen code
-			takeTurn(new Turn(choice, new Response(choice, secretCode)));
-		else
+			// takeTurn(new Turn(choice, new Response(choice, secretCode)));
+			this.takeTurn(new Turn(choice, new Response(choice, secretCode)));
+		else {
 			// draw the guess with empty response until human chooses
 			board.addTurnGuess(new Turn(choice, new Response(settings.getCodeLength())));
+			responseDialog.requestFocus();
+		}
 
-		responseDialog.requestFocus();
-		// responseDialog.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	}
 
 	private void humanResponds(Response response, Code choice) {
 
-		takeTurn(new Turn(choice, response));
+		this.takeTurn(new Turn(choice, response));
 		board.removeTurnGuess();
 		board.addEmptyTurn();
 		board.setGuessShown(false);
 		if (settings.isAiGuesser())
-			aiPlayTurn(false);
+			aiPlayTurn();
 
 	}
 
@@ -125,15 +129,16 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	// , rerandomize the guess input combo boxes
 	public void reset() {
 		board.clear();
-		turns.clear();
-		secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(), settings.isEasyMode());
+		game = new AnalyzedGame(settings);
+		// secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(),
+		// settings.isEasyMode());
 		guessPanel.resetCBoxes();
-		ai = new AI(settings);
+		// ai = new AI(settings);
 	}
 
-	public ArrayList<Turn> getTurns() {
-		return turns;
-	}
+//	public ArrayList<Turn> getTurns() {
+//		return turns;
+//	}
 
 	public GameSettings getSettings() {
 		return settings;
@@ -148,9 +153,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 //	}
 
 	private void createAndShowGUI() {
-		MastermindGUI game = new MastermindGUI();
+		MastermindGUI window = new MastermindGUI();
 		this.setTitle("Marcus Mastermind");
-
 
 		// Set this window's location and size:
 		setBounds(300, 300, 500, 600);
@@ -159,26 +163,25 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		menuBar = new GameMenuBar();
 		setJMenuBar(menuBar);
 		// listen to menu selections
-		menuBar.reset.addActionListener(game);
-		menuBar.easyMode.addItemListener(game);
-		menuBar.humanGuesser.addActionListener(game);
-		menuBar.aiGuesser.addActionListener(game);
-		menuBar.aiSetter.addActionListener(game);
-		menuBar.humanSetter.addActionListener(game);
+		menuBar.reset.addActionListener(window);
+		menuBar.easyMode.addItemListener(window);
+		menuBar.humanGuesser.addActionListener(window);
+		menuBar.aiGuesser.addActionListener(window);
+		menuBar.aiSetter.addActionListener(window);
+		menuBar.humanSetter.addActionListener(window);
 
 		// Create a Board, which is a kind of JPanel:
-		board = new Board(game);
+		board = new Board(window);
 
 		// Create the user input panel for guessing a code
-		guessPanel = new GuessInputPanel(game);
+		guessPanel = new GuessInputPanel(window);
 		// Create the user input dialog for entering a response
-		responseDialog = new ResponseInputDialog(game);
+		responseDialog = new ResponseInputDialog(window);
 		// Create Panel for taking an AI turn
-		aiTurnPanel = new AITurnPanel(game);
+		aiTurnPanel = new AITurnPanel(window);
 
-		// Add panels to window:
+		// Add panels to window and layout:
 		Container c = getContentPane();
-		//layout stuff
 		GroupLayout layout = new GroupLayout(c);
 		c.setLayout(layout);
 		layout.setAutoCreateGaps(true);
@@ -198,6 +201,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		if (!game.getSettings().isAiSetter())
 			menuBar.humanSetter.doClick();
 
+		// show and configure application window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
 		setResizable(false);
@@ -212,22 +216,23 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 
 			if (settings.isAiSetter())
 				// take the turn with chosen code
-				takeTurn(new Turn(guess, new Response(guess, secretCode)));
+				this.takeTurn(new Turn(guess, new Response(guess, secretCode)));
 			else
-			// draw the guess with empty response until human chooses
-			if (!board.isGuessShown())
+			// draw the guess with empty response until huma;n chooses (if not already)
+			if (!board.isGuessShown()) {
 				board.addTurnGuess(new Turn(guess, new Response(settings.getCodeLength())));
-			responseDialog.requestFocus();
+				responseDialog.requestFocus();
+			}
 
 		} else if (e.getActionCommand().equals(("Human Guesser"))) {
+			// show the guess panel and hide the ai turn button
 			settings.setAiGuesser(false);
-			// guessPanel.getTakeTurn().setText("Take Turn");
 			guessPanel.setVisible(true);
 			aiTurnPanel.setVisible(false);
 			reset();
 		} else if (e.getActionCommand().equals(("AI Guesser"))) {
+			// hide the guess panel and show the ai turn button
 			settings.setAiGuesser(true);
-			// guessPanel.getTakeTurn().setText("AI Game");
 			guessPanel.setVisible(false);
 			aiTurnPanel.setVisible(true);
 			reset();
@@ -245,10 +250,11 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			responseDialog.setVisible(true);
 			reset();
 
+			// only take AI turn if not waiting for a human response
 		} else if (e.getActionCommand().equals("AI Take Turn") && !board.isGuessShown()) {
-			aiPlayTurn(settings.isAiSetter());
+			aiPlayTurn();
 		} else {
-
+			// check each response button to see if it was pressed
 			for (int i = 0; i < responseDialog.getButtons().size(); i++)
 				if (e.getSource().equals(responseDialog.getButtons().get(i)) && board.isGuessShown()) {
 					Response r = (responseDialog.getButtons().get(i).getResponse());
@@ -280,50 +286,3 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	}
 
 }
-
-//class GameMenuBar extends JMenuBar {
-//
-//	JMenu gameMenu;
-//	JMenu settingsMenu;
-//	JMenuItem reset;
-//	JCheckBoxMenuItem easyMode;
-//	JRadioButtonMenuItem humanGuesser;
-//	JRadioButtonMenuItem aiGuesser;
-//	JRadioButtonMenuItem humanSetter;
-//	JRadioButtonMenuItem aiSetter;
-//
-//	public GameMenuBar() {
-//		gameMenu = new JMenu("Game");
-//		settingsMenu = new JMenu("Settings");
-//
-//		this.add(gameMenu);
-//		this.add(settingsMenu);
-//
-//		reset = new JMenuItem("Reset");
-//		gameMenu.add(reset);
-//
-//		easyMode = new JCheckBoxMenuItem("Easy Mode");
-//		settingsMenu.add(easyMode);
-//
-//		ButtonGroup guessers = new ButtonGroup();
-//		humanGuesser = new JRadioButtonMenuItem("Human Guesser");
-//		aiGuesser = new JRadioButtonMenuItem("AI Guesser");
-//		guessers.add(humanGuesser);
-//		guessers.add(aiGuesser);
-//
-//		settingsMenu.addSeparator();
-//		settingsMenu.add(humanGuesser);
-//		settingsMenu.add(aiGuesser);
-//		
-//		ButtonGroup setters = new ButtonGroup();
-//		humanSetter = new JRadioButtonMenuItem("Human Code Setter");
-//		aiSetter = new JRadioButtonMenuItem("AI CodeSetter");
-//		setters.add(humanSetter);
-//		setters.add(aiSetter);
-//
-//		settingsMenu.addSeparator();
-//		settingsMenu.add(humanSetter);
-//		settingsMenu.add(aiSetter);
-//
-//	}
-//}

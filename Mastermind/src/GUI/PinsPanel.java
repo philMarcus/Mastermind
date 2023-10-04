@@ -1,4 +1,4 @@
-package baseGame;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,6 +6,9 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 
 import javax.swing.JPanel;
+
+import baseGame.GameSettings;
+import baseGame.Response;
 
 public class PinsPanel extends JPanel {
 

@@ -1,9 +1,14 @@
-package baseGame;
+package GUI;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
+
+import baseGame.Code;
+import baseGame.GameSettings;
+import baseGame.Response;
+import baseGame.Turn;
 
 @SuppressWarnings("serial")
 public class Board extends JPanel {
@@ -21,7 +26,6 @@ public class Board extends JPanel {
 
 		// add an empty turn panel for each "untaken" turn
 		for (int i = 0; i < settings.getMaxTries(); i++) {
-			//this.add(new TurnPanel(settings.getCodeLength()));
 			addEmptyTurn();
 		}
 
@@ -55,7 +59,7 @@ public class Board extends JPanel {
 	}
 
 	public void clear() {
-		if (guessShown&&turnsTaken<10) {
+		if (guessShown&&turnsTaken<settings.getMaxTries()) {
 			removeTurnGuess();
 			addEmptyTurn();
 		}
@@ -142,12 +146,4 @@ class PegsPanel extends JPanel {
 	}
 }
 
-/*
- * class SecretCodePanel extends PegsPanel{ public void paintComponent(Graphics
- * g) { super.paintComponent(g); // Call PegsPanel's paintComponent method // to
- * paint the background
- * 
- * }
- * 
- * }
- */
+

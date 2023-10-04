@@ -1,4 +1,4 @@
-package baseGame;
+package GUI;
 
 import java.awt.Graphics;
 

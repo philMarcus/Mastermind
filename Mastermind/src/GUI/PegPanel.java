@@ -1,8 +1,11 @@
-package baseGame;
+package GUI;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
+
+import baseGame.GameSettings;
+import baseGame.Peg;
 
 public class PegPanel extends JPanel {
 		private Peg peg;

@@ -1,7 +1,9 @@
-package baseGame;
+package GUI;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import baseGame.GameSettings;
 
 public class PinPainter implements Painter {
 	private Color color;

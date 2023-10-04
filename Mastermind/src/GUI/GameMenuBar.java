@@ -1,4 +1,4 @@
-package baseGame;
+package GUI;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JCheckBoxMenuItem;

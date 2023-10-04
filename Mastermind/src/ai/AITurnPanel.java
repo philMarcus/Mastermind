@@ -4,7 +4,7 @@ package ai;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import baseGame.MastermindGUI;
+import GUI.MastermindGUI;
 
 public class AITurnPanel extends JPanel {
 	private JButton aiTurnButton;
