@@ -56,23 +56,31 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	}
 
 	public Turn takeTurn(Turn t) {
-
+		//add and process turn to the game
 		game.takeTurn(t);
+		//check for empty code Universe, (result of human response error)
+		CodeUniverse cU = game.getCodeUniverse(game.getTurnsTaken()-1);
+		if (cU.getSize() == 0) {
+			JOptionPane.showMessageDialog(this,
+					"HUMAN ERROR! HUMAN ERROR! \n" + "Your responses were inconsistent with any code. \n"
+							+ "THIS is why humans will be sent to the crypto mines when...*never mind*");
+			reset();
+			return t;
+		}
+		
 		// update the board display with the new turn
 		board.addTurn(t);
+		
 		// check the new turn for victory
 		if (t.isVictory()) {
 			showVictoryDialog();
 			reset();
-		}
-		else {
-
-		// check new turn for a loss
-		if (game.getTurnsTaken() >= settings.getMaxTries()) {
-			showLoseDialog();
-			reset();
-
-		}
+		} else {
+			// check new turn for a loss
+			if (game.getTurnsTaken() >= settings.getMaxTries()) {
+				showLoseDialog();
+				reset();
+			}
 		}
 
 		return t;
@@ -83,15 +91,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		Code choice;
 		CodeUniverse cU = game.getCodeUniverse(game.getTurnsTaken());
 		AIPersonality pers = new TheProfessorAI(cU);
-		if (cU.getSize() > 0) {
-			choice = pers.getChoice();
-		} else {
-			JOptionPane.showMessageDialog(this,
-					"HUMAN ERROR! HUMAN ERROR! \n" + "Your responses were inconsistent with any code. \n"
-							+ "THIS is why humans will be sent to the crypto mines when...*never mind*");
-			reset();
-			return;
-		}
+		choice = pers.getChoice();
+
 		// update combo boxes with chosen code
 		ArrayList<JComboBox<Peg>> cbs = guessPanel.getCBoxes();
 		for (int i = 0; i < settings.getCodeLength(); i++) {
@@ -112,11 +113,11 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		board.removeTurnGuess();
 		board.addEmptyTurn();
 		
+
+
 		Turn t = new Turn(choice, response);
 		this.takeTurn(t);
-		if (!t.isVictory()) {
 
-		}
 
 	}
 
