@@ -36,7 +36,7 @@ public class GameEngine {
 		// When given a code (without a response) as a parameter, takeTurn will
 		// generate a response from the secret code
 		Turn t = new Turn(c, new Response(c, secretCode));
-		takeTurn(t);
+		turns.add(t);
 		return t;
 	}
 

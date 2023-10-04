@@ -29,6 +29,7 @@ public class AnalyzedGame extends GameEngine {
 		//so indices match the turn to the code universe it was chosen from.
 		cUs.add(ai.getCodeUniverse());
 		ai.setPegPossibilities();
+		pegAnalyses.add(ai.getPegPossibilities());
 	}
 	
 	public Turn takeTurn(Turn t) {

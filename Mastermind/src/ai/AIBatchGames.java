@@ -85,5 +85,13 @@ public class AIBatchGames {
 		return 0;
 		
 	}
+	
+	public String toString() {
+		String s = "GamesWonIn: "+gamesWonIn+" \n";
+		s += "Won "+numWins()+" out of "+ numGames+ " games. \n";
+		s += "Mean attempts to win: "+getMeanTries()+"\n";
+		s += "Median attempts to win: "+getMedianTries()+"\n";
+		return s;
+	}
 }
 

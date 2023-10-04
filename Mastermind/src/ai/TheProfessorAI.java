@@ -2,6 +2,10 @@ package ai;
 
 import baseGame.Code;
 
+//Testing results:
+//Won 10000 out of 10000 games. 
+//Mean attempts to win: 4.6437
+
 public class TheProfessorAI implements AIPersonality {
 private AnalyzedGame game;
 
