@@ -89,8 +89,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			JOptionPane.showMessageDialog(this,
 					"HUMAN ERROR! HUMAN ERROR! \n" + "Your responses were inconsistent with any code. \n"
 							+ "THIS is why humans will be sent to the crypto mines when...*never mind*");
-			choice = getSecretCode();
 			reset();
+			return;
 		}
 		// update combo boxes with chosen code
 		ArrayList<JComboBox<Peg>> cbs = guessPanel.getCBoxes();

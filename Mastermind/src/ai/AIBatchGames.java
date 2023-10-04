@@ -14,6 +14,7 @@ public class AIBatchGames {
 	
 	public AIBatchGames(GameSettings settings) {
 		this.settings = settings;
+		ai = new TheProfessorAI();
 		
 	}
 	
