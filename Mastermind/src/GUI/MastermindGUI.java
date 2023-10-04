@@ -59,6 +59,10 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		//add and process turn to the game
 		game.takeTurn(t);
 		//check for empty code Universe, (result of human response error)
+		// update the board display with the new turn
+		board.addTurn(t);
+		
+		//check for empty code Universe, (result of human response error)
 		CodeUniverse cU = game.getCodeUniverse(game.getTurnsTaken()-1);
 		if (cU.getSize() == 0) {
 			JOptionPane.showMessageDialog(this,
@@ -66,10 +70,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 							+ "THIS is why humans will be sent to the crypto mines when...*never mind*");
 			reset();
 			return t;
-		}
-		
-		// update the board display with the new turn
-		board.addTurn(t);
+		}		
+
 		
 		// check the new turn for victory
 		if (t.isVictory()) {
@@ -82,7 +84,6 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 				reset();
 			}
 		}
-
 		return t;
 	}
 
