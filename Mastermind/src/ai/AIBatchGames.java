@@ -87,8 +87,10 @@ public class AIBatchGames {
 	}
 	
 	public String toString() {
-		String s = "GamesWonIn: "+gamesWonIn+" \n";
-		s += "Won "+numWins()+" out of "+ numGames+ " games. \n";
+		String s = "GamesWonIn: ";
+		for(int i=0;i<=settings.getMaxTries();i++)
+			s += gamesWonIn[i]+" ";
+		s += "\nWon "+numWins()+" out of "+ numGames+ " games. \n";
 		s += "Mean attempts to win: "+getMeanTries()+"\n";
 		s += "Median attempts to win: "+getMedianTries()+"\n";
 		return s;
