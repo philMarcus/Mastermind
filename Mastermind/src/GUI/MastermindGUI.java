@@ -13,7 +13,6 @@ import javax.swing.JOptionPane;
 
 import ai.AIAnalysis;
 import ai.AIPersonality;
-import ai.AITurnPanel;
 import ai.AnalyzedGame;
 import ai.CodeUniverse;
 import ai.TheProfessorAI;
@@ -44,7 +43,6 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 						"I win of course. \n" + "You responded correctly, human. You may be spared.");
 			else if (!settings.isAiGuesser())
 				JOptionPane.showMessageDialog(this, "Victory. According to a human.");
-
 		} else {
 			JOptionPane.showMessageDialog(this, "Win! The secret code was indeed" + secretCode);
 		}
@@ -166,6 +164,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		responseDialog = new ResponseInputDialog(window);
 		// Create Panel for taking an AI turn
 		aiTurnPanel = new AITurnPanel(window);
+		aiTurnPanel.setPreferredSize(guessPanel.getPreferredSize());
 
 		// Add panels to window and layout:
 		Container c = getContentPane();

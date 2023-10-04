@@ -1,10 +1,8 @@
-package ai;
+package GUI;
 
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-
-import GUI.MastermindGUI;
 
 public class AITurnPanel extends JPanel {
 	private JButton aiTurnButton;
