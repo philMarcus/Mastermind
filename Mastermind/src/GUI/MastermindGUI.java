@@ -90,8 +90,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	public void aiPlayTurn() {
 		// an AI personality makes a choice of code
 		Code choice;
-		CodeUniverse cU = game.getCodeUniverse(game.getTurnsTaken());
-		AIPersonality pers = new TheProfessorAI(cU);
+
+		AIPersonality pers = new TheProfessorAI(game);
 		choice = pers.getChoice();
 
 		// update combo boxes with chosen code
