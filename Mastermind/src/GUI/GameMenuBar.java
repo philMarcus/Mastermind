@@ -10,26 +10,33 @@ import javax.swing.JRadioButtonMenuItem;
 public class GameMenuBar extends JMenuBar {
 
 	JMenu gameMenu;
+	JMenu playersMenu;
 	JMenu settingsMenu;
+	// game menu items
 	JMenuItem reset;
-	JCheckBoxMenuItem easyMode;
+	// players menu items
 	JRadioButtonMenuItem humanGuesser;
 	JRadioButtonMenuItem aiGuesser;
 	JRadioButtonMenuItem humanSetter;
 	JRadioButtonMenuItem aiSetter;
+	// settings menu items
+	JCheckBoxMenuItem easyMode;
+	JMenuItem increaseCodeLength;
+	JMenuItem decreaseCodeLength;
 
 	public GameMenuBar() {
 		gameMenu = new JMenu("Game");
+		playersMenu = new JMenu("Players");
 		settingsMenu = new JMenu("Settings");
 
 		this.add(gameMenu);
+		this.add(playersMenu);
 		this.add(settingsMenu);
 
 		reset = new JMenuItem("Reset");
 		gameMenu.add(reset);
 
-		easyMode = new JCheckBoxMenuItem("Easy Mode");
-		settingsMenu.add(easyMode);
+
 
 		ButtonGroup guessers = new ButtonGroup();
 		humanGuesser = new JRadioButtonMenuItem("Human Guesser");
@@ -37,19 +44,29 @@ public class GameMenuBar extends JMenuBar {
 		guessers.add(humanGuesser);
 		guessers.add(aiGuesser);
 
-		settingsMenu.addSeparator();
-		settingsMenu.add(humanGuesser);
-		settingsMenu.add(aiGuesser);
+	
 		
 		ButtonGroup setters = new ButtonGroup();
 		humanSetter = new JRadioButtonMenuItem("Human Code Setter");
 		aiSetter = new JRadioButtonMenuItem("AI Code Setter");
 		setters.add(humanSetter);
 		setters.add(aiSetter);
+		
+		//settingsMenu.addSeparator();
+		playersMenu.add(humanGuesser);
+		playersMenu.add(aiGuesser);
 
+		playersMenu.addSeparator();
+		playersMenu.add(humanSetter);
+		playersMenu.add(aiSetter);
+		
+		easyMode = new JCheckBoxMenuItem("Easy Mode");
+		increaseCodeLength = new JMenuItem("Increase Code Length");
+		decreaseCodeLength = new JMenuItem("Decrease Code Length");
+		settingsMenu.add(easyMode);
 		settingsMenu.addSeparator();
-		settingsMenu.add(humanSetter);
-		settingsMenu.add(aiSetter);
+		settingsMenu.add(increaseCodeLength);
+		settingsMenu.add(decreaseCodeLength);
 
 	}
 }

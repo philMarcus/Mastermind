@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class GameSettings {
 	private int maxTries = 10;
 	private int codeLength = 4;
-	private boolean allowMultiples = true;
 	private int numPegOptions;
 	private ArrayList<Peg> pegOptions = new ArrayList<Peg>();
 	
@@ -61,16 +60,18 @@ public class GameSettings {
 		return codeLength;
 	}
 
+	public void setCodeLength(int codeLength) {
+		this.codeLength = codeLength;
+	}
+
+
+
 	public boolean isEasyMode() {
 		return easyMode;
 	}
 
 	public void setEasyMode(boolean easyMode) {
 		this.easyMode = easyMode;
-	}
-
-	public boolean allowsMultiples() {
-		return allowMultiples;
 	}
 
 	public int getNumPegOptions() {

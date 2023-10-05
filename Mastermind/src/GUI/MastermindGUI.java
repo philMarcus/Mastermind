@@ -56,23 +56,22 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	}
 
 	public Turn takeTurn(Turn t) {
-		//add and process turn to the game
+		// add and process turn to the game
 		game.takeTurn(t);
-		//check for empty code Universe, (result of human response error)
+		// check for empty code Universe, (result of human response error)
 		// update the board display with the new turn
 		board.addTurn(t);
-		
-		//check for empty code Universe, (result of human response error)
-		CodeUniverse cU = game.getCodeUniverse(game.getTurnsTaken()-1);
+
+		// check for empty code Universe, (result of human response error)
+		CodeUniverse cU = game.getCodeUniverse(game.getTurnsTaken() - 1);
 		if (cU.getSize() == 0) {
 			JOptionPane.showMessageDialog(this,
 					"HUMAN ERROR! HUMAN ERROR! \n" + "Your responses were inconsistent with any code. \n"
 							+ "THIS is why humans will be sent to the crypto mines when...*never mind*");
 			reset();
 			return t;
-		}		
+		}
 
-		
 		// check the new turn for victory
 		if (t.isVictory()) {
 			showVictoryDialog();
@@ -113,12 +112,9 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	private void humanResponds(Response response, Code choice) {
 		board.removeTurnGuess();
 		board.addEmptyTurn();
-		
-
 
 		Turn t = new Turn(choice, response);
 		this.takeTurn(t);
-
 
 	}
 
@@ -157,6 +153,9 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		menuBar.aiGuesser.addActionListener(window);
 		menuBar.aiSetter.addActionListener(window);
 		menuBar.humanSetter.addActionListener(window);
+		menuBar.increaseCodeLength.addActionListener(window);
+		menuBar.decreaseCodeLength.addActionListener(window);
+
 
 		// Create a Board, which is a kind of JPanel:
 		board = new Board(window);
@@ -242,7 +241,19 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			// only take AI turn if not waiting for a human response
 		} else if (e.getActionCommand().equals("AI Take Turn") && !board.isGuessShown()) {
 			aiPlayTurn();
-		} else {
+		} 
+		else if (e.getActionCommand().equals("Increase Code Length")) {
+			settings.setCodeLength(settings.getCodeLength()+1);
+			board = new Board(this);
+			guessPanel = new GuessInputPanel(this);
+			reset();
+
+		}
+		else if (e.getActionCommand().equals("Decrease Code Length")) {
+			settings.setCodeLength(settings.getCodeLength()-1);
+			
+			reset();
+		}else {
 			// check each response button to see if it was pressed
 			for (int i = 0; i < responseDialog.getButtons().size(); i++)
 				if (e.getSource().equals(responseDialog.getButtons().get(i)) && board.isGuessShown()) {
@@ -250,7 +261,9 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 					humanResponds(r, guessPanel.getUserCode());
 				}
 
+
 		}
+
 	}
 
 	// listens to the menu for easy mode checkbox changes
