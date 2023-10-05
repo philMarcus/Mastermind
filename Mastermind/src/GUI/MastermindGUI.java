@@ -127,6 +127,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	public void reset() {
 		board.clear();
 		game = new AnalyzedGame(settings);
+		secretCode = game.getSecretCode();
 		guessPanel.resetCBoxes();
 
 	}

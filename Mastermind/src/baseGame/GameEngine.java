@@ -4,26 +4,28 @@ import java.util.ArrayList;
 
 public class GameEngine {
 
-
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
 	private GameSettings settings = new GameSettings();
 	private Code secretCode;
-	
+
+	// begin a new game with a predetermined secret code
 	public GameEngine(GameSettings settings, Code secretCode) {
 		this.settings = settings;
 		this.secretCode = secretCode;
 	}
 
+	// begin a new game with a random secret code
 	public GameEngine(GameSettings settings) {
 		this.settings = settings;
-		this.secretCode = new Code(settings.getCodeLength(), settings.getPegOptions());
+		this.secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(), settings.isEasyMode());
 	}
-	
+
+	// begin a new game with a random secret code and the default game settings
 	public GameEngine() {
 		settings = new GameSettings();
 		this.secretCode = new Code(settings.getCodeLength(), settings.getPegOptions());
 	}
-	
+
 	public Turn takeTurn(Turn t) {
 		// add a new turn to the gamestate, which consists of a guessed code and a
 		// calculated response
