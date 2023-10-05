@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -35,6 +36,15 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	private static AITurnPanel aiTurnPanel;
 	private static Board board;
 	private static GameMenuBar menuBar;
+	
+	public MastermindGUI() {
+		super();
+	}
+	
+	public MastermindGUI(GameSettings settings) {
+		super();
+		this.settings = settings;
+	}
 
 	private void showVictoryDialog() {
 		if (!settings.isAiSetter()) {
@@ -135,7 +145,16 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	public Code getSecretCode() {
 		return secretCode;
 	}
-
+	
+	private void newWindow() {
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				MastermindGUI newGUI = new MastermindGUI(settings);
+				newGUI.createAndShowGUI();
+			}
+		});
+	}
+	
 	private void createAndShowGUI() {
 		MastermindGUI window = new MastermindGUI();
 		this.setTitle("Marcus Mastermind");
@@ -147,27 +166,26 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		menuBar = new GameMenuBar();
 		setJMenuBar(menuBar);
 		// listen to menu selections
-		menuBar.reset.addActionListener(window);
-		menuBar.easyMode.addItemListener(window);
-		menuBar.humanGuesser.addActionListener(window);
-		menuBar.aiGuesser.addActionListener(window);
-		menuBar.aiSetter.addActionListener(window);
-		menuBar.humanSetter.addActionListener(window);
-//		menuBar.increaseCodeLength.addActionListener(window);
-//		menuBar.decreaseCodeLength.addActionListener(window);
-
+		menuBar.reset.addActionListener(this);
+		menuBar.easyMode.addItemListener(this);
+		menuBar.humanGuesser.addActionListener(this);
+		menuBar.aiGuesser.addActionListener(this);
+		menuBar.aiSetter.addActionListener(this);
+		menuBar.humanSetter.addActionListener(this);
+		menuBar.increaseCodeLength.addActionListener(this);
+		menuBar.decreaseCodeLength.addActionListener(this);
 
 		// Create a Board, which is a kind of JPanel:
-		board = new Board(window);
+		board = new Board(this);
 
 		// Create the user input panel for guessing a code
-		guessPanel = new GuessInputPanel(window);
+		guessPanel = new GuessInputPanel(this);
 		// Create the user input dialog for entering a response
-		responseDialog = new ResponseInputDialog(window);
+		responseDialog = new ResponseInputDialog(this);
 		// Create Panel for taking an AI turn
-		aiTurnPanel = new AITurnPanel(window);
+		aiTurnPanel = new AITurnPanel(this);
 		aiTurnPanel.setPreferredSize(guessPanel.getPreferredSize());
-
+		
 		// Add panels to window and layout:
 		Container c = getContentPane();
 		GroupLayout layout = new GroupLayout(c);
@@ -192,6 +210,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		// show and configure application window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
+		setSize(new Dimension(getPreferredSize()));
 		setResizable(false);
 	}
 
@@ -243,16 +262,25 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			aiPlayTurn();
 		} 
 		else if (e.getActionCommand().equals("Increase Code Length")) {
+			if (settings.getCodeLength()<settings.MAXCODELENGTH) {
 			settings.setCodeLength(settings.getCodeLength()+1);
-			board = new Board(this);
-			guessPanel = new GuessInputPanel(this);
-			reset();
-
+			//new instance of GUI needed to accommodate new board
+			newWindow();
+			this.dispose();
+			}
+			else 
+				JOptionPane.showMessageDialog(this,"No thank you");
 		}
 		else if (e.getActionCommand().equals("Decrease Code Length")) {
+			if (settings.getCodeLength()>1) {
 			settings.setCodeLength(settings.getCodeLength()-1);
-			
-			reset();
+			//new instance of GUI needed to accommodate new board
+			newWindow();
+			this.dispose();
+			}
+			else 
+				JOptionPane.showMessageDialog(this,"Hmm...");
+				this.dispose();
 		}else {
 			// check each response button to see if it was pressed
 			for (int i = 0; i < responseDialog.getButtons().size(); i++)

@@ -5,8 +5,11 @@ import java.util.ArrayList;
 
 
 public class GameSettings {
+	public final int MAXCODELENGTH = 8;
+	
 	private int maxTries = 10;
 	private int codeLength = 4;
+
 	private int numPegOptions;
 	private ArrayList<Peg> pegOptions = new ArrayList<Peg>();
 	
