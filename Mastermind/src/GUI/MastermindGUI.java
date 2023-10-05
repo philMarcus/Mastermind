@@ -44,6 +44,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	public MastermindGUI(GameSettings settings) {
 		super();
 		this.settings = settings;
+		game = new AnalyzedGame(settings);
+		secretCode = game.getSecretCode();
 	}
 
 	private void showVictoryDialog() {
@@ -156,7 +158,6 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	}
 	
 	private void createAndShowGUI() {
-		MastermindGUI window = new MastermindGUI();
 		this.setTitle("Marcus Mastermind");
 
 		// Set this window's location and size:
@@ -184,6 +185,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		responseDialog = new ResponseInputDialog(this);
 		// Create Panel for taking an AI turn
 		aiTurnPanel = new AITurnPanel(this);
+		//set the AI turn button panel to the same size as the guess input panel
 		aiTurnPanel.setPreferredSize(guessPanel.getPreferredSize());
 		
 		// Add panels to window and layout:
@@ -198,13 +200,17 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 				layout.createSequentialGroup().addComponent(board).addComponent(guessPanel).addComponent(aiTurnPanel));
 
 		// check settings for human or ai player
-		menuBar.humanGuesser.doClick();
-		if (game.getSettings().isAiGuesser())
+
+		if (settings.isAiGuesser())
 			menuBar.aiGuesser.doClick();
+		else 	
+			menuBar.humanGuesser.doClick();
 
 		// check settings for human or ai setter
-		menuBar.aiSetter.doClick();
-		if (!game.getSettings().isAiSetter())
+
+		if (settings.isAiSetter())
+			menuBar.aiSetter.doClick();
+		else
 			menuBar.humanSetter.doClick();
 
 		// show and configure application window
@@ -279,6 +285,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			this.dispose();
 			}
 			else 
+				//close the window if a zero-length code is attempted :)
 				JOptionPane.showMessageDialog(this,"Hmm...");
 				this.dispose();
 		}else {
