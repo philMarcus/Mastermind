@@ -34,6 +34,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	private static GuessInputPanel guessPanel;
 	private static ResponseInputDialog responseDialog;
 	private static AITurnPanel aiTurnPanel;
+	private static AnalysisDialog analysisDialog;
 	private static Board board;
 	private static GameMenuBar menuBar;
 
@@ -74,6 +75,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		// check for empty code Universe, (result of human response error)
 		// update the board display with the new turn
 		board.addTurn(t);
+		analysisDialog.updateText();
 
 		// check for empty code Universe, (result of human response error)
 		CodeUniverse cU = game.getCodeUniverse(game.getTurnsTaken() - 1);
@@ -139,6 +141,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		secretCode = game.getSecretCode();
 		guessPanel.resetCBoxes();
 		menuBar.easyMode.setSelected(settings.isEasyMode());
+		analysisDialog.updateText();
 
 	}
 
@@ -235,6 +238,10 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		aiTurnPanel = new AITurnPanel(this);
 		// set the AI turn button panel to the same size as the guess input panel
 		aiTurnPanel.setPreferredSize(guessPanel.getPreferredSize());
+		//create the analysis dialog
+		analysisDialog = new AnalysisDialog(this);
+		analysisDialog.setVisible(true);
+		
 
 		// Add panels to window and layout:
 		layoutPanels();
@@ -345,6 +352,10 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			settings.setEasyMode(false);
 			reset();
 		}
+	}
+	
+	public String toString() {
+		return game.toString();
 	}
 
 	public static void main(String[] args) {

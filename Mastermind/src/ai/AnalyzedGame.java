@@ -20,6 +20,8 @@ public class AnalyzedGame extends GameEngine {
 		//so indices match the turn to the code universe it was chosen from.
 		cUs.add(ai.getCodeUniverse());
 		ai.setPegPossibilities();
+		pegAnalyses.add(ai.getPegPossibilities());
+		
 	}
 	
 	public AnalyzedGame() {
@@ -74,6 +76,19 @@ public class AnalyzedGame extends GameEngine {
 	
 	public ArrayList<PegPossibility> getPegAnalysis(int i){
 		return pegAnalyses.get(i);
+	}
+	
+	public String toString(){
+		int len = this.getSettings().getCodeLength();
+		int opts = this.getSettings().getNumPegOptions();
+		String s = "Turn "+(turnsTaken+1)+" ";
+		if(len==4 && opts==6)
+			s += "Standard Game ";
+		else s+= " | Code Length: "+len+" | Peg Options: " + opts;
+		if (this.getSettings().isEasyMode())
+			s+=" EZ";
+		s+= "\n"+ ai.toString();
+		return s;
 	}
 	
 }

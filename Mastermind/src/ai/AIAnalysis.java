@@ -18,7 +18,7 @@ public class AIAnalysis {
 		settings = s;
 		cU = new CodeUniverse(settings);
 		setPegPossibilities();
-		System.out.println(toString());
+		//System.out.println(toString());
 
 	}
 
@@ -35,7 +35,7 @@ public class AIAnalysis {
 	public void processTurn(Turn t) {
 		cU.processTurn(t);
 		setPegPossibilities();
-		System.out.println(toString());
+		//System.out.println(toString());
 	}
 
 	public CodeUniverse getCodeUniverse() {
