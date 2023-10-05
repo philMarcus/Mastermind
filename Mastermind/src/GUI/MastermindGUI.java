@@ -36,11 +36,11 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	private static AITurnPanel aiTurnPanel;
 	private static Board board;
 	private static GameMenuBar menuBar;
-	
+
 	public MastermindGUI() {
 		super();
 	}
-	
+
 	public MastermindGUI(GameSettings settings) {
 		super();
 		this.settings = settings;
@@ -147,8 +147,37 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	public Code getSecretCode() {
 		return secretCode;
 	}
-	
-	
+
+	private void addPegOption(){
+		if(settings.getNumPegOptions()<settings.getMaxPegOptions()) {
+		settings.addPegOption();
+		guessPanel = new GuessInputPanel(this);
+		layoutPanels();
+		int num = settings.getNumPegOptions();
+		String s = settings.getPegOptions().get(num-1).getText();
+		s+=" pegs added. "+num+" Peg Options";
+		JOptionPane.showMessageDialog(this,s);
+		}
+		else
+			JOptionPane.showMessageDialog(this,"No more pegs");
+	}
+
+	private void removePegOption() {
+		if(settings.getNumPegOptions()>1) {
+		int num = settings.getNumPegOptions();
+		String s = settings.getPegOptions().get(num - 1).getText();
+		s += " pegs removed. " + (num - 1) + " Peg Options";
+		JOptionPane.showMessageDialog(this, s);
+		settings.removePegOption();
+		guessPanel = new GuessInputPanel(this);
+		layoutPanels();
+		}
+		else {
+			JOptionPane.showMessageDialog(this,"No pegs, no game.");
+			this.dispose();
+		}
+	}
+
 	private void newWindow() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -157,7 +186,21 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			}
 		});
 	}
-	
+
+	public void layoutPanels() {
+		Container c = getContentPane();
+		c.removeAll();
+		GroupLayout layout = new GroupLayout(c);
+		c.setLayout(layout);
+		layout.setAutoCreateGaps(true);
+		layout.setAutoCreateContainerGaps(true);
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(board)
+				.addComponent(guessPanel).addComponent(aiTurnPanel));
+		layout.setVerticalGroup(
+				layout.createSequentialGroup().addComponent(board).addComponent(guessPanel).addComponent(aiTurnPanel));
+
+	}
+
 	private void createAndShowGUI() {
 		this.setTitle("Marcus Mastermind");
 
@@ -176,6 +219,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		menuBar.humanSetter.addActionListener(this);
 		menuBar.increaseCodeLength.addActionListener(this);
 		menuBar.decreaseCodeLength.addActionListener(this);
+		menuBar.addPegOption.addActionListener(this);
+		menuBar.removePegOption.addActionListener(this);
 
 		// Create a Board, which is a kind of JPanel:
 		board = new Board(this);
@@ -186,23 +231,17 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		responseDialog = new ResponseInputDialog(this);
 		// Create Panel for taking an AI turn
 		aiTurnPanel = new AITurnPanel(this);
-		//set the AI turn button panel to the same size as the guess input panel
+		// set the AI turn button panel to the same size as the guess input panel
 		aiTurnPanel.setPreferredSize(guessPanel.getPreferredSize());
-		
+
 		// Add panels to window and layout:
-		Container c = getContentPane();
-		GroupLayout layout = new GroupLayout(c);
-		c.setLayout(layout);
-		layout.setAutoCreateGaps(true);
-		layout.setAutoCreateContainerGaps(true);
-		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER).addComponent(board)
-				.addComponent(guessPanel).addComponent(aiTurnPanel));
-		layout.setVerticalGroup(
-				layout.createSequentialGroup().addComponent(board).addComponent(guessPanel).addComponent(aiTurnPanel));
+		layoutPanels();
 
 		// check settings for human or ai player
 		guessPanel.setVisible(!settings.isAiGuesser());
 		aiTurnPanel.setVisible(settings.isAiGuesser());
+		menuBar.easyMode.setSelected(settings.isEasyMode());
+		
 
 		// show and configure application window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -257,36 +296,39 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			// only take AI turn if not waiting for a human response
 		} else if (e.getActionCommand().equals("AI Take Turn") && !board.isGuessShown()) {
 			aiPlayTurn();
-		} 
-		else if (e.getActionCommand().equals("Increase Code Length")) {
-			if (settings.getCodeLength()<settings.MAXCODELENGTH) {
-			settings.setCodeLength(settings.getCodeLength()+1);
-			//new instance of GUI needed to accommodate new board
-			newWindow();
-			this.dispose();
-			}
-			else 
-				JOptionPane.showMessageDialog(this,"No, thank you.");
-		}
-		else if (e.getActionCommand().equals("Decrease Code Length")) {
-			if (settings.getCodeLength()>1) {
-			settings.setCodeLength(settings.getCodeLength()-1);
-			//new instance of GUI needed to accommodate new board
-			newWindow();
-			this.dispose();
-			}
-			else 
-				//close the window if a zero-length code is attempted :)
-				JOptionPane.showMessageDialog(this,"Hmm...");
+		} else if (e.getActionCommand().equals("Increase Code Length")) {
+			if (settings.getCodeLength() < settings.MAXCODELENGTH) {
+				settings.setCodeLength(settings.getCodeLength() + 1);
+				// new instance of GUI needed to accommodate new board
+				newWindow();
 				this.dispose();
-		}else {
+			} else
+				JOptionPane.showMessageDialog(this, "No, thank you.");
+		} else if (e.getActionCommand().equals("Decrease Code Length")) {
+			if (settings.getCodeLength() > 1) {
+				settings.setCodeLength(settings.getCodeLength() - 1);
+				// new instance of GUI needed to accommodate new board
+				newWindow();
+				this.dispose();
+			} else
+				// close the window if a zero-length code is attempted :)
+				JOptionPane.showMessageDialog(this, "Hmm...");
+			this.dispose();
+		} else if (e.getActionCommand().equals("Add Peg Option")) {
+			addPegOption();
+			reset();
+
+		} else if (e.getActionCommand().equals("Remove Peg Option")) {
+			removePegOption();
+			reset();
+
+		} else {
 			// check each response button to see if it was pressed
 			for (int i = 0; i < responseDialog.getButtons().size(); i++)
 				if (e.getSource().equals(responseDialog.getButtons().get(i)) && board.isGuessShown()) {
 					Response r = (responseDialog.getButtons().get(i).getResponse());
 					humanResponds(r, guessPanel.getUserCode());
 				}
-
 
 		}
 

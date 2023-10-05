@@ -3,58 +3,76 @@ package baseGame;
 import java.awt.Color;
 import java.util.ArrayList;
 
-
 public class GameSettings {
 	public final int MAXCODELENGTH = 7;
-	
+
 	private int maxTries = 10;
 	private int codeLength = 4;
 
 	private int numPegOptions;
 	private ArrayList<Peg> pegOptions = new ArrayList<Peg>();
-	
-	//setting to disallow repeating pegs in secret code
+	private ArrayList<Peg> reservePegOptions = new ArrayList<Peg>();
+
+	// setting to disallow repeating pegs in secret code
 	private boolean easyMode = false;
-	//settings to have ai guess and set codes
-	private boolean aiGuesser=false;
-	private boolean aiSetter=true;
-	
-	//settings for swing display
+	// settings to have ai guess and set codes
+	private boolean aiGuesser = false;
+	private boolean aiSetter = true;
+
+	// settings for swing display
 	private static int pegWidth = 30;
 	private static int pegSlotWidth = 40;
 	private static int pegSlotHeight = 35;
-	private static int pinWidth = pegWidth/3;
-	private static int pinSlotWidth = pegSlotWidth/2;
-	private static int pinSlotHeight = pegSlotHeight/2;
-	
-	//displaying AI analyses in console
-	private boolean printNumCodes=true;
-	private boolean printCodeUniverse=false;
-	private boolean printPegPossibilities=true;
-	private boolean printPegProbabilities=true;
-	
-	
-	// add the six default colors to pegOptions list and set numPegOptions	
+	private static int pinWidth = pegWidth / 3;
+	private static int pinSlotWidth = pegSlotWidth / 2;
+	private static int pinSlotHeight = pegSlotHeight / 2;
+
+	// displaying AI analyses in console
+	private boolean printNumCodes = true;
+	private boolean printCodeUniverse = false;
+	private boolean printPegPossibilities = true;
+	private boolean printPegProbabilities = true;
+
+	// add the six default colors to pegOptions list and set numPegOptions
 	public GameSettings() {
-	pegOptions.add(new Peg(Color.BLACK, "Black", "B"));
-	pegOptions.add(new Peg(Color.WHITE, "White", "W"));
-	pegOptions.add(new Peg(Color.RED, "Red", "R"));
-	pegOptions.add(new Peg(Color.GREEN, "Green", "G"));
-	pegOptions.add(new Peg(Color.BLUE, "Blue", "U"));
-	pegOptions.add(new Peg(Color.YELLOW, "Yellow", "Y"));
-	numPegOptions = pegOptions.size();
-
-	}
-	
-
-	
-	//construct a non-default color option Settings
-	public GameSettings (ArrayList<Peg> nonDefaultPegOption) {
-		pegOptions = nonDefaultPegOption;
+		pegOptions.add(new Peg(Color.BLACK, "Black", "B"));
+		pegOptions.add(new Peg(Color.WHITE, "White", "W"));
+		pegOptions.add(new Peg(Color.RED, "Red", "R"));
+		pegOptions.add(new Peg(Color.GREEN, "Green", "G"));
+		pegOptions.add(new Peg(Color.BLUE, "Blue", "U"));
+		pegOptions.add(new Peg(Color.YELLOW, "Yellow", "Y"));
 		numPegOptions = pegOptions.size();
+
+		reservePegOptions.add(new Peg(Color.ORANGE, "Orange", "O"));
+		reservePegOptions.add(new Peg(Color.LIGHT_GRAY, "Gray", "A"));
+		reservePegOptions.add(new Peg(Color.CYAN, "Cyan", "C"));
+		reservePegOptions.add(new Peg(Color.PINK, "Pink", "P"));
 	}
-	
-	
+
+	public void addPegOption() {
+		int r = reservePegOptions.size();
+		if (r>0) {
+		pegOptions.add(reservePegOptions.remove(r - 1));
+			numPegOptions++;
+		}
+
+	}
+
+	public void removePegOption() {
+		int r = pegOptions.size();
+		if (r>0) {
+		reservePegOptions.add(pegOptions.remove(pegOptions.size() - 1));
+			numPegOptions--;
+		}
+
+	}
+
+//	//construct a non-default color option Settings
+//	public GameSettings (ArrayList<Peg> nonDefaultPegOption) {
+//		pegOptions = nonDefaultPegOption;
+//		numPegOptions = pegOptions.size();
+//	}
+
 	public int getMaxTries() {
 		return maxTries;
 	}
@@ -67,8 +85,6 @@ public class GameSettings {
 		this.codeLength = codeLength;
 	}
 
-
-
 	public boolean isEasyMode() {
 		return easyMode;
 	}
@@ -79,6 +95,10 @@ public class GameSettings {
 
 	public int getNumPegOptions() {
 		return numPegOptions;
+	}
+	
+	public int getMaxPegOptions() {
+		return numPegOptions + reservePegOptions.size();
 	}
 
 	public ArrayList<Peg> getPegOptions() {
@@ -108,61 +128,41 @@ public class GameSettings {
 	public static int getPinSlotHeight() {
 		return pinSlotHeight;
 	}
-	
 
-	
 	public boolean isPrintCodeUniverse() {
 		return printCodeUniverse;
 	}
-
 
 	public boolean isPrintNumCodes() {
 		return printNumCodes;
 	}
 
-
-
 	public void setPrintNumCodes(boolean printNumCodes) {
 		this.printNumCodes = printNumCodes;
 	}
-
-
 
 	public boolean isPrintPegPossibilities() {
 		return printPegPossibilities;
 	}
 
-
 	public boolean isPrintPegProbabilities() {
 		return printPegProbabilities;
 	}
-
-
 
 	public boolean isAiGuesser() {
 		return aiGuesser;
 	}
 
-
-
 	public void setAiGuesser(boolean aiGuesser) {
 		this.aiGuesser = aiGuesser;
 	}
-
-
 
 	public boolean isAiSetter() {
 		return aiSetter;
 	}
 
-
-
 	public void setAiSetter(boolean aiSetter) {
 		this.aiSetter = aiSetter;
 	}
 
-
-	
-
-	
 }

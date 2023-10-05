@@ -8,7 +8,6 @@ import baseGame.Turn;
 import baseGame.Code;
 import baseGame.Response;
 
-
 //A CodeUniverse is the set of all codes that are possible solutions to
 //a game of Mastermind. When a turn is processed, all codes that would not have 
 //generated the turn's response are removed from the universe.
@@ -32,6 +31,15 @@ public class CodeUniverse {
 		return a % b;
 	}
 
+	boolean repeatsDigits(int[] a) {
+		for (int i = 0; i < len; i++)
+			for (int j = 0; j < i; j++)
+				if ((a[i] == a[j]))
+					return true;
+		return false;
+
+	}
+
 	public CodeUniverse(GameSettings settings) {
 		len = settings.getCodeLength();
 		opts = settings.getPegOptions();
@@ -43,33 +51,35 @@ public class CodeUniverse {
 			for (int slot = 0; slot < len; slot++) {
 				vals[slot] = nthDigit(i, len - slot, numOpts);
 			}
-			codeUniverse.add(new Code(vals, opts));
+			if (!settings.isEasyMode() || !repeatsDigits(vals))
+				codeUniverse.add(new Code(vals, opts));
 
 		}
 	}
-	
+
 	public void processTurn(Turn t) {
-		for (int i=0;i<codeUniverse.size();i++) {
+		for (int i = 0; i < codeUniverse.size(); i++) {
 			Code c = codeUniverse.get(i);
-			//generate r, the response turn's guess would generate if c was the secret code
-			Response r = new Response(t.getGuess(),c);
-			//remove c from the codeUniverse if r doesn't match the turn's response
-			if(!(r.equals(t.getResponse()))){
+			// generate r, the response turn's guess would generate if c was the secret code
+			Response r = new Response(t.getGuess(), c);
+			// remove c from the codeUniverse if r doesn't match the turn's response
+			if (!(r.equals(t.getResponse()))) {
 				codeUniverse.remove(i);
 				i--;
 			}
 		}
 	}
-public int getSize() {
-	return codeUniverse.size();
-}
-	
+
+	public int getSize() {
+		return codeUniverse.size();
+	}
+
 	public String toString() {
 		String s = "";
 		for (Code c : codeUniverse) {
 			s += c.toString() + "\n";
 		}
-		
+
 		return s;
 	}
 

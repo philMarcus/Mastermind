@@ -23,6 +23,8 @@ public class GameMenuBar extends JMenuBar {
 	JCheckBoxMenuItem easyMode;
 	JMenuItem increaseCodeLength;
 	JMenuItem decreaseCodeLength;
+	JMenuItem addPegOption;
+	JMenuItem removePegOption;
 
 	public GameMenuBar() {
 		gameMenu = new JMenu("Game");
@@ -67,6 +69,11 @@ public class GameMenuBar extends JMenuBar {
 		settingsMenu.addSeparator();
 		settingsMenu.add(increaseCodeLength);
 		settingsMenu.add(decreaseCodeLength);
+		addPegOption = new JMenuItem("Add Peg Option");
+		removePegOption = new JMenuItem("Remove Peg Option");
+		settingsMenu.addSeparator();
+		settingsMenu.add(addPegOption);
+		settingsMenu.add(removePegOption);
 
 	}
 }
