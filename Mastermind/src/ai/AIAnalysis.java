@@ -51,7 +51,7 @@ public class AIAnalysis {
 		if (settings.isPrintCodeUniverse())
 			s+=cU.toString()+"\n";
 		if(settings.isPrintNumCodes())
-			s+=cU.getSize()+" possible codes.\n";
+			s+=cU.getSize()+" possible codes.\n\n";
 		if (settings.isPrintPegPossibilities()) {
 			String sp = "";
 			for (PegPossibility p : ps) {
