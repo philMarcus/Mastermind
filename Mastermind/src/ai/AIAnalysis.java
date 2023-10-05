@@ -18,6 +18,7 @@ public class AIAnalysis {
 		settings = s;
 		cU = new CodeUniverse(settings);
 		setPegPossibilities();
+		System.out.println(toString());
 
 	}
 
@@ -34,17 +35,7 @@ public class AIAnalysis {
 	public void processTurn(Turn t) {
 		cU.processTurn(t);
 		setPegPossibilities();
-		if (settings.isPrintCodeUniverse())
-			System.out.println(cU.toString());
-		if(settings.isPrintNumCodes())
-			System.out.println(cU.getSize()+" possible codes.\n");
-		if (settings.isPrintPegPossibilities()) {
-			String s = "";
-			for (PegPossibility p : ps) {
-				s += p.toString(settings.isPrintPegProbabilities());
-			}
-			System.out.println(s);
-		}
+		System.out.println(toString());
 	}
 
 	public CodeUniverse getCodeUniverse() {
@@ -53,6 +44,22 @@ public class AIAnalysis {
 
 	public ArrayList<PegPossibility> getPegPossibilities() {
 		return ps;
+	}
+	
+	public String toString() {
+		String s="";
+		if (settings.isPrintCodeUniverse())
+			s+=cU.toString()+"\n";
+		if(settings.isPrintNumCodes())
+			s+=cU.getSize()+" possible codes.\n";
+		if (settings.isPrintPegPossibilities()) {
+			String sp = "";
+			for (PegPossibility p : ps) {
+				sp += p.toString(settings.isPrintPegProbabilities());
+			}
+			s+=sp;
+		}
+		return s;
 	}
 
 }

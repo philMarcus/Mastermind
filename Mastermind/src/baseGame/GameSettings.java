@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 
 public class GameSettings {
-	public final int MAXCODELENGTH = 8;
+	public final int MAXCODELENGTH = 7;
 	
 	private int maxTries = 10;
 	private int codeLength = 4;

@@ -148,6 +148,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		return secretCode;
 	}
 	
+	
 	private void newWindow() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
@@ -200,18 +201,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 				layout.createSequentialGroup().addComponent(board).addComponent(guessPanel).addComponent(aiTurnPanel));
 
 		// check settings for human or ai player
-
-		if (settings.isAiGuesser())
-			menuBar.aiGuesser.doClick();
-		else 	
-			menuBar.humanGuesser.doClick();
-
-		// check settings for human or ai setter
-
-		if (settings.isAiSetter())
-			menuBar.aiSetter.doClick();
-		else
-			menuBar.humanSetter.doClick();
+		guessPanel.setVisible(!settings.isAiGuesser());
+		aiTurnPanel.setVisible(settings.isAiGuesser());
 
 		// show and configure application window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -275,7 +266,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			this.dispose();
 			}
 			else 
-				JOptionPane.showMessageDialog(this,"No thank you");
+				JOptionPane.showMessageDialog(this,"No, thank you.");
 		}
 		else if (e.getActionCommand().equals("Decrease Code Length")) {
 			if (settings.getCodeLength()>1) {
