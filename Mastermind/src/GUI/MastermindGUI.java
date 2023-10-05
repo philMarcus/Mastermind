@@ -184,6 +184,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	}
 
 	private void newWindow() {
+		analysisDialog.dispose();
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				MastermindGUI newGUI = new MastermindGUI(settings);
