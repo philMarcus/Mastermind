@@ -17,6 +17,10 @@ public class GameEngine {
 	// begin a new game with a random secret code
 	public GameEngine(GameSettings settings) {
 		this.settings = settings;
+		//can't have easy mode when theres too few pin options for the length.
+		if(settings.isEasyMode() && settings.getNumPegOptions()<settings.getCodeLength())
+			settings.setEasyMode(false);
+		
 		this.secretCode = new Code(settings.getCodeLength(), settings.getPegOptions(), settings.isEasyMode());
 	}
 

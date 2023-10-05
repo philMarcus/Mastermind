@@ -44,6 +44,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	public MastermindGUI(GameSettings settings) {
 		super();
 		this.settings = settings;
+		
 		game = new AnalyzedGame(settings);
 		secretCode = game.getSecretCode();
 	}
@@ -137,6 +138,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		game = new AnalyzedGame(settings);
 		secretCode = game.getSecretCode();
 		guessPanel.resetCBoxes();
+		menuBar.easyMode.setSelected(settings.isEasyMode());
 
 	}
 

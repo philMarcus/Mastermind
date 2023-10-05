@@ -35,7 +35,7 @@ public class GuessInputPanel extends JPanel implements ActionListener {
 		game = gameState;
 		opts = game.getSettings().getPegOptions();
 		len = game.getSettings().getCodeLength();
-		userCode = new Code(len, opts,game.getSettings().isEasyMode());
+		userCode = new Code(len, opts/*,game.getSettings().isEasyMode()*/);
 		
 		for(int i=0;i<len;i++) {
 			JComboBox<Peg> cb = new JComboBox<Peg>(getComboModel(opts));
