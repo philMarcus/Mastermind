@@ -153,8 +153,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		menuBar.aiGuesser.addActionListener(window);
 		menuBar.aiSetter.addActionListener(window);
 		menuBar.humanSetter.addActionListener(window);
-		menuBar.increaseCodeLength.addActionListener(window);
-		menuBar.decreaseCodeLength.addActionListener(window);
+//		menuBar.increaseCodeLength.addActionListener(window);
+//		menuBar.decreaseCodeLength.addActionListener(window);
 
 
 		// Create a Board, which is a kind of JPanel:
