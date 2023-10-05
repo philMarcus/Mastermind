@@ -227,6 +227,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		menuBar.decreaseCodeLength.addActionListener(this);
 		menuBar.addPegOption.addActionListener(this);
 		menuBar.removePegOption.addActionListener(this);
+		menuBar.showAnalysis.addActionListener(this);
 
 		// Create a Board, which is a kind of JPanel:
 		board = new Board(this);
@@ -241,7 +242,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		aiTurnPanel.setPreferredSize(guessPanel.getPreferredSize());
 		//create the analysis dialog
 		analysisDialog = new AnalysisDialog(this);
-		analysisDialog.setVisible(true);
+		//analysisDialog.setVisible(true);
 		
 
 		// Add panels to window and layout:
@@ -250,6 +251,10 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		// check settings for human or ai player
 		guessPanel.setVisible(!settings.isAiGuesser());
 		aiTurnPanel.setVisible(settings.isAiGuesser());
+		menuBar.aiGuesser.setSelected(settings.isAiGuesser());
+		menuBar.humanGuesser.setSelected(!settings.isAiGuesser());
+		menuBar.aiSetter.setSelected(settings.isAiSetter());
+		menuBar.humanSetter.setSelected(!settings.isAiSetter());
 		menuBar.easyMode.setSelected(settings.isEasyMode());
 		
 
@@ -264,6 +269,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		// Registered on the "take turn" button on user input panel. Takes a turn.
 		if (e.getActionCommand().equals("Reset")) {
 			reset();
+		} else if (e.getActionCommand().equals("Show Game Analysis")) {
+			analysisDialog.setVisible(true);
 		} else if (e.getActionCommand().equals("Take Turn")) {
 			Code guess = guessPanel.getUserCode();
 
