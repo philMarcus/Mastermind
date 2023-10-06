@@ -193,7 +193,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		});
 	}
 
-	public void layoutPanels() {
+	private void layoutPanels() {
 		Container c = getContentPane();
 		c.removeAll();
 		GroupLayout layout = new GroupLayout(c);
@@ -204,6 +204,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 				.addComponent(guessPanel).addComponent(aiTurnPanel));
 		layout.setVerticalGroup(
 				layout.createSequentialGroup().addComponent(board).addComponent(guessPanel).addComponent(aiTurnPanel));
+		guessPanel.setVisible(!settings.isAiGuesser());
+		aiTurnPanel.setVisible(settings.isAiGuesser());
 
 	}
 
