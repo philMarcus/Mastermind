@@ -5,10 +5,10 @@ import baseGame.GameSettings;
 
 public class AIBatchGames {
 
-	private int numGames;
+	private long numGames;
 	//tracks number of games won in X tries.
 	//so gamesWonIn[5] would be how many games were won in exactly 5 tries
-	private int[] gamesWonIn;
+	private long[] gamesWonIn;
 	
 	private GameSettings settings;
 	//the AI personality makes the choice based on the analyzed game state
@@ -19,7 +19,7 @@ public class AIBatchGames {
 		
 		//the "+1" makes the index more meaningful, even though the [0] element
 		//will always be empty. Index directly corresponds to the turns taken to win.
-		gamesWonIn = new int[settings.getMaxTries()+1];
+		gamesWonIn = new long[settings.getMaxTries()+1];
 	
 	}
 	
@@ -45,24 +45,24 @@ public class AIBatchGames {
 			runGame();
 	}
 	
-	public int numWins() {
-		int w=0;
+	public long numWins() {
+		long w=0;
 		for(int i=0;i<=settings.getMaxTries();i++)
 			w += gamesWonIn[i];
 		return w;
 		
 	}
 	
-	public int numLost() {
+	public long numLost() {
 		return numGames - numWins();
 	}
 
-	public int getNumGames() {
+	public long getNumGames() {
 		return numGames;
 	}
 
 	public double getMeanTries() {
-		int sum=0;
+		long sum=0;
 		//add number of turns to win*number of games to get total tries
 		for(int i=0;i<=settings.getMaxTries();i++)
 			
@@ -73,7 +73,7 @@ public class AIBatchGames {
 	}
 	
 	public int getMedianTries() {
-		int c=0;
+		long c=0;
 		for(int i=0;i<=settings.getMaxTries();i++) {
 			c += gamesWonIn[i];
 			//if count is now more than half of total games, we've passed the median, i.
