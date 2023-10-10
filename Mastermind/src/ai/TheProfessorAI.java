@@ -3,18 +3,18 @@ package ai;
 import baseGame.Code;
 
 //Games Won In: 
-//1 turns: 818
-//2 turns: 9943
-//3 turns: 77718
-//4 turns: 329708
-//5 turns: 442418
-//6 turns: 130151
-//7 turns: 9133
-//8 turns: 111
-//9 turns: 0
+//1 turns: 771576
+//2 turns: 9841997
+//3 turns: 77085437
+//4 turns: 329423907
+//5 turns: 442875492
+//6 turns: 130637311
+//7 turns: 9251496
+//8 turns: 112631
+//9 turns: 153
 //10 turns: 0
-//Won 1000000 out of 1000000 games. 
-//Mean attempts to win: 4.630505
+//Won 1000000000 out of 1000000000 games. 
+//Mean attempts to win: 0.338304436****int overflow error (4.633...
 //Median attempts to win: 5
 
 public class TheProfessorAI implements AIPersonality {
