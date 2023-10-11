@@ -14,7 +14,7 @@ import baseGame.Code;
 //9 turns: 153
 //10 turns: 0
 //Won 1000000000 out of 1000000000 games. 
-//Mean attempts to win: 0.338304436****int overflow error (4.633...
+//Mean attempts to win: 4.633271732
 //Median attempts to win: 5
 
 public class TheProfessorAI implements AIPersonality {
