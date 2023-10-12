@@ -1,6 +1,7 @@
 package GUI;
 
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.util.EventListener;
 
 import javax.swing.JButton;
@@ -15,7 +16,20 @@ import baseGame.GameSettings;
 public class BatchDialog extends JDialog {
 
 	BatchInputPanel inputPanel;
-	JTextArea batchText;
+	JTextArea txt;
+	
+	public BatchDialog(GameSettings settings) {
+		super();
+		
+		txt = new JTextArea("",8,40);
+		txt.setFont(new Font("Courier New", Font.PLAIN, 20));
+		inputPanel = new BatchInputPanel(settings);
+		
+		this.add(txt);
+		this.add(inputPanel);
+		
+		this.setVisible(true);
+	}
 }
 
 

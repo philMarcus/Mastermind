@@ -158,5 +158,15 @@ public class GameSettings {
 	public void setAiSetter(boolean aiSetter) {
 		this.aiSetter = aiSetter;
 	}
+	
+	public String toString() {
+		String s = "";
+		if(codeLength==4 && getNumPegOptions()==6)
+			s += "Standard Game ";
+		else s+= "Code Length: "+codeLength+" | Peg Options: " + getNumPegOptions();
+		if (easyMode)
+			s+=" EZ";
+		return s;
+	}
 
 }

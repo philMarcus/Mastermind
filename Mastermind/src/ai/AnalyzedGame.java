@@ -81,12 +81,8 @@ public class AnalyzedGame extends GameEngine {
 	public String toString(){
 		int len = this.getSettings().getCodeLength();
 		int opts = this.getSettings().getNumPegOptions();
-		String s = "Turn "+(turnsTaken+1);
-		if(len==4 && opts==6)
-			s += " | Standard Game ";
-		else s+= " | Code Length: "+len+" | Peg Options: " + opts;
-		if (this.getSettings().isEasyMode())
-			s+=" EZ";
+		String s = "Turn "+(turnsTaken+1)+" | ";
+		s+= this.getSettings().toString();
 		s+= "\n"+ ai.toString();
 		return s;
 	}
