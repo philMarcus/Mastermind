@@ -17,6 +17,8 @@ public class GameSettings {
 	// settings to have ai guess and set codes
 	private boolean aiGuesser = false;
 	private boolean aiSetter = true;
+	
+	public final String TITLE = "Marcus Mastermind";
 
 	// settings for swing display
 	private static int pegWidth = 30;

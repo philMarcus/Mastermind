@@ -142,6 +142,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		guessPanel.resetCBoxes();
 		menuBar.easyMode.setSelected(settings.isEasyMode());
 		analysisDialog.updateText();
+		updateTitle();
 
 	}
 
@@ -208,9 +209,13 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		aiTurnPanel.setVisible(settings.isAiGuesser());
 
 	}
+	
+	private void updateTitle() {
+		this.setTitle(settings.TITLE + " | "+settings.toString());
+	}
 
 	private void createAndShowGUI() {
-		this.setTitle("Marcus Mastermind");
+		updateTitle();
 
 		// Set this window's location and size:
 		setBounds(300, 300, 500, 600);

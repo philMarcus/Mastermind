@@ -79,8 +79,6 @@ public class AnalyzedGame extends GameEngine {
 	}
 	
 	public String toString(){
-		int len = this.getSettings().getCodeLength();
-		int opts = this.getSettings().getNumPegOptions();
 		String s = "Turn "+(turnsTaken+1)+" | ";
 		s+= this.getSettings().toString();
 		s+= "\n"+ ai.toString();
