@@ -4,12 +4,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class GameSettings {
-	public final int MAXCODELENGTH = 7;
+	public final int MAXCODELENGTH = 7; //longer than 7 takes a very long time to analyze
 
 	private int maxTries = 10;
 	private int codeLength = 4;
 
-	private int numPegOptions;
 	private ArrayList<Peg> pegOptions = new ArrayList<Peg>();
 	private ArrayList<Peg> reservePegOptions = new ArrayList<Peg>();
 
@@ -41,7 +40,6 @@ public class GameSettings {
 		pegOptions.add(new Peg(Color.GREEN, "Green", "G"));
 		pegOptions.add(new Peg(Color.BLUE, "Blue", "U"));
 		pegOptions.add(new Peg(Color.YELLOW, "Yellow", "Y"));
-		numPegOptions = pegOptions.size();
 
 		reservePegOptions.add(new Peg(Color.ORANGE, "Orange", "O"));
 		reservePegOptions.add(new Peg(Color.LIGHT_GRAY, "Gray", "A"));
@@ -51,19 +49,15 @@ public class GameSettings {
 
 	public void addPegOption() {
 		int r = reservePegOptions.size();
-		if (r>0) {
-		pegOptions.add(reservePegOptions.remove(r - 1));
-			numPegOptions++;
-		}
+		if (r > 0)
+			pegOptions.add(reservePegOptions.remove(r - 1));
 
 	}
 
 	public void removePegOption() {
 		int r = pegOptions.size();
-		if (r>0) {
-		reservePegOptions.add(pegOptions.remove(pegOptions.size() - 1));
-			numPegOptions--;
-		}
+		if (r > 0)
+			reservePegOptions.add(pegOptions.remove(pegOptions.size() - 1));
 
 	}
 
@@ -94,11 +88,11 @@ public class GameSettings {
 	}
 
 	public int getNumPegOptions() {
-		return numPegOptions;
+		return pegOptions.size();
 	}
-	
+
 	public int getMaxPegOptions() {
-		return numPegOptions + reservePegOptions.size();
+		return pegOptions.size() + reservePegOptions.size();
 	}
 
 	public ArrayList<Peg> getPegOptions() {
