@@ -4,13 +4,11 @@ public class Turn {
 
 	private Code guess;
 	private Response response;
-	private boolean isVictory;
 	
 	public Turn(Code guessPegs, Response responsePins) {
-		guess = new Code(guessPegs.getPegs());
+		guess = guessPegs;
 		response = responsePins;
-		if (response.getNumBlack() == guess.getLength()) isVictory = true;
-	}
+		}
 	
 	//returns the number of times a given peg was guessed this turn
 	public int numGuessed(Peg peg) {
@@ -29,8 +27,9 @@ public class Turn {
 		return response;
 	}
 
+	//if the number of black pins is the same as the code length, it's a win!
 	public boolean isVictory() {
-		return isVictory;
+		return response.getNumBlack() == guess.getLength();
 	}
 	
 	public String toString() {
