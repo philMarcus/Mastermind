@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -40,10 +41,10 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 		super();
 		this.settings = settings;
 
-		this.setLayout(new GridLayout(0, 1));
-		setBounds(900, 450, 600, 400);
+		this.setLayout(new FlowLayout());
+		setBounds(900, 450, 600, 450);
 
-		txt = new JTextArea("", 12, 40);
+		txt = new JTextArea(15, 40);
 		txt.setFont(new Font("Courier New", Font.PLAIN, 20));
 		inputPanel = new BatchInputPanel(settings);
 
@@ -89,6 +90,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//when "run" is clicked start a new batch thread running
 	    BatchThread t = new BatchThread();
 	    t.start();
 	}
@@ -106,13 +108,15 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 		}
 	}
 	
+	//want to run batches in a new thread so as not to hang the UI while it goes
+	//this class overrides the run() method of the Thread class
 	class BatchThread extends Thread{
 		public void run() {
 			runBatches();
 		}
 	}
 
-	class BatchInputPanel extends JPanel implements EventListener {
+	class BatchInputPanel extends JPanel {
 
 		SpinnerNumberModel lenModel;
 		JSpinner lenInput;
@@ -153,6 +157,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 			this.add(gameLabel);
 			this.add(numGamesInput);
 			this.add(run);
+			
 		}
 
 	}
