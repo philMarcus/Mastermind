@@ -2,6 +2,7 @@ package GUI;
 
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
@@ -26,16 +27,26 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 	BatchInputPanel inputPanel;
 	JTextArea txt;
 	
+	int length;
+	int numPegOpts;
+	int numGames;
+	
 	public BatchDialog(GameSettings settings) {
 		super();
 		
-		//this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setLayout(new GridLayout(0,1));
 		setBounds(900, 450, 600, 400);
 		
-		txt = new JTextArea("",8,40);
+		txt = new JTextArea("",12,40);
 		txt.setFont(new Font("Courier New", Font.PLAIN, 20));
 		inputPanel = new BatchInputPanel(settings);
 		
+		//initialize variables to default spinner values
+		length = (int)inputPanel.lenModel.getValue();
+		numPegOpts = (int)inputPanel.numPegsModel.getValue();
+		numGames = (int)inputPanel.numGamesModel.getValue();
+		
+		//add components and register action/change listeners
 		this.add(txt);
 		this.add(inputPanel);
 		inputPanel.lenInput.addChangeListener(this);
@@ -54,8 +65,14 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		// TODO Auto-generated method stub
 		
+		//update length, peg options, or numGames when a spinner value changes
+		if(e.getSource().equals(inputPanel.lenInput)) {
+			length = (int)inputPanel.lenModel.getValue();
+		}else if (e.getSource().equals(inputPanel.numPegsInput)) {
+			numPegOpts = (int)inputPanel.numPegsModel.getValue();
+		}else if (e.getSource().equals(inputPanel.numGamesInput)) {
+			numGames = (int)inputPanel.numGamesModel.getValue();
 	}
 }
 
@@ -103,4 +120,5 @@ class BatchInputPanel extends JPanel implements EventListener{
 		this.add(run);
 	}
 	
+}
 }
