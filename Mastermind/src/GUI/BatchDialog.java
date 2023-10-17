@@ -10,6 +10,8 @@ import java.util.EventListener;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
@@ -28,6 +30,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 		super();
 		
 		//this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setBounds(900, 450, 600, 400);
 		
 		txt = new JTextArea("",8,40);
 		txt.setFont(new Font("Courier New", Font.PLAIN, 20));
@@ -77,19 +80,25 @@ class BatchInputPanel extends JPanel implements EventListener{
 		//initialize components
 		lenModel = new SpinnerNumberModel(settings.getCodeLength(),1,settings.MAXCODELENGTH,1);
 		lenInput = new JSpinner(lenModel);
+		JLabel lenLabel = new JLabel("Code Length:");
 		
 		numPegsModel = new SpinnerNumberModel(settings.getNumPegOptions(),1,settings.getMaxPegOptions(),1);
 		numPegsInput = new JSpinner(numPegsModel);
+		JLabel pegLabel = new JLabel("Peg Options:");
 		
 		numGamesModel = new SpinnerNumberModel(NUMGAMES_DEFAULT,NUMGAMES_MIN,NUMGAMES_MAX,NUMGAMES_STEP);
 		numGamesInput = new JSpinner(numGamesModel);
+		JLabel gameLabel = new JLabel("Games:");
 		
 		run = new JButton("Run");
 		
 		//set the layout and add components
 		this.setLayout(new FlowLayout());
+		this.add(lenLabel);
 		this.add(lenInput);
+		this.add(pegLabel);
 		this.add(numPegsInput);
+		this.add(gameLabel);
 		this.add(numGamesInput);
 		this.add(run);
 	}
