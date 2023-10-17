@@ -2,6 +2,7 @@ package ai;
 
 import baseGame.GameSettings;
 
+//deprecated since implementation of Batch Dialog
 public class BatchTester {
 
 	public static void main(String[] args) {

@@ -41,6 +41,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 		super();
 		this.settings = settings;
 
+		this.setTitle(settings.TITLE + " - AI Batch Games");
 		this.setLayout(new FlowLayout());
 		setBounds(900, 450, 600, 450);
 

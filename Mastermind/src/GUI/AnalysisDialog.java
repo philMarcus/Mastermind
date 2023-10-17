@@ -16,6 +16,8 @@ public class AnalysisDialog extends JDialog {
 	public AnalysisDialog(MastermindGUI game) {
 		super();
 		gameState = game;
+		
+		this.setTitle(game.getSettings().TITLE + " - Game Analysis");
 
 		txt = new JTextArea(gameState.toString(),8,40);
 		txt.setFont(new Font("Courier New", Font.PLAIN, 20));
