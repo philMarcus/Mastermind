@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 public class GameSettings {
-	public final int MAXCODELENGTH = 7; //longer than 7 takes a very long time to analyze
+	public final int MAXCODELENGTH = 7; // longer than 7 takes a very long time to analyze
 
 	private int maxTries = 10;
 	private int codeLength = 4;
@@ -17,7 +17,7 @@ public class GameSettings {
 	// settings to have ai guess and set codes
 	private boolean aiGuesser = false;
 	private boolean aiSetter = true;
-	
+
 	public final String TITLE = "Marcus Mastermind";
 
 	// settings for swing display
@@ -61,6 +61,25 @@ public class GameSettings {
 		if (r > 0)
 			reservePegOptions.add(pegOptions.remove(pegOptions.size() - 1));
 
+	}
+
+	public boolean setPegOptions(int num) {
+		// ensure num is within the allowed range of peg options
+		if (num > getMaxPegOptions() || num < 1) {
+			return false;
+		}
+		int old = getNumPegOptions();
+		//call addPegOption or removePegOption enough
+		//times to make up the difference between old and num
+		if (num > old) {
+			for (int i = 0; i < num - old; i++)
+				addPegOption();
+		}
+		if (num < old) {
+			for (int i = 0; i < old - num; i++)
+				removePegOption();
+		}
+		return true;
 	}
 
 //	//construct a non-default color option Settings
@@ -160,14 +179,15 @@ public class GameSettings {
 	public void setAiSetter(boolean aiSetter) {
 		this.aiSetter = aiSetter;
 	}
-	
+
 	public String toString() {
 		String s = "";
-		if(codeLength==4 && getNumPegOptions()==6)
+		if (codeLength == 4 && getNumPegOptions() == 6)
 			s += "Standard Game ";
-		else s+= "Code Length: "+codeLength+" | Peg Options: " + getNumPegOptions();
+		else
+			s += "Code Length: " + codeLength + " | Peg Options: " + getNumPegOptions();
 		if (easyMode)
-			s+=" EZ";
+			s += " EZ";
 		return s;
 	}
 
