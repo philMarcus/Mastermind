@@ -193,6 +193,14 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			}
 		});
 	}
+	
+	private void openBatches(){
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				BatchDialog batches = new BatchDialog(settings);
+			}
+		});
+	}
 
 	private void layoutPanels() {
 		Container c = getContentPane();
@@ -235,6 +243,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		menuBar.addPegOption.addActionListener(this);
 		menuBar.removePegOption.addActionListener(this);
 		menuBar.showAnalysis.addActionListener(this);
+		menuBar.aiBatches.addActionListener(this);
 
 		// Create a Board, which is a kind of JPanel:
 		board = new Board(this);
@@ -278,6 +287,8 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			reset();
 		} else if (e.getActionCommand().equals("Show Game Analysis")) {
 			analysisDialog.setVisible(true);
+		} else if (e.getActionCommand().equals("AI Batch Games")) {
+			openBatches();
 		} else if (e.getActionCommand().equals("Take Turn")) {
 			Code guess = guessPanel.getUserCode();
 

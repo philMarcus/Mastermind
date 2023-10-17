@@ -27,7 +27,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 	public BatchDialog(GameSettings settings) {
 		super();
 		
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		//this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		txt = new JTextArea("",8,40);
 		txt.setFont(new Font("Courier New", Font.PLAIN, 20));
