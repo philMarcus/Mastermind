@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextArea;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -62,22 +63,34 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 		this.setVisible(true);
 	}
 
+	
 	public void runBatches() {
 		settings.setCodeLength(length);
 		settings.setPegOptions(numPegOpts);
 		// for now no EZ mode in batches
 		settings.setEasyMode(false);
 
+		
 		AIBatchGames batch = new AIBatchGames(settings);
 		for (int i = 0; i < numGames; i++) {
-			AnalyzedGame g = batch.runGame();
-			txt.setText(batch.toString());
+			batch.runGame();
+			updateText(batch.toString());
 		}
+	}	
+	
+
+	public void updateText(String text) {
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				txt.setText(text);
+			}
+		});
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		runBatches();
+	    BatchThread t = new BatchThread();
+	    t.start();
 	}
 
 	@Override
@@ -90,6 +103,12 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 			numPegOpts = (int) inputPanel.numPegsModel.getValue();
 		} else if (e.getSource().equals(inputPanel.numGamesInput)) {
 			numGames = (int) inputPanel.numGamesModel.getValue();
+		}
+	}
+	
+	class BatchThread extends Thread{
+		public void run() {
+			runBatches();
 		}
 	}
 
