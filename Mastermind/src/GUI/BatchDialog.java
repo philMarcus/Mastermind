@@ -65,7 +65,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 	}
 
 	
-	public void runBatches() {
+	public void runBatch() {
 		settings.setCodeLength(length);
 		settings.setPegOptions(numPegOpts);
 		// for now no EZ mode in batches
@@ -75,18 +75,10 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 		AIBatchGames batch = new AIBatchGames(settings);
 		for (int i = 0; i < numGames; i++) {
 			batch.runGame();
-			updateText(batch.toString());
+			txt.setText(batch.toString());
 		}
 	}	
 	
-
-	public void updateText(String text) {
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				txt.setText(text);
-			}
-		});
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -112,7 +104,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 	//this class overrides the run() method of the Thread class
 	class BatchThread extends Thread{
 		public void run() {
-			runBatches();
+			runBatch();
 		}
 	}
 
