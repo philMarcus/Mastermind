@@ -15,6 +15,7 @@ public class GameMenuBar extends JMenuBar {
 	// game menu items
 	JMenuItem reset;
 	JMenuItem showAnalysis;
+	JMenuItem aiBatches;
 	// players menu items
 	JRadioButtonMenuItem humanGuesser;
 	JRadioButtonMenuItem aiGuesser;
@@ -40,6 +41,8 @@ public class GameMenuBar extends JMenuBar {
 		gameMenu.add(reset);
 		showAnalysis = new JMenuItem("Show Game Analysis");
 		gameMenu.add(showAnalysis);
+		aiBatches = new JMenuItem("AI Batch Games");
+		gameMenu.add(aiBatches);
 
 
 

@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemListener;
 import java.util.EventListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
@@ -25,6 +26,8 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 	
 	public BatchDialog(GameSettings settings) {
 		super();
+		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		txt = new JTextArea("",8,40);
 		txt.setFont(new Font("Courier New", Font.PLAIN, 20));
