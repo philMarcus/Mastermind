@@ -45,7 +45,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 	public MastermindGUI(GameSettings settings) {
 		super();
 		this.settings = settings;
-		
+
 		game = new AnalyzedGame(settings);
 		secretCode = game.getSecretCode();
 	}
@@ -154,32 +154,30 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		return secretCode;
 	}
 
-	private void addPegOption(){
-		if(settings.getNumPegOptions()<settings.getMaxPegOptions()) {
-		settings.addPegOption();
-		guessPanel = new GuessInputPanel(this);
-		layoutPanels();
-		int num = settings.getNumPegOptions();
-		String s = settings.getPegOptions().get(num-1).getText();
-		s+=" pegs added. "+num+" Peg Options";
-		JOptionPane.showMessageDialog(this,s);
-		}
-		else
-			JOptionPane.showMessageDialog(this,"No more pegs");
+	private void addPegOption() {
+		if (settings.getNumPegOptions() < settings.getMaxPegOptions()) {
+			settings.addPegOption();
+			guessPanel = new GuessInputPanel(this);
+			layoutPanels();
+			int num = settings.getNumPegOptions();
+			String s = settings.getPegOptions().get(num - 1).getText();
+			s += " pegs added. " + num + " Peg Options";
+			JOptionPane.showMessageDialog(this, s);
+		} else
+			JOptionPane.showMessageDialog(this, "No more pegs");
 	}
 
 	private void removePegOption() {
-		if(settings.getNumPegOptions()>1) {
-		int num = settings.getNumPegOptions();
-		String s = settings.getPegOptions().get(num - 1).getText();
-		s += " pegs removed. " + (num - 1) + " Peg Options";
-		JOptionPane.showMessageDialog(this, s);
-		settings.removePegOption();
-		guessPanel = new GuessInputPanel(this);
-		layoutPanels();
-		}
-		else {
-			JOptionPane.showMessageDialog(this,"No pegs, no game.");
+		if (settings.getNumPegOptions() > 1) {
+			int num = settings.getNumPegOptions();
+			String s = settings.getPegOptions().get(num - 1).getText();
+			s += " pegs removed. " + (num - 1) + " Peg Options";
+			JOptionPane.showMessageDialog(this, s);
+			settings.removePegOption();
+			guessPanel = new GuessInputPanel(this);
+			layoutPanels();
+		} else {
+			JOptionPane.showMessageDialog(this, "No pegs, no game.");
 			this.dispose();
 		}
 	}
@@ -193,11 +191,13 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			}
 		});
 	}
-	
-	private void openBatches(){
+
+	private void openBatches() {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				BatchDialog batches = new BatchDialog(settings);
+				int len = settings.getCodeLength();
+				int opt = settings.getNumPegOptions();
+				BatchDialog batches = new BatchDialog(new GameSettings(len, opt));
 			}
 		});
 	}
@@ -217,9 +217,9 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		aiTurnPanel.setVisible(settings.isAiGuesser());
 
 	}
-	
+
 	private void updateTitle() {
-		this.setTitle(settings.TITLE + " | "+settings.toString());
+		this.setTitle(settings.TITLE + " | " + settings.toString());
 	}
 
 	private void createAndShowGUI() {
@@ -256,10 +256,9 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		aiTurnPanel = new AITurnPanel(this);
 		// set the AI turn button panel to the same size as the guess input panel
 		aiTurnPanel.setPreferredSize(guessPanel.getPreferredSize());
-		//create the analysis dialog
+		// create the analysis dialog
 		analysisDialog = new AnalysisDialog(this);
-		//analysisDialog.setVisible(true);
-		
+		// analysisDialog.setVisible(true);
 
 		// Add panels to window and layout:
 		layoutPanels();
@@ -272,7 +271,6 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		menuBar.aiSetter.setSelected(settings.isAiSetter());
 		menuBar.humanSetter.setSelected(!settings.isAiSetter());
 		menuBar.easyMode.setSelected(settings.isEasyMode());
-		
 
 		// show and configure application window
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -379,7 +377,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 			reset();
 		}
 	}
-	
+
 	public String toString() {
 		return game.toString();
 	}

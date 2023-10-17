@@ -44,7 +44,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 		this.setLayout(new FlowLayout());
 		setBounds(900, 450, 600, 450);
 
-		txt = new JTextArea(15, 40);
+		txt = new JTextArea(16, 40);
 		txt.setFont(new Font("Courier New", Font.PLAIN, 20));
 		inputPanel = new BatchInputPanel(settings);
 
@@ -75,7 +75,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 		AIBatchGames batch = new AIBatchGames(settings);
 		for (int i = 0; i < numGames; i++) {
 			batch.runGame();
-			txt.setText(batch.toString());
+			txt.setText(settings.toString() + "\n"+ batch.toString());
 		}
 	}	
 	

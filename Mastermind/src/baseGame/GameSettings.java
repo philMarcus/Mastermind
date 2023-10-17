@@ -34,8 +34,19 @@ public class GameSettings {
 	private boolean printPegPossibilities = true;
 	private boolean printPegProbabilities = true;
 
-	// add the six default colors to pegOptions list and set numPegOptions
+
 	public GameSettings() {
+		initPegOptions();
+	}
+	
+	public GameSettings(int len, int opts) {
+		initPegOptions();
+		codeLength = len;
+		setPegOptions(opts);
+	}
+	
+	// add the six default colors to pegOptions and extra pegs to reservePegOptons
+	public void initPegOptions() {
 		pegOptions.add(new Peg(Color.BLACK, "Black", "B"));
 		pegOptions.add(new Peg(Color.WHITE, "White", "W"));
 		pegOptions.add(new Peg(Color.RED, "Red", "R"));
