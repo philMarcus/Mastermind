@@ -244,6 +244,7 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		menuBar.removePegOption.addActionListener(this);
 		menuBar.showAnalysis.addActionListener(this);
 		menuBar.aiBatches.addActionListener(this);
+		menuBar.defaultSettings.addActionListener(this);
 
 		// Create a Board, which is a kind of JPanel:
 		board = new Board(this);
@@ -354,7 +355,11 @@ public class MastermindGUI extends JFrame implements ActionListener, ItemListene
 		} else if (e.getActionCommand().equals("Remove Peg Option")) {
 			removePegOption();
 			reset();
-
+		} else if (e.getActionCommand().equals("Default Settings")) {
+			settings.setCodeLength(4);
+			settings.setPegOptions(6);
+			newWindow();
+			this.dispose();
 		} else {
 			// check each response button to see if it was pressed
 			for (int i = 0; i < responseDialog.getButtons().size(); i++)

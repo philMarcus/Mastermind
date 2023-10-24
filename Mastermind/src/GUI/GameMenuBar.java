@@ -27,6 +27,7 @@ public class GameMenuBar extends JMenuBar {
 	JMenuItem decreaseCodeLength;
 	JMenuItem addPegOption;
 	JMenuItem removePegOption;
+	JMenuItem defaultSettings;
 
 	public GameMenuBar() {
 		gameMenu = new JMenu("Game");
@@ -60,7 +61,9 @@ public class GameMenuBar extends JMenuBar {
 		setters.add(humanSetter);
 		setters.add(aiSetter);
 		
-		//settingsMenu.addSeparator();
+		defaultSettings = new JMenuItem("Default Settings");
+		
+
 		playersMenu.add(humanGuesser);
 		playersMenu.add(aiGuesser);
 
@@ -80,6 +83,7 @@ public class GameMenuBar extends JMenuBar {
 		settingsMenu.addSeparator();
 		settingsMenu.add(addPegOption);
 		settingsMenu.add(removePegOption);
-
+		settingsMenu.addSeparator();
+		settingsMenu.add(defaultSettings);
 	}
 }
