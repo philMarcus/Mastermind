@@ -2,22 +2,28 @@ package baseGame;
 
 import java.util.ArrayList;
 
-public class GameEngine {
+//This class represents a single game of Mastermind. 
 
+public class Game {
+	//The game consists of an arraylist of Turns
 	private ArrayList<Turn> turns = new ArrayList<Turn>();
+	
+	//The various game options are stored in a GameSettings variable
 	private GameSettings settings = new GameSettings();
+	
+	//This is the code that the player is trying to guess
 	private Code secretCode;
 
 	// begin a new game with a predetermined secret code
-	public GameEngine(GameSettings settings, Code secretCode) {
+	public Game(GameSettings settings, Code secretCode) {
 		this.settings = settings;
 		this.secretCode = secretCode;
 	}
 
 	// begin a new game with a random secret code
-	public GameEngine(GameSettings settings) {
+	public Game(GameSettings settings) {
 		this.settings = settings;
-		//can't have easy mode when theres too few pin options for the length.
+		//can't have easy mode when theres too few peg options for the length.
 		if(settings.isEasyMode() && settings.getNumPegOptions()<settings.getCodeLength())
 			settings.setEasyMode(false);
 		
@@ -25,7 +31,7 @@ public class GameEngine {
 	}
 
 	// begin a new game with a random secret code and the default game settings
-	public GameEngine() {
+	public Game() {
 		settings = new GameSettings();
 		this.secretCode = new Code(settings.getCodeLength(), settings.getPegOptions());
 	}

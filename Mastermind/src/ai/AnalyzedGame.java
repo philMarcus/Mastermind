@@ -3,11 +3,11 @@ package ai;
 import java.util.ArrayList;
 
 import baseGame.Code;
-import baseGame.GameEngine;
+import baseGame.Game;
 import baseGame.GameSettings;
 import baseGame.Turn;
 
-public class AnalyzedGame extends GameEngine {
+public class AnalyzedGame extends Game {
 	private AIAnalysis ai;
 	private int turnsTaken;
 	ArrayList<CodeUniverse> cUs= new ArrayList<>();

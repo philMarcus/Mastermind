@@ -1,8 +1,11 @@
 package baseGame;
 
+//This class represents a single turn of a game of Mastermind. The turn consists of a 
+//guessed Code and the Response based on how well the guessed code matches the secret code.
 public class Turn {
-
+	//The code guessed this turn
 	private Code guess;
+	//The response, detailing how well the guessed coed matches the secret code
 	private Response response;
 	
 	public Turn(Code guessPegs, Response responsePins) {

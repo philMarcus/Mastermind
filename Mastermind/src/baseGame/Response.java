@@ -2,15 +2,24 @@ package baseGame;
 
 import java.util.ArrayList;
 
+
+//This class represents a response to a guessed code. Responses consist of black
+//and white pins. A guess with a correct peg in the correct slot earns a black pin
+//A guess with a correct peg in an incorrect slot earns a white pin.
 public class Response {
+	//The number of black pins in the response
 	private int numBlack = 0;
+	//The total number of pins (black and white) in the response
 	private int numPins = 0;
+	//The length of the codes in this game
 	private int len;
 
 	// construct the response for a given code and secretcode.
 	// Code and secretcode should be the same length.
 	public Response(Code guess, Code secretCode) {
 		len = guess.getLength();
+		
+		//a list to keep track of pegs we have "checked" for earned pins
 		ArrayList<Peg> checkedPegs = new ArrayList<>();
 
 		for (int i = 0; i < len; i++) {
@@ -32,7 +41,10 @@ public class Response {
 					if (secretCode.getPeg(j) == p)
 						s++;
 				}
-				// add to num pins the smaller of the two counts
+				
+				//The number of pins that a Peg earns is the *smaller* of the counts of 
+				//that peg in the secret code and the guessed code.
+				// So, add to num pins the smaller of the two counts
 				if (g < s)
 					numPins += g;
 				else
@@ -61,6 +73,7 @@ public class Response {
 		return numBlack;
 	}
 
+	//calculate number of white pins by subtracting black pins from the total number
 	public int getNumWhite() {
 		return numPins - numBlack;
 	}
@@ -69,6 +82,7 @@ public class Response {
 		return len;
 	}
 
+	//calulate the number of empty pins by subtracting the total earned pins from the code length
 	public int getNumEmpty() {
 		return len - numPins;
 	}
@@ -82,6 +96,8 @@ public class Response {
 		return (numBlack == len);
 	}
 
+	//two responses are equal if they have the same number of black pins and the same number
+	//of total pins
 	public boolean equals(Response r) {
 		return (numBlack == r.getNumBlack() && numPins == r.getNumPins());
 	}

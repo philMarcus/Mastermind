@@ -2,8 +2,13 @@ package baseGame;
 
 import java.util.ArrayList;
 
+
+//This class represents a "code" in the game. In the standard game, this consists of a series
+//of four pegs of six possible colors. The goal of the game is for the player to choose
+//a code identical to the "secret code" set at the start of the game
 public class Code {
 
+	//the code is stored as an array of Pegs.
 	private Peg[] pegs;
 
 	// constructor for a Code from given pegs
@@ -20,6 +25,8 @@ public class Code {
 			double rand = Math.random() * (remainingOpts.size());
 			int rInt = (int) rand;
 			if (easyMode)
+				//on easy mode, a used peg should be removed from options, so that
+				//it can't be used again.
 				pegs[i] = remainingOpts.remove(rInt);
 			else
 				pegs[i] = remainingOpts.get(rInt);
@@ -37,7 +44,8 @@ public class Code {
 		}
 	}
 
-	// constructor for an array of integers
+	// constructor for an array of integers. The integers represent the index of
+	//the desired peg in the pegOptions list
 	public Code(int[] ints, ArrayList<Peg> pegOptions) {
 		pegs = new Peg[ints.length];
 		for (int i = 0; i < pegs.length; i++) {
@@ -45,18 +53,22 @@ public class Code {
 		}
 	}
 
+	//returns the number of pegs in a code
 	public int getLength() {
 		return pegs.length;
 	}
 
+	//returns a specific peg from this code
 	public Peg getPeg(int index) {
 		return pegs[index];
 	}
 
+	//returns the array of pegs in this code
 	public Peg[] getPegs() {
 		return pegs;
 	}
 
+	//sets a single peg in this code
 	public void setPeg(Peg peg, int index) {
 		pegs[index] = peg;
 	}
