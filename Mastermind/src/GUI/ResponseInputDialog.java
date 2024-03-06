@@ -7,19 +7,21 @@ import javax.swing.JDialog;
 
 import baseGame.Response;
 
-
+//This class represents the window that a human code-setter uses to choose a response
+//to a guessed code
 public class ResponseInputDialog extends JDialog {
 	private MastermindGUI game;
-	private int len;
-	private ArrayList<ResponseButton> buttons = new ArrayList<>();
+	private int len; //code length
+	//list of buttons conatining possible responses
+	private ArrayList<ResponseButton> buttons = new ArrayList<>(); 
 	
 	private GridLayout layout;
 	
 	public ResponseInputDialog(MastermindGUI gameState) {
-		super(gameState ,"Response Input");
+		super(gameState ,"Response Input"); //Create a dialog owned by the Mastermind GUI
 		game = gameState;
 		len = game.getSettings().getCodeLength();
-		layout= new GridLayout(len, 0);
+		layout= new GridLayout(len, 0); //use a grid layout with codeLength rows
 		
 		this.setLayout(layout);
 		
@@ -32,6 +34,7 @@ public class ResponseInputDialog extends JDialog {
 				this.add(btn);
 			}
 		}
+		//locate the window TODO: add to game settings
 		this.setBounds(750, 500, 400, 200);
 	}
 
@@ -41,13 +44,13 @@ public class ResponseInputDialog extends JDialog {
 
 }
 
+//This class represents a single button for a single possible pin response
 class ResponseButton extends JButton {
-//	private Painter painter;
-	private Response rsp;
-	private int len;
+	private Response rsp; //the response represented by the button
+	private int len; //code length
 
 	public ResponseButton(Response r) {
-		super(r.toString());
+		super(r.toString()); //the button text comes from the Response toString method
 		rsp = r;
 
 	}
@@ -57,8 +60,3 @@ class ResponseButton extends JButton {
 	}
 }
 
-//	public void paintComponent(Graphics g) {
-//		super.paintComponent(g);
-//		painter.paint(g);
-//	}
-//}

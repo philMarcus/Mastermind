@@ -10,23 +10,26 @@ import javax.swing.JPanel;
 import baseGame.GameSettings;
 import baseGame.Response;
 
+//This class represents a panel to graphically display the pins in a response (or an empty response)
 public class PinsPanel extends JPanel {
 
-	private Response rsp;
+	private Response rsp; // the response pins to display
 
 	// creates a display panel with the number of black, white,
 	// and empty pins specified in the passed turn response
 	public PinsPanel(Response response) {
 		super();
 		rsp = response;
-		this.setLayout(new GridLayout(2, 0));
-
+		this.setLayout(new GridLayout(2, 0)); //pins are drawn using a grid layout
+		//draw black pins
 		for (int i = 0; i < rsp.getNumBlack(); i++) {
 			this.add(new PinPanel(true));
 		}
+		//draw white pins
 		for (int i = 0; i < rsp.getNumWhite(); i++) {
 			this.add(new PinPanel(false));
 		}
+		//draw empty pin slots, which are empty gray panels sized according to game settings
 		for (int i = 0; i < rsp.getNumEmpty(); i++) {
 			JPanel p = new JPanel();
 			p.setBackground(Color.GRAY);
@@ -41,11 +44,10 @@ public class PinsPanel extends JPanel {
 
 }
 
+//This class represents the display of a single black or white pin
 class PinPanel extends JPanel {
-	private Color color;
-	private PinPainter painter;
-
-
+	private Color color; //the color of the pin
+	private PinPainter painter; //used to draw the pin circle on the panel
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g); // Call JPanel's paintComponent method
@@ -54,6 +56,7 @@ class PinPanel extends JPanel {
 
 	}
 
+	//creates a black or white pin panel
 	public PinPanel(boolean isBlack) {
 		super();
 		this.setBackground(Color.GRAY);
@@ -73,8 +76,8 @@ class PinPanel extends JPanel {
 
 }
 
-class PinPainter 
-{
+//This class renders a circle sized according to game settings
+class PinPainter {
 	private Color color;
 	private int d = GameSettings.getPinWidth();
 	private int w = GameSettings.getPinSlotWidth();
@@ -84,7 +87,6 @@ class PinPainter
 		this.color = color;
 	}
 
-	//@Override
 	public void paint(Graphics g) {
 		int x = (w - d) / 2;
 		int y = (h - d) / 2;
