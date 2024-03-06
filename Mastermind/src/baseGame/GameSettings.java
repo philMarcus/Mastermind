@@ -75,6 +75,8 @@ public class GameSettings {
 	// This method moves a peg from "reservePegOptions" to "pegOptions"
 	public void addPegOption() {
 		int r = reservePegOptions.size();
+		//ensure there is at least one remaining reserve peg
+		//before adding it to pegOptions
 		if (r > 0)
 			pegOptions.add(reservePegOptions.remove(r - 1));
 
@@ -137,6 +139,8 @@ public class GameSettings {
 		return pegOptions.size();
 	}
 
+	//the max number of peg options is the current number of options plus the number of
+	//reserve peg options
 	public int getMaxPegOptions() {
 		return pegOptions.size() + reservePegOptions.size();
 	}
