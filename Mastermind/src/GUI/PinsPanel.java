@@ -43,8 +43,8 @@ public class PinsPanel extends JPanel {
 
 class PinPanel extends JPanel {
 	private Color color;
-	private Painter painter;
-//	private int d = GameSettings.getPinWidth();
+	private PinPainter painter;
+
 
 
 	public void paintComponent(Graphics g) {
@@ -69,6 +69,28 @@ class PinPanel extends JPanel {
 		int w = GameSettings.getPinSlotWidth();
 		int h = GameSettings.getPinSlotHeight();
 		return new Dimension(w, h);
+	}
+
+}
+
+class PinPainter 
+{
+	private Color color;
+	private int d = GameSettings.getPinWidth();
+	private int w = GameSettings.getPinSlotWidth();
+	private int h = GameSettings.getPinSlotHeight();
+
+	public PinPainter(Color color) {
+		this.color = color;
+	}
+
+	//@Override
+	public void paint(Graphics g) {
+		int x = (w - d) / 2;
+		int y = (h - d) / 2;
+		g.setColor(color);
+		g.fillOval(x, y, d, d);
+
 	}
 
 }
