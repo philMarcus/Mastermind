@@ -7,74 +7,70 @@ import baseGame.Peg;
 //there could be in the secret code, as well
 //as the probability of finding each peg in each slot
 public class PegPossibility {
-	private Peg p; //the peg under analysis
-	
-	//the maximum number of times this peg could be found in the secret code
-	private int maxNum; 
-	
-	//the minimum number of times this peg could be found in the secret code
-	private int minNum;
-	
-	private int len; //code length
-	
-	//
-	private boolean[] excludedSlots;
-	private boolean[] locatedSlots;
-	private double[] probabilityPerSlot;
-	private static boolean update = true;
+	private Peg p; // the peg under analysis
 
+	// the maximum number of times this peg could be found in the secret code
+	private int maxNum;
+
+	// the minimum number of times this peg could be found in the secret code
+	private int minNum;
+
+	private int len; // code length
+
+	// the fraction of remaining possible codes that contain the peg in each slot
+	private double[] probabilityPerSlot;
+
+	// construct the peg possibilty for a given peg and a given code universe
 	public PegPossibility(Peg peg, CodeUniverse cU) {
-		len = cU.getLength();
-		// initially there could be any number of a peg, up to the length of the code
-		// itself
-		minNum = len;
-		maxNum = 0;
+		len = cU.getLength(); // code length
 		p = peg;
-		// flags slots this peg can't be in
-		excludedSlots = new boolean[len];
-		// flags slots this peg is definitely in
-		locatedSlots = new boolean[len];
+
 		// fraction of remaining codes containing this peg in each slot
 		probabilityPerSlot = new double[len];
 
+		// process code universe to update probabilityPerSlot and min and max nums
 		processCU(cU);
 
 	}
 
+	// analyze a codeUniverse to determine the max and min number of times the peg
+	// can appear in the secret code, and the probabilities of finding the peg in
+	// each slot
 	private void processCU(CodeUniverse cU) {
-		int tot = cU.getSize();
+		int tot = cU.getSize(); // number of possible codes in the code universe
 		// iterate through possible codes and count how many matches the peg has in each
 		// slot
 		for (Code c : cU.getCodeUniverse()) {
-			int count = 0;
+			int count = 0; // count of the peg in this code
 			for (int slot = 0; slot < len; slot++) {
+				// check if the peg is found in the slot in this code
 				if (c.getPeg(slot) == p) {
+					// add to the count of the codes in which this peg is found in the slot
 					probabilityPerSlot[slot]++;
+					// add to the count of this peg in this code
 					count++;
 				}
 			}
+			// update min and max nums based on the count of the peg in the code
 			if (count < minNum)
-				setMinNum(count);
+				minNum = count;
 			if (count > maxNum)
-				setMaxNum(count);
+				maxNum = count;
 		}
-		// divide count by total for probability
+		// divide count of codes with the peg in each slot by total codes
 		for (int slot = 0; slot < len; slot++) {
 			probabilityPerSlot[slot] /= tot;
-			// exclude slots with no possible codes
-			if (probabilityPerSlot[slot] <= 0)
-				excludeSlot(slot);
-			// mark as located slots in which every code contains this peg
-			if (probabilityPerSlot[slot] >= 1)
-				setLocatedSlot(slot);
 		}
 
 	}
 
+	// return the peg under analysis
 	public Peg getPeg() {
 		return p;
 	}
 
+	// returns true if the peg is guaranteed to be found at least once in the secret
+	// code
 	public boolean isIdentified() {
 		if (minNum > 0)
 			return true;
@@ -82,87 +78,61 @@ public class PegPossibility {
 			return false;
 	}
 
+	// return the max number of times the peg could be found in the secret code
 	public int getMaxNum() {
 		return maxNum;
 	}
 
-	public void setMaxNum(int max) {
-		maxNum = max;
-		update = true;
-	}
-
+	// return the minimum number of times the peg could be found in the secret code
 	public int getNumIdentified() {
 		return minNum;
 	}
 
-	public void setMinNum(int min) {
-		minNum = min;
-		update = true;
-	}
-
+	// returns true if we are certain of how many times this peg is found in the
+	// secret code
 	public boolean numIsCertain() {
 		return (maxNum == minNum);
 	}
 
+	// returns the number of slots in which this peg is definitely not found
 	public int getNumExcludedSlots() {
 		int n = 0;
-		for (boolean x : excludedSlots) {
-			if (x)
+		for (double x : probabilityPerSlot) {
+			if (x == 0)
 				n++;
 		}
 		return n;
 	}
 
+	// returns true if the peg is definitely not found in slot i
 	public boolean isExcludedAt(int i) {
-		return excludedSlots[i];
+		return probabilityPerSlot[i] == 0;
 	}
 
+	// returns the number of slots in which this peg will definitely be found in the
+	// secret code
 	public int getNumLocated() {
 		int n = 0;
-		for (boolean x : locatedSlots) {
-			if (x)
+		for (double x : probabilityPerSlot) {
+			if (x == 1)
 				n++;
 		}
 		return n;
 	}
 
+	// returns true if there is at least one slot in which we know this peg will be
+	// found
 	public boolean isLocated() {
 		return (getNumLocated() > 0);
 	}
 
+	// returns true if we know this peg is in slot i in the secret code
 	public boolean isLocatedAt(int i) {
-		return locatedSlots[i];
+		return probabilityPerSlot[i] == 1;
 	}
 
-	public void excludeSlot(int slot) {
-		excludedSlots[slot] = true;
-		update = true;
-		// always ensure maxNum is no larger than number of non-excluded slots.
-		int max = len - getNumExcludedSlots();
-		if (getMaxNum() > max)
-			setMaxNum(max);
-	}
-
-	public void setLocatedSlot(int slot) {
-		locatedSlots[slot] = true;
-		update = true;
-		// always ensure minNum is as large as number of peg locations
-		if (getNumIdentified() < getNumLocated())
-			setMinNum(getNumLocated());
-	}
-
-	public static boolean needsUpdate() {
-		return update;
-	}
-
-	public static void resetUpdatedFlag() {
-		update = false;
-	}
-
-	public static void setNeedsUpdate() {
-		update = true;
-	}
-
+	// prints the peg possibility as a string, if probs is true, will print the
+	// peg probabilities as well as the peg possibilities
 	public String toString(Boolean probs) {
 		String s = new String();
 		s += getPeg().getKey() + " " + getNumIdentified() + "-" + getMaxNum();
