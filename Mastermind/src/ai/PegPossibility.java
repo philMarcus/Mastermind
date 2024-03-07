@@ -3,13 +3,21 @@ package ai;
 import baseGame.Code;
 import baseGame.Peg;
 
-//For each peg we need to keep track of the min and max number there could be in the code, as well
-//as which slots the peg can't be found in and which slots they have been found in
+//PegPossibility is a class intended to keep track of the min and max number of pegs  
+//there could be in the secret code, as well
+//as the probability of finding each peg in each slot
 public class PegPossibility {
-	private Peg p;
-	private int maxNum;
+	private Peg p; //the peg under analysis
+	
+	//the maximum number of times this peg could be found in the secret code
+	private int maxNum; 
+	
+	//the minimum number of times this peg could be found in the secret code
 	private int minNum;
-	private int len;
+	
+	private int len; //code length
+	
+	//
 	private boolean[] excludedSlots;
 	private boolean[] locatedSlots;
 	private double[] probabilityPerSlot;
@@ -157,23 +165,26 @@ public class PegPossibility {
 
 	public String toString(Boolean probs) {
 		String s = new String();
-		s += getPeg().getKey()+" "+getNumIdentified()+"-"+getMaxNum();
-		s +=" [";
-		for(int i=0; i<len;i++) {
-			if (isLocatedAt(i)) s+="O";
-			else if (isExcludedAt(i)) s+="x";
-			else s+=".";
+		s += getPeg().getKey() + " " + getNumIdentified() + "-" + getMaxNum();
+		s += " [";
+		for (int i = 0; i < len; i++) {
+			if (isLocatedAt(i))
+				s += "O";
+			else if (isExcludedAt(i))
+				s += "x";
+			else
+				s += ".";
 		}
 		s += "]";
-		if(probs) {
-			s+="[";
-			for(int i=0; i<len;i++) {
-				int pct = (int)(probabilityPerSlot[i]*100+0.5);
-				s+=" "+pct+"%";
+		if (probs) {
+			s += "[";
+			for (int i = 0; i < len; i++) {
+				int pct = (int) (probabilityPerSlot[i] * 100 + 0.5);
+				s += " " + pct + "%";
 			}
-			s+="]";
+			s += "]";
 		}
-		s+=System.lineSeparator();
+		s += System.lineSeparator();
 		return s;
 	}
 

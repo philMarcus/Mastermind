@@ -7,35 +7,47 @@ import baseGame.GameSettings;
 import baseGame.Peg;
 import baseGame.Turn;
 
-//Calculations based on the game state; used to inform guesses by specific AI strategies(ists?).
+//This class performs the analyses for a game of Mastermind, which consists of
+//the remaining possible codes that could be the game's secret code (the code Universe)
+//and the probabilities of finding each peg in each slot (peg possibilities)
 public class AIAnalysis {
+	
+	//a list of the remaining possible secret codes for the game
 	private CodeUniverse cU;
+	
+	//a list of pegs and the likelihoods that each will be found in a given slot
 	private ArrayList<PegPossibility> ps = new ArrayList<>();
+	
 	private GameSettings settings;
 
-
+	//construct a new analysis for a game with given settings
 	public AIAnalysis(GameSettings s) {
 		settings = s;
+		//generate the initial list of all possible codes
 		cU = new CodeUniverse(settings);
+		//initialize the peg possibilities list
 		setPegPossibilities();
-		//System.out.println(toString());
-
 	}
 
+	// determine the peg possibilities based on the current code universe
 	public void setPegPossibilities() {
-		// initialize the peg-possibilities array
 		ps = new ArrayList<>();
 		ArrayList<Peg> opts = settings.getPegOptions();
+		//iterate over each peg option and perform it's PegPossibility analysis
 		Iterator<Peg> it = opts.iterator();
 		while (it.hasNext()) {
 			ps.add(new PegPossibility(it.next(), cU));
 		}
 	}
-
+	
+	
+	// updates the code universe for a given turn and sets the peg possibilities
+	//based on the updated code universe
 	public void processTurn(Turn t) {
+		//update code universe by removing codes inconsistent with the response to this turn
 		cU.processTurn(t);
+		//create peg possibilities list based on this turn
 		setPegPossibilities();
-		//System.out.println(toString());
 	}
 
 	public CodeUniverse getCodeUniverse() {
