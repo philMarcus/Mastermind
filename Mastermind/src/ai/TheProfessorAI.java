@@ -2,7 +2,7 @@ package ai;
 
 import baseGame.Code;
 
-//Games Won In: 
+//Standard Games Won In: 
 //1 turns: 771576
 //2 turns: 9841997
 //3 turns: 77085437
@@ -16,7 +16,12 @@ import baseGame.Code;
 //Won 1000000000 out of 1000000000 games. 
 //Mean attempts to win: 4.633271732
 //Median attempts to win: 5
-
+//
+//TheProfessorAI is an "AI personality" that makes a guess for a turn by randomly
+//choosing a code from the remaining codes in the code universe
+//
+//Believed to be the the world-beating Mastermind solution.
+//
 public class TheProfessorAI implements AIPersonality {
 private AnalyzedGame game;
 

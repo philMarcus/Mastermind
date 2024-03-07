@@ -20,7 +20,7 @@ public class PegPossibility {
 	// the fraction of remaining possible codes that contain the peg in each slot
 	private double[] probabilityPerSlot;
 
-	// construct the peg possibilty for a given peg and a given code universe
+	// construct the peg possibility for a given peg and a given code universe
 	public PegPossibility(Peg peg, CodeUniverse cU) {
 		len = cU.getLength(); // code length
 		p = peg;
