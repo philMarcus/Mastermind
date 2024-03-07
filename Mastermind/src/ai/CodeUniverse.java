@@ -8,7 +8,7 @@ import baseGame.Turn;
 import baseGame.Code;
 import baseGame.Response;
 
-//A CodeUniverse is the set of all codes that are possible solutions to
+//A CodeUniverse is the set of all codes that are possible secret codes to
 //a game of Mastermind. When a turn is processed, all codes that would not have 
 //generated the turn's response are removed from the universe.
 //
