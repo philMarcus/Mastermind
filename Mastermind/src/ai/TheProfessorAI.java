@@ -20,7 +20,7 @@ import baseGame.Code;
 //TheProfessorAI is an "AI personality" that makes a guess for a turn by randomly
 //choosing a code from the remaining codes in the code universe
 //
-//Believed to be the the world-beating Mastermind solution.
+//
 //
 public class TheProfessorAI implements AIPersonality {
 private AnalyzedGame game;
