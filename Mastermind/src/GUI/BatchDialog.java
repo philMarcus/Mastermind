@@ -87,6 +87,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 			batch.runGame();
 			txt.setText(settings.toString() + "\n"+ batch.toString());
 		}
+		batch.saveResultsToCSV("mastermind_results_"+settings.getCodeLength()+"_"+settings.getNumPegOptions()+".csv");
 	}	
 	
 
@@ -116,6 +117,7 @@ public class BatchDialog extends JDialog implements ActionListener, ChangeListen
 	class BatchThread extends Thread{
 		public void run() {
 			runBatch();
+			
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package ai;
 
 import baseGame.Code;
+import java.io.PrintWriter;
 import baseGame.GameSettings;
 
 //this class represents a large number of AI-played games of Mastermind,
@@ -104,6 +105,32 @@ public class AIBatchGames {
 		return 0;
 		
 	}
+	
+//	 /**
+//     * Saves the results of the game batch to a CSV file.
+//     * The file will have one column: "TurnsToWin".
+//     * Each row will represent one game played, showing the number of turns it took to win.
+//     * @param filename The name of the file to save the results to (e.g., "mastermind_results.csv").
+//     */
+    public void saveResultsToCSV(String filename) {
+        try (PrintWriter writer = new PrintWriter(filename)) {
+            // Write the header row
+            writer.println("TurnsToWin,CodeLength,NumColors");
+
+            // Loop through the gamesWonIn array
+            for (int turns = 1; turns < gamesWonIn.length; turns++) {
+                long gamesWonThisTurn = gamesWonIn[turns];
+                // For each game won in 'turns' number of turns, write a new line with that number
+                for (int i = 0; i < gamesWonThisTurn; i++) {
+                    writer.println(turns+ "," + settings.getCodeLength() + "," + settings.getNumPegOptions());
+                }
+            }
+            System.out.println("Successfully saved results to " + filename);
+        } catch (java.io.FileNotFoundException e) {
+            System.err.println("Error: Could not write to file " + filename);
+            e.printStackTrace();
+        }
+    }
 	
 	//store the stats as a string. Displayed in the GUI BatchDialog.
 	public String toString() {
