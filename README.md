@@ -12,7 +12,7 @@ This project began as a pedagogical model for an AP Computer Science class and e
 
 The heatmap below shows the mean turns to win (raw difficulty) for each game variant. The color represents the mean turns to win, and the annotations include the 95% confidence interval (e.g., `± 0.01`), confirming the high precision of the simulation. We can see the difficulty (brighter colors) increases as we move down (longer `CodeLength`) and as we move right (more `NumColors`).
 
-![Mean Turns to Win Heatmap](mastermind_combined_heatmap.png)
+![Mean Turns to Win Heatmap](Mastermind/mastermind_combined_heatmap.png)
 *Mean turns to win for each (CodeLength, NumColors) variant, annotated with 95% confidence intervals.*
 
 ---
@@ -21,7 +21,7 @@ The heatmap below shows the mean turns to win (raw difficulty) for each game var
 
 This map raises a deeper question: Which parameter do we increment to add *more* difficulty? To answer this, I calculated the marginal difficulty of adding a digit versus adding a color. The figure below shows the complete answer.
 
-![Crossover and Significance Plot](mastermind_final_comparison_plot.png)
+![Crossover and Significance Plot](Mastermind/mastermind_final_comparison_plot.png)
 
 * **The Left Plot (The Finding):** This map shows the *direction* of the difficulty difference. **Blue cells** show where adding a **color** is harder; **Red cells** show where adding a **digit** is harder.
 * **The Right Plot (The Confidence):** This is the Statistical Significance Map. The color shows the signal-to-noise ratio (SNR) of the finding. **Darker cells** are *less* significant (the measured value is close to the uncertainty), while **lighter cells** are *highly* significant.
@@ -40,4 +40,4 @@ Crucially, the significance map proves this is not a product of bad data. The lo
 
 ## Full Analysis
 
-For the complete, step-by-step narrative of the analysis—including disproving the initial $C^L$ hypothesis and all data-wrangling code—please see the [**full Jupyter Notebook**](Mastermind_Analysis.ipynb).
+For the complete, step-by-step narrative of the analysis—including disproving the initial $C^L$ hypothesis and all data-wrangling code—please see the [**full Jupyter Notebook**](Mastermind/Mastermind_Analysis.ipynb).
