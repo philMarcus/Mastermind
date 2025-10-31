@@ -34,7 +34,7 @@ Crucially, the significance map proves this is not a product of bad data. The lo
 
 ## Technical Details
 
-* **Simulation Engine:** The game logic and AI solver were written in **Java**. The solver uses a strategy of randomly selecting a guess from the universe of remaining valid codes.
+* **Simulation Engine:** The game logic [**(baseGame)**](Masrermind/src/baseGame/) and AI solver [**(ai)**](Masrermind/src/ai/) were written in **Java**. The solver uses a strategy of randomly selecting a guess from the universe of remaining valid codes. The [**(GUI)**](Masrermind/src/GUI/) uses Java's swing library. Download the [**latest release**](https://github.com/philMarcus/Mastermind/releases/download/v1.5/Mastermind.1.5.AI.Batches.jar) to play and use all features.
 * **Data Generation:** The Java application was modified to run large numbers of simulated games and export the results to `.csv` files.
 * **Analysis & Visualization:** A **Jupyter Notebook** was used for the analysis, with **Python** libraries **Pandas** for data manipulation and **Matplotlib/Seaborn** for all visualizations.
 
